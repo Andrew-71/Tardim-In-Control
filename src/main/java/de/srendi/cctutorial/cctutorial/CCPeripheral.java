@@ -1,5 +1,8 @@
 package de.srendi.cctutorial.cctutorial;
 
+import com.swdteam.common.command.tardim.CommandTardimBase;
+import com.swdteam.common.command.tardim.CommandTravel;
+import com.swdteam.common.data.DimensionMapReloadListener;
 import dan200.computercraft.api.lua.LuaFunction;
 import dan200.computercraft.api.peripheral.IComputerAccess;
 import dan200.computercraft.api.peripheral.IPeripheral;
@@ -7,6 +10,9 @@ import dan200.computercraft.api.lua.ObjectLuaTable;
 import dan200.computercraft.api.lua.LuaException;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 
 
@@ -113,24 +119,28 @@ public class CCPeripheral implements IPeripheral {
             ++index;
         }
 
-        // We really don't want to create a new TARDIM if we are not inside one, do we?
+        // We really don't want to access a ghost TARDIM, do we?
         if (!found) {
             throw new LuaException("Peripheral is not inside a TARDIM");
         }
+        TardimData T = TardimManager.getTardim(index);
+        if (T.getCurrentLocation() == null || T.getOwnerName() == null) {
+            throw new LuaException("Peripheral is not inside a TARDIM");
+        }
 
-    	return TardimManager.getTardim(index);
+    	return T;
     }
 
     // Peripheral methods ===============================================================
 
     // Get amount of fuel we have (Out of 100)
     @LuaFunction(mainThread = true)
-    public final double get_fuel() throws LuaException {
+    public final double getFuel() throws LuaException {
         return getTardimData().getFuel();
     }
 
     @LuaFunction(mainThread = true)
-    public final double calculate_fuel() throws LuaException {
+    public final double calculateFuelForJourney() throws LuaException {
         TardimData data = getTardimData();
 
         if (data.getTravelLocation() == null) return 0;
@@ -150,41 +160,40 @@ public class CCPeripheral implements IPeripheral {
 
     // Check whether the TARDIM is locked
     @LuaFunction(mainThread = true)
-    public final boolean is_locked() throws LuaException {
+    public final boolean isLocked() throws LuaException {
         return getTardimData().isLocked();
     }
 
     //  Check whether the TARDIM is in flight
     @LuaFunction(mainThread = true)
-    public final boolean is_in_flight() throws LuaException { return getTardimData().isInFlight(); }
+    public final boolean isInFlight() throws LuaException { return getTardimData().isInFlight(); }
 
     // Supposedly gets UNIX timestamp of when we entered flight
     @LuaFunction(mainThread = true)
-    public final long get_time_entered_flight() throws LuaException {
+    public final long getTimeEnteredFlight() throws LuaException {
         TardimData data = getTardimData();
         if (!data.isInFlight()) {
             return -1;
-            // ????
         }
         return data.getTimeEnteredFlight();
     }
 
     // Get username of the TARDIM's owner
     @LuaFunction(mainThread = true)
-    public final String get_owner_name() throws LuaException {
+    public final String getOwnerName() throws LuaException {
         TardimData data = getTardimData();
         return data.getOwnerName();
     }
 
     // Lock/Unlock the TARDIM
     @LuaFunction(mainThread = true)
-    public final void set_locked(boolean locked) throws LuaException {
+    public final void setLocked(boolean locked) throws LuaException {
         getTardimData().setLocked(locked);
     }
 
     // Returns table with current TARDIM location
     @LuaFunction(mainThread = true)
-    public final ObjectLuaTable get_current_location() throws LuaException {
+    public final ObjectLuaTable getCurrentLocation() throws LuaException {
     	Location loc = getTardimData().getCurrentLocation();
         return new ObjectLuaTable(Map.of(
             "dimension", loc.getLevel().location().toString(),
@@ -199,7 +208,7 @@ public class CCPeripheral implements IPeripheral {
 
     // Returns flight destination (or null if there isn't one)
     @LuaFunction(mainThread = true)
-    public final ObjectLuaTable get_flight_location() throws LuaException {
+    public final ObjectLuaTable getTravelLocation() throws LuaException {
     	TardimData data = getTardimData();
         if (data.getTravelLocation() != null) {
         	Location loc = data.getTravelLocation();
@@ -216,4 +225,68 @@ public class CCPeripheral implements IPeripheral {
         	return null;
         }
     }
+
+    // Returns table with all companions of this TARDIM's owner
+    @LuaFunction(mainThread = true)
+    public final ObjectLuaTable getCompanions() throws LuaException {
+    	TardimData data = getTardimData();
+    	ObjectLuaTable companions = new ObjectLuaTable(Map.of());
+    	for (int i = 0; i < data.getCompanions().size(); i++) {
+    		companions.put(i + 1, data.getCompanions().get(i).getUsername());
+    	}
+    	return companions;
+    }
+
+    // Supposed to set dimension of the destination
+    // TODO: This looks like a hazard if someone inserts a dimension that doesn't exist
+    @LuaFunction(mainThread = true)
+    public final void setDimension(String dimension) throws LuaException {
+    	TardimData data = getTardimData();
+
+
+        String key = dimension;
+        dimension = DimensionMapReloadListener.toTitleCase(dimension);
+        if (TardimManager.DIMENSION_MAP.containsKey(dimension)) {
+            key = (String)TardimManager.DIMENSION_MAP.get(dimension);
+        } else {
+            dimension = dimension.toLowerCase();
+        }
+
+        if (!CommandTravel.isValidPath(key)) {
+            throw new LuaException("Invalid dimension");
+        } else {
+            ResourceKey<Level> dim = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(dimension));
+            if (data.getTravelLocation() == null) {
+                data.setTravelLocation(new Location(data.getCurrentLocation()));
+            }
+
+            data.getTravelLocation().setLocation(dim);
+        }
+    }
+
+    // Set X, Y and Z of travel destination
+    @LuaFunction(mainThread = true)
+    public final void setTravelLocation(int x, int y, int z) throws LuaException {
+        TardimData data = getTardimData();
+        if (data.getTravelLocation() == null) {
+            data.setTravelLocation(new Location(data.getCurrentLocation()));
+        }
+
+        data.getTravelLocation().setPosition(x, y, z);
+    }
+
+    /*
+    @LuaFunction(mainThread = true)
+    public final void demat() throws LuaException {
+    	TardimData data = getTardimData();
+    	data.setInFlight(true);
+    }
+
+    @LuaFunction(mainThread = true)
+    public final void remat() throws LuaException {
+        TardimData data = getTardimData();
+        data.setInFlight(false);
+    }
+
+    */
 }

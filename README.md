@@ -9,7 +9,7 @@ This mod is an addon for the [TARDIM mod](https://www.curseforge.com/minecraft/m
 * Connect a computer to the peripheral using a wired modem and wrap it with `peripheral.wrap()`.
 * Call one of the many methods available to you.
 
-All the methods can be found in the [API documentation](https:/google.com), and there are some examples in the [examples folder](/examples)
+All the methods can be found in the [API documentation](https:/google.com), and there are some examples in the [examples folder](examples)
 
 ### Example usecases
 * Monitor to display fuel levels, current location, and other information on a screen in a nice way.

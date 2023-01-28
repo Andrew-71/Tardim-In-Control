@@ -16,7 +16,7 @@ import javax.annotation.Nullable;
 public class CCBlock extends Block implements EntityBlock {
 
     public CCBlock() {
-        super(Properties.of(Material.METAL).strength(5, 5));
+        super(Properties.of(Material.METAL).strength(5, 5).noOcclusion());
     }
 
     /**
