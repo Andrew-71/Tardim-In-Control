@@ -1,4 +1,4 @@
-package de.srendi.cctutorial.cctutorial;
+package su.a71.tardim_ic.tardim_ic;
 
 import dan200.computercraft.api.peripheral.IPeripheral;
 import net.minecraft.core.BlockPos;
@@ -11,16 +11,16 @@ import org.jetbrains.annotations.NotNull;
 
 import static dan200.computercraft.shared.Capabilities.CAPABILITY_PERIPHERAL;
 
-public class CCTileEntity extends BlockEntity {
+public class DigitalInterfaceTileEntity extends BlockEntity {
 
-    public CCTileEntity(BlockPos pos, BlockState state) {
+    public DigitalInterfaceTileEntity(BlockPos pos, BlockState state) {
         super(Registration.CC_TILEENTITY.get(), pos, state);
     }
 
     /**
      * Our peripheral, we create a new peripheral for each new tile entity
      */
-    protected CCPeripheral peripheral = new CCPeripheral(this);
+    protected DigitalInterfacePeripheral peripheral = new DigitalInterfacePeripheral(this);
     private LazyOptional<IPeripheral> peripheralCap;
     public BlockPos getPos() {
         return this.worldPosition;

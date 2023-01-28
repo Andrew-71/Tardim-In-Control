@@ -4,13 +4,13 @@ loaderVersion = "[36,)" #mandatory This is typically bumped every Minecraft vers
 license = "All rights reserved"
 [[mods]] #mandatory
 # The modid of the mod
-modId = "cctutorial" #mandatory
+modId = "tardim_ic" #mandatory
 version = "1.0" #mandatory
 # A display name for the mod
-displayName = "CCtutorial" #mandatory
+displayName = "TARDIM: In Control" #mandatory
 # The description text for the mod (multi line!) (#mandatory)
 description = '''
-    A mod to show you, how the magic of cc works.
+    All of time and space, now automated. Control your TARDIM using ComputerCraft: Tweaked.
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.cctutorial]] #optional

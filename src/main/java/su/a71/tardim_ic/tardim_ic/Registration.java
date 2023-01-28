@@ -1,4 +1,4 @@
-package de.srendi.cctutorial.cctutorial;
+package su.a71.tardim_ic.tardim_ic;
 
 import com.google.common.collect.Sets;
 import net.minecraft.world.item.BlockItem;
@@ -16,12 +16,12 @@ import java.util.function.Supplier;
 
 public class Registration {
 
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, CCtutorial.MODID);
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, CCtutorial.MODID);
-    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, CCtutorial.MODID);
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, TardimInControl.MODID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, TardimInControl.MODID);
+    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, TardimInControl.MODID);
 
     // Blocks
-    public static final RegistryObject<Block> CC_BLOCK = register("digital_tardim_interface", CCBlock::new);
+    public static final RegistryObject<Block> CC_BLOCK = register("digital_tardim_interface", DigitalInterfaceBlock::new);
 
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> block) {
         RegistryObject<T> registryObject = BLOCKS.register(name, block);
@@ -30,7 +30,7 @@ public class Registration {
     }
 
     // Tile Entities
-    public static final RegistryObject<BlockEntityType<CCTileEntity>> CC_TILEENTITY = Registration.BLOCK_ENTITIES.register("digital_tardim_interface", () -> new BlockEntityType<>(CCTileEntity::new, Sets.newHashSet(CC_BLOCK.get()), null));
+    public static final RegistryObject<BlockEntityType<DigitalInterfaceTileEntity>> CC_TILEENTITY = Registration.BLOCK_ENTITIES.register("digital_tardim_interface", () -> new BlockEntityType<>(DigitalInterfaceTileEntity::new, Sets.newHashSet(CC_BLOCK.get()), null));
 
     // Register our stuff
     public static void register() {

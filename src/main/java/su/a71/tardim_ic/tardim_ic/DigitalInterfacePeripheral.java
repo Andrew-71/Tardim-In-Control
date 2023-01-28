@@ -1,6 +1,5 @@
-package de.srendi.cctutorial.cctutorial;
+package su.a71.tardim_ic.tardim_ic;
 
-import com.swdteam.common.command.tardim.CommandTardimBase;
 import com.swdteam.common.command.tardim.CommandTravel;
 import com.swdteam.common.data.DimensionMapReloadListener;
 import dan200.computercraft.api.lua.LuaFunction;
@@ -9,7 +8,6 @@ import dan200.computercraft.api.peripheral.IPeripheral;
 import dan200.computercraft.api.lua.ObjectLuaTable;
 import dan200.computercraft.api.lua.LuaException;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -33,15 +31,15 @@ import java.util.Map;
 /**
  * Our peripheral class, this is the class where we will register functions for our block.
  */
-public class CCPeripheral implements IPeripheral {
+public class DigitalInterfacePeripheral implements IPeripheral {
 
     private final List<IComputerAccess> connectedComputers = new ArrayList<>();  // List of computers connected to the peripheral
-    private final CCTileEntity tileEntity;  // Peripheral's BlockEntity, used for accessing coordinates
+    private final DigitalInterfaceTileEntity tileEntity;  // Peripheral's BlockEntity, used for accessing coordinates
 
     /**
      * @param tileEntity the tile entity of this peripheral
      */
-    public CCPeripheral(CCTileEntity tileEntity) {
+    public DigitalInterfacePeripheral(DigitalInterfaceTileEntity tileEntity) {
         this.tileEntity = tileEntity;
     }
 
@@ -63,7 +61,7 @@ public class CCPeripheral implements IPeripheral {
     @Override
     public void attach(@Nonnull IComputerAccess computer) { connectedComputers.add(computer); }
 
-    public CCTileEntity getTileEntity() {
+    public DigitalInterfaceTileEntity getTileEntity() {
         return tileEntity;
     }
 

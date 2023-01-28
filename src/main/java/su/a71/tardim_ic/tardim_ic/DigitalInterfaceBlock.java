@@ -1,4 +1,4 @@
-package de.srendi.cctutorial.cctutorial;
+package su.a71.tardim_ic.tardim_ic;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
@@ -13,9 +13,9 @@ import javax.annotation.Nullable;
 /**
  * This is our block. To tell minecraft that this block has a block entity, we need to implement {@link EntityBlock}
  */
-public class CCBlock extends Block implements EntityBlock {
+public class DigitalInterfaceBlock extends Block implements EntityBlock {
 
-    public CCBlock() {
+    public DigitalInterfaceBlock() {
         super(Properties.of(Material.METAL).strength(5, 5).noOcclusion());
     }
 
