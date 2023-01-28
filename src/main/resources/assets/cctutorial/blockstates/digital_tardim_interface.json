@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "cctutorial:block/digital_tardim_interface"
+    }
+  }
+}

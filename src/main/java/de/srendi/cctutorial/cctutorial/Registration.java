@@ -21,7 +21,7 @@ public class Registration {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, CCtutorial.MODID);
 
     // Blocks
-    public static final RegistryObject<Block> CC_BLOCK = register("tutorial_block", CCBlock::new);
+    public static final RegistryObject<Block> CC_BLOCK = register("digital_tardim_interface", CCBlock::new);
 
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> block) {
         RegistryObject<T> registryObject = BLOCKS.register(name, block);
@@ -30,7 +30,7 @@ public class Registration {
     }
 
     // Tile Entities
-    public static final RegistryObject<BlockEntityType<CCTileEntity>> CC_TILEENTITY = Registration.BLOCK_ENTITIES.register("tutorial_block", () -> new BlockEntityType<>(CCTileEntity::new, Sets.newHashSet(CC_BLOCK.get()), null));
+    public static final RegistryObject<BlockEntityType<CCTileEntity>> CC_TILEENTITY = Registration.BLOCK_ENTITIES.register("digital_tardim_interface", () -> new BlockEntityType<>(CCTileEntity::new, Sets.newHashSet(CC_BLOCK.get()), null));
 
     // Register our stuff
     public static void register() {

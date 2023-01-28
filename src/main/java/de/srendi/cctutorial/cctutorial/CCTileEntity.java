@@ -22,6 +22,9 @@ public class CCTileEntity extends BlockEntity {
      */
     protected CCPeripheral peripheral = new CCPeripheral(this);
     private LazyOptional<IPeripheral> peripheralCap;
+    public BlockPos getPos() {
+        return this.worldPosition;
+    }
 
     /**
      * When a computer modem tries to wrap our block, the modem will call getCapability to receive our peripheral.

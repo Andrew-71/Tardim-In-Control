@@ -6,6 +6,9 @@ import dan200.computercraft.api.peripheral.IPeripheral;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
+import com.swdteam.tardim.TardimData;
+import com.swdteam.tardim.TardimManager;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -72,26 +75,28 @@ public class CCPeripheral implements IPeripheral {
         return tileEntity;
     }
 
+
+    public TardimData getTardimData() {
+    	return TardimManager.getFromPos(getTileEntity().getPos());
+    }
+
     /**
      * To register functions for our block, wee need to create final methods with the {@link LuaFunction} annotation
      * This function will send a message to every player on the Server
      */
-    @LuaFunction
-    public final void sendMessage(String message) {
-        // Used to get the current server and all online players.
-        ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers().forEach(player -> {
-            // Now, send the message
-            // To send a message, we need a Component(In this case a literal text component).
-            player.sendSystemMessage(Component.literal(message));
-        });
-    }
 
-    /**
-     * Because we want to access the world, we need to run this function on the main thread.
-     */
     @LuaFunction(mainThread = true)
-    public final boolean isRaining() {
-        return getTileEntity().getLevel().getRainLevel(0) > 0;
+    public final double get_fuel() {
+        return getTardimData().getFuel();
     }
 
+    @LuaFunction(mainThread = true)
+    public final boolean is_locked() {
+        return getTardimData().isLocked();
+    }
+
+    @LuaFunction(mainThread = true)
+    public final void set_locked(boolean locked) {
+        getTardimData().setLocked(locked);
+    }
 }
