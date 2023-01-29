@@ -27,6 +27,6 @@ public class DigitalInterfaceBlock extends Block implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-        return Registration.CC_TILEENTITY.get().create(pos, state);
+        return Registration.DIGITAL_TARDIM_INTERFACE_TILEENTITY.get().create(pos, state);
     }
 }

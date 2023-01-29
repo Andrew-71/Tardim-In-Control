@@ -8,11 +8,15 @@ import dan200.computercraft.api.peripheral.IPeripheral;
 import dan200.computercraft.api.lua.ObjectLuaTable;
 import dan200.computercraft.api.lua.LuaException;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
-
+import net.minecraft.server.players.PlayerList;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 // TODO: Fabric and Forge diffirence? (Bottom: Fabric)
 import com.swdteam.tardim.TardimData;
@@ -24,13 +28,9 @@ import com.swdteam.tardim.TardimData.Location;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-/**
- * Our peripheral class, this is the class where we will register functions for our block.
- */
+
 public class DigitalInterfacePeripheral implements IPeripheral {
 
     private final List<IComputerAccess> connectedComputers = new ArrayList<>();  // List of computers connected to the peripheral
@@ -52,12 +52,9 @@ public class DigitalInterfacePeripheral implements IPeripheral {
     @Override
     public boolean equals(@Nullable IPeripheral iPeripheral) { return this == iPeripheral; }
 
-    // Called when a computer disconnects from the peripheral
+    // Called when a computer connects/disconnects from the peripheral
     @Override
     public void detach(@Nonnull IComputerAccess computer) { connectedComputers.remove(computer); }
-
-    // Called when a computer connects to the peripheral
-    // TODO: add a sound effect? Like a simple TARDIS beep?
     @Override
     public void attach(@Nonnull IComputerAccess computer) { connectedComputers.add(computer); }
 
@@ -66,15 +63,21 @@ public class DigitalInterfacePeripheral implements IPeripheral {
     }
 
 
-    /* Get TARDIM's data, which we need for *every* function
-    *
-    * We can't do a simple
-    *   TardimManager.getFromPos(getTileEntity().getPos())
-    * because if someone attempts to call a method outside a TARDIM, this would create a new TARDIM/Point to the one with ID of 0 (Due to the way TardimSaveHandler.loadTardisData works).
-    * Which is obviously not what we want.
-    *
-    * So instead we use this, and recieve ability to give user a LuaException if they think that fiddling with time devices is funny
-    * This is mostly a copy of getIDForXZ function */
+    /**
+     *  Get TARDIM's data, which we need for *every* function
+     * <p>
+     * We can't do a simple
+     * <code>TardimManager.getFromPos(getTileEntity().getPos())</code>
+     * <p>
+     * because if someone attempts to call a method outside a TARDIM, this would create a new TARDIM/Point to the one with ID of 0 (Due to the way TardimSaveHandler.loadTardisData works).
+     * Which is obviously not what we want.
+     * <p>
+     * So instead we use this, and get the ability to give user a LuaException if they think that fiddling with time is funny
+     * This is mostly a copy of getIDForXZ function with some added checks
+     *
+     * @return TardimData of the TARDIM that the peripheral is in
+     * @throws LuaException if the peripheral is not in a TARDIM
+     * */
     public TardimData getTardimData() throws LuaException {
         int X = getTileEntity().getPos().getX(), Z = getTileEntity().getPos().getZ();
 
@@ -131,12 +134,20 @@ public class DigitalInterfacePeripheral implements IPeripheral {
 
     // Peripheral methods ===============================================================
 
-    // Get amount of fuel we have (Out of 100)
+    /**
+     * Return how much fuel is left in the TARDIM
+     *
+     * @return Fuel left (Out of 100)
+    */
     @LuaFunction(mainThread = true)
     public final double getFuel() throws LuaException {
         return getTardimData().getFuel();
     }
 
+    /**
+     * Get how much fuel it would take to travel to the destination
+     * @return Amount of fuel needed (Out of 100)
+    */
     @LuaFunction(mainThread = true)
     public final double calculateFuelForJourney() throws LuaException {
         TardimData data = getTardimData();
@@ -153,20 +164,34 @@ public class DigitalInterfacePeripheral implements IPeripheral {
             fuel = 10.0;
         }
 
-        return 100; //data.calculateFuelForJourney(((Level) curr.getLevel()), dest.getLevel().location(), curr.getPos(), dest.getPos());
+        Vec3 posA = new Vec3(curr.getPos().getX(), curr.getPos().getY(), curr.getPos().getZ());
+        Vec3 posB = new Vec3(dest.getPos().getX(), dest.getPos().getY(), dest.getPos().getZ());
+        fuel += posA.distanceTo(posB) / 100.0;
+        if (fuel > 100.0) fuel = 100.0;
+
+        return fuel;
     }
 
-    // Check whether the TARDIM is locked
+    /**
+     * Check whether the TARDIM is locked
+     * @return true if locked, false if not
+     */
     @LuaFunction(mainThread = true)
     public final boolean isLocked() throws LuaException {
         return getTardimData().isLocked();
     }
 
-    //  Check whether the TARDIM is in flight
+    /**
+     * Check whether the TARDIM is in flight
+     * @return true if in flight, false if not
+     */
     @LuaFunction(mainThread = true)
     public final boolean isInFlight() throws LuaException { return getTardimData().isInFlight(); }
 
-    // Supposedly gets UNIX timestamp of when we entered flight
+    /**
+     * Supposedly gets UNIX timestamp of when we entered flight
+     * @return UNIX timestamp if in flight, -1 if not
+     */
     @LuaFunction(mainThread = true)
     public final long getTimeEnteredFlight() throws LuaException {
         TardimData data = getTardimData();
@@ -176,20 +201,34 @@ public class DigitalInterfacePeripheral implements IPeripheral {
         return data.getTimeEnteredFlight();
     }
 
-    // Get username of the TARDIM's owner
+    /**
+     * Get username of the TARDIM's owner
+     * @return String of the owner's username
+     */
     @LuaFunction(mainThread = true)
     public final String getOwnerName() throws LuaException {
         TardimData data = getTardimData();
         return data.getOwnerName();
     }
 
-    // Lock/Unlock the TARDIM
+    /**
+     * Lock/unlock the TARDIM
+     * @param locked    true to lock, false to unlock
+     */
     @LuaFunction(mainThread = true)
     public final void setLocked(boolean locked) throws LuaException {
         getTardimData().setLocked(locked);
     }
 
-    // Returns table with current TARDIM location
+    /**
+     * Get the current location of the TARDIM
+     * @return ObjectLuaTable of the current location with the following keys:
+     * <ul>
+     *     <li>dimension - String of the dimension</li>
+     *     <li>pos - table with the keys x, y, z that hold numbers</li>
+     *     <li>facing - String of the facing</li>
+     * </ul>
+     */
     @LuaFunction(mainThread = true)
     public final ObjectLuaTable getCurrentLocation() throws LuaException {
     	Location loc = getTardimData().getCurrentLocation();
@@ -204,7 +243,17 @@ public class DigitalInterfacePeripheral implements IPeripheral {
         ));
     }
 
-    // Returns flight destination (or null if there isn't one)
+    /**
+     * Get the current location of the TARDIM
+     * @return if there is no destination returns null.
+     * <p>
+     * Otherwise, ObjectLuaTable of the current location with the following keys:
+     *  <ul>
+     *      <li>dimension - String of the dimension</li>
+     *      <li>pos - table with the keys x, y, z that hold numbers</li>
+     *      <li>facing - String of the facing</li>
+     *  </ul>
+     */
     @LuaFunction(mainThread = true)
     public final ObjectLuaTable getTravelLocation() throws LuaException {
     	TardimData data = getTardimData();
@@ -224,7 +273,10 @@ public class DigitalInterfacePeripheral implements IPeripheral {
         }
     }
 
-    // Returns table with all companions of this TARDIM's owner
+    /**
+     * Get list of the TARDIM owner's companions
+     * @return ObjectLuaTable containing the usernames of the companions
+     */
     @LuaFunction(mainThread = true)
     public final ObjectLuaTable getCompanions() throws LuaException {
     	TardimData data = getTardimData();
@@ -235,12 +287,17 @@ public class DigitalInterfacePeripheral implements IPeripheral {
     	return companions;
     }
 
-    // Supposed to set dimension of the destination
-    // TODO: This looks like a hazard if someone inserts a dimension that doesn't exist
+    /**
+     * Set dimension for the TARDIM to travel to
+     * <p>
+     * This is a serious hazard right now due to the fact that I am unable to check if the dimension is valid.
+     * <p>
+     * TODO: If invalid dimension is given, the TARDIM is unable to land until the dimension is changed. Add proper checks.
+     * @param dimension String of the dimension e.g. "minecraft:overworld"
+     */
     @LuaFunction(mainThread = true)
     public final void setDimension(String dimension) throws LuaException {
     	TardimData data = getTardimData();
-
 
         String key = dimension;
         dimension = DimensionMapReloadListener.toTitleCase(dimension);
@@ -262,7 +319,12 @@ public class DigitalInterfacePeripheral implements IPeripheral {
         }
     }
 
-    // Set X, Y and Z of travel destination
+    /**
+     * Set the destination's coordinates
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @param z Z coordinate
+     */
     @LuaFunction(mainThread = true)
     public final void setTravelLocation(int x, int y, int z) throws LuaException {
         TardimData data = getTardimData();
@@ -273,18 +335,56 @@ public class DigitalInterfacePeripheral implements IPeripheral {
         data.getTravelLocation().setPosition(x, y, z);
     }
 
-    /*
+
+    /**
+     * Set destination to the TARDIM's owner's home (Must be online)
+     */
     @LuaFunction(mainThread = true)
-    public final void demat() throws LuaException {
+    public final void home() throws LuaException {
     	TardimData data = getTardimData();
-    	data.setInFlight(true);
+
+        UUID uuid = data.getOwner();
+        String username = data.getOwnerName();
+        if (uuid == null || username == null) {
+            throw new LuaException("TARDIM has no owner");
+        }
+
+        PlayerList playerList = ServerLifecycleHooks.getCurrentServer().getPlayerList();
+        ServerPlayer player = playerList.getPlayer(uuid);
+        if (player == null) {
+            throw new LuaException("TARDIM owner is not online");
+        }
+
+        ResourceKey<Level> dim = player.getRespawnDimension();
+        BlockPos pos = player.getRespawnPosition();
+        if (pos == null) {
+            throw new LuaException("TARDIM owner has no home");
+        }
+
+        setDimension(dim.location().toString());
+        setTravelLocation(pos.getX(), pos.getY(), pos.getZ());
     }
 
+    /**
+     * Set destination for a player's location (Player must be online)
+     * @param username - String of the username of the player
+     */
     @LuaFunction(mainThread = true)
-    public final void remat() throws LuaException {
-        TardimData data = getTardimData();
-        data.setInFlight(false);
+    public final void locatePlayer(String username) throws LuaException {
+    	PlayerList playerList = ServerLifecycleHooks.getCurrentServer().getPlayerList();
+    	ServerPlayer player = playerList.getPlayerByName(username);
+    	if (player == null) {
+    		throw new LuaException("Player not found");
+    	}
+
+    	ResourceKey<Level> dim = player.getCommandSenderWorld().dimension();
+    	BlockPos pos = player.blockPosition();
+
+    	setDimension(dim.location().toString());
+    	setTravelLocation(pos.getX(), pos.getY(), pos.getZ());
     }
 
-    */
+    // I would love to add this, however it requires TARDIM source code.
+    // TODO: If I am ever part of the TARDIM team, I will add this.
+    // TODO: locateBiome, demat, remat, setFacing, toggleFacing
 }

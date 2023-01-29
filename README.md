@@ -12,9 +12,25 @@ This mod is an addon for the [TARDIM mod](https://www.curseforge.com/minecraft/m
 All the methods can be found in the [API documentation](https:/google.com), and there are some examples in the [examples folder](examples)
 
 ### Example usecases
-* Monitor to display fuel levels, current location, and other information on a screen in a nice way.
+* Monitor fuel levels, current location, and other information on a screen in a nice way.
 * Way to remotely summon your TARDIM to you, or to a specific location. (Using chunkloaders)
 * Refined control of your TARDIM, such as saving and loading locations, or setting a destination in a GUI.
 * Visual effects that activate during flight.
 
 The possibilities are endless, the only limit is your imagination! (And coding skills)
+
+### FAQ
+
+Is this for Fabric or Forge?
+: As a Fabric player who recognises Forge's large playerbase, I intend to support both major modloaders. 
+However a version for one of them could be released a bit later than the other one's.
+
+Can I use this in my modpack?
+: Sure, as long as you credit me and link to this page.
+
+Will there be a 1.19.3 version and beyond?
+: Yes, I will try my best to update to later versions as soon as ComputerCraft: Tweaked and TARDIM receive stable versions for them.
+
+Will you support earlier versions?
+: I am not very familiar with those and therefore cannot make versions for before 1.19, 
+however if there will be a lot of people asking for it I could try sometime in the future. But no gurantees.

@@ -14,7 +14,7 @@ import static dan200.computercraft.shared.Capabilities.CAPABILITY_PERIPHERAL;
 public class DigitalInterfaceTileEntity extends BlockEntity {
 
     public DigitalInterfaceTileEntity(BlockPos pos, BlockState state) {
-        super(Registration.CC_TILEENTITY.get(), pos, state);
+        super(Registration.DIGITAL_TARDIM_INTERFACE_TILEENTITY.get(), pos, state);
     }
 
     /**
