@@ -11,7 +11,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle'
 
 group = 'su.a71.tardim_ic'
-version = '1.0'
+version = '0.5'
 archivesBaseName = 'tardim_ic'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)

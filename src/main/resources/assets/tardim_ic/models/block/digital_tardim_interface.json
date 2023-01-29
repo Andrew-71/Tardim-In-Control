@@ -3,7 +3,8 @@
 	"parent": "digital_tardim_interface",
 	"texture_size": [64, 64],
 	"textures": {
-		"1": "tardim_ic:blocks/digital_tardim_interface"
+		"1": "tardim_ic:blocks/digital_tardim_interface",
+		"particle": "tardim_ic:blocks/digital_tardim_interface"
 	},
 	"elements": [
 		{
@@ -208,6 +209,5 @@
 			"rotation": [-90, 0, 0],
 			"translation": [0, 0, 4.25]
 		}
-	},
-	"particles": "block/deepslate_brick"
+	}
 }
