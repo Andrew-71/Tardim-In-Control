@@ -384,6 +384,84 @@ public class DigitalInterfacePeripheral implements IPeripheral {
     	setTravelLocation(pos.getX(), pos.getY(), pos.getZ());
     }
 
+    /**
+     * Get the rotation of the TARDIM's door
+     * @return String of the door rotation ("north", "south", "east", "west")
+     */
+    @LuaFunction(mainThread = true)
+    public final String getDoorRotation() throws LuaException {
+    	TardimData data = getTardimData();
+    	double rotation = data.getDoorRotation();
+        if (rotation == 0) {
+            return "north";
+        } else if (rotation == 90) {
+            return "east";
+        } else if (rotation == 180) {
+            return "south";
+        } else if (rotation == 270) {
+            return "west";
+        } else {
+            throw new LuaException("Invalid door rotation");
+        }
+    }
+
+    /**
+     * Set the rotation of the TARDIM's door
+     * @param rotation  String of the door rotation ("north", "south", "east", "west")
+     */
+    @LuaFunction
+    public final void setDoorRotation(String rotation) throws LuaException {
+    	TardimData data = getTardimData();
+        switch (rotation) {
+            case "north" -> data.setDoorRotation(0);
+            case "east" -> data.setDoorRotation(90);
+            case "south" -> data.setDoorRotation(180);
+            case "west" -> data.setDoorRotation(270);
+            default -> throw new LuaException("Invalid door rotation");
+        }
+    }
+
+    /**
+     * Toggle the rotation of the TARDIM's door (north -> east -> south -> west -> north)
+     */
+    @LuaFunction
+    public final void toggleDoorRotation() throws LuaException {
+    	TardimData data = getTardimData();
+        double rotation = data.getDoorRotation();
+        if (rotation == 0) {
+            data.setDoorRotation(90);
+        } else if (rotation == 90) {
+            data.setDoorRotation(180);
+        } else if (rotation == 180) {
+            data.setDoorRotation(270);
+        } else if (rotation == 270) {
+            data.setDoorRotation(0);
+        } else {
+            throw new LuaException("Invalid door rotation");
+        }
+    }
+
+    /**
+     * Add a number to the destination's coordinates
+     * @param axis  String of the axis ("x", "y", "z")
+     * @param amount    Number to add to the axis
+     */
+    @LuaFunction
+    public final void coordAdd(String axis, int amount) throws LuaException {
+    	TardimData data = getTardimData();
+    	if (data.getTravelLocation() == null) {
+    		data.setTravelLocation(new Location(data.getCurrentLocation()));
+    	}
+
+    	Location location = data.getTravelLocation();
+    	switch (axis) {
+    		case "x" -> location.addPosition(amount, 0, 0);
+            case "y" -> location.addPosition(0, amount, 0);
+            case "z" -> location.addPosition(0, 0, amount);
+            default -> throw new LuaException("Invalid axis");
+    	}
+    }
+
     // I would love to add this, however it requires TARDIM source code.
     // TODO: If I am ever part of the TARDIM team, I will add this.
     // TODO: locateBiome, demat, remat, setFacing, toggleFacing

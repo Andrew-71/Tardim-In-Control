@@ -208,5 +208,6 @@
 			"rotation": [-90, 0, 0],
 			"translation": [0, 0, 4.25]
 		}
-	}
+	},
+	"particles": "block/deepslate_brick"
 }
