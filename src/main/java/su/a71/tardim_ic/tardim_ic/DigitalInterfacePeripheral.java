@@ -9,6 +9,7 @@ import dan200.computercraft.api.lua.ObjectLuaTable;
 import dan200.computercraft.api.lua.LuaException;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -391,17 +392,23 @@ public class DigitalInterfacePeripheral implements IPeripheral {
     @LuaFunction(mainThread = true)
     public final String getDoorRotation() throws LuaException {
     	TardimData data = getTardimData();
-    	double rotation = data.getDoorRotation();
-        if (rotation == 0) {
-            return "north";
-        } else if (rotation == 90) {
-            return "east";
-        } else if (rotation == 180) {
-            return "south";
-        } else if (rotation == 270) {
-            return "west";
-        } else {
-            throw new LuaException("Invalid door rotation");
+    	Direction rotation = data.getTravelLocation().getFacing();
+        switch (rotation) {
+            case NORTH -> {
+                return "north";
+            }
+            case EAST -> {
+                return "east";
+            }
+            case SOUTH -> {
+                return "south";
+            }
+            case WEST -> {
+                return "west";
+            }
+            default -> {
+                throw new LuaException("Invalid door rotation");
+            }
         }
     }
 
@@ -413,12 +420,14 @@ public class DigitalInterfacePeripheral implements IPeripheral {
     public final void setDoorRotation(String rotation) throws LuaException {
     	TardimData data = getTardimData();
         switch (rotation) {
-            case "north" -> data.setDoorRotation(0);
-            case "east" -> data.setDoorRotation(90);
-            case "south" -> data.setDoorRotation(180);
-            case "west" -> data.setDoorRotation(270);
+            case "north" -> data.getTravelLocation().setFacing(Direction.NORTH);
+            case "east" -> data.getTravelLocation().setFacing(Direction.EAST);
+            case "south" -> data.getTravelLocation().setFacing(Direction.SOUTH);
+            case "west" -> data.getTravelLocation().setFacing(Direction.WEST);
             default -> throw new LuaException("Invalid door rotation");
         }
+
+        data.save();
     }
 
     /**
@@ -427,18 +436,23 @@ public class DigitalInterfacePeripheral implements IPeripheral {
     @LuaFunction
     public final void toggleDoorRotation() throws LuaException {
     	TardimData data = getTardimData();
-        double rotation = data.getDoorRotation();
-        if (rotation == 0) {
-            data.setDoorRotation(90);
-        } else if (rotation == 90) {
-            data.setDoorRotation(180);
-        } else if (rotation == 180) {
-            data.setDoorRotation(270);
-        } else if (rotation == 270) {
-            data.setDoorRotation(0);
-        } else {
-            throw new LuaException("Invalid door rotation");
+        if (data.getTravelLocation() == null) {
+            data.setTravelLocation(new Location(data.getCurrentLocation()));
         }
+
+        if (data.getTravelLocation().getFacing() == null) {
+            data.getTravelLocation().setFacing(Direction.NORTH);
+        }
+
+        switch (data.getTravelLocation().getFacing()) {
+            case NORTH -> data.getTravelLocation().setFacing(Direction.EAST);
+            case EAST -> data.getTravelLocation().setFacing(Direction.SOUTH);
+            case SOUTH -> data.getTravelLocation().setFacing(Direction.WEST);
+            case WEST -> data.getTravelLocation().setFacing(Direction.NORTH);
+            default -> data.getTravelLocation().setFacing(Direction.NORTH);
+        }
+
+        data.save();
     }
 
     /**
