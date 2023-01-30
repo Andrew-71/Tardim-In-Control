@@ -386,6 +386,20 @@ public class DigitalInterfacePeripheral implements IPeripheral {
     }
 
     /**
+     * Get online players. Useful for making a GUI for the locate function or just a nice dashboard.
+     * @return ObjectLuaTable of the online players
+     */
+    @LuaFunction(mainThread = true)
+    public final ObjectLuaTable getOnlinePlayers() throws LuaException {
+    	PlayerList playerList = ServerLifecycleHooks.getCurrentServer().getPlayerList();
+    	ObjectLuaTable players = new ObjectLuaTable(Map.of());
+    	for (int i = 0; i < playerList.getPlayers().size(); i++) {
+    		players.put(i + 1, playerList.getPlayers().get(i).getGameProfile().getName());
+    	}
+    	return players;
+    }
+
+    /**
      * Get the rotation of the TARDIM's door
      * @return String of the door rotation ("north", "south", "east", "west")
      */
