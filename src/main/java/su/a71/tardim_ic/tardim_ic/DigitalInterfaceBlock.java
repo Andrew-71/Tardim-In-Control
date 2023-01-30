@@ -14,14 +14,9 @@ import javax.annotation.Nullable;
 public class DigitalInterfaceBlock extends Block implements EntityBlock {
 
     public DigitalInterfaceBlock() {
-        super(Properties.of(Material.METAL).strength(5, 5).noOcclusion());
+        super(Properties.of(Material.METAL).strength(2, 4).noOcclusion());
     }
 
-    /**
-     * This is the method from {@link EntityBlock} to create a new block entity for our block
-     *
-     * @return A new block entity from our registry object
-     */
     @Nullable
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
