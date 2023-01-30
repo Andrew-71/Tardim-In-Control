@@ -29,13 +29,12 @@ public class Registration {
     };
 
     // Blocks
-    public static final RegistryObject<Block> DIGITAL_TARDIM_INTERFACE = register("digital_tardim_interface", DigitalInterfaceBlock::new);
-
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> block) {
         RegistryObject<T> registryObject = BLOCKS.register(name, block);
         ITEMS.register(name, () -> new BlockItem(registryObject.get(), new Item.Properties().tab(TARDIM_IC_TAB)));
         return registryObject;
     }
+    public static final RegistryObject<Block> DIGITAL_TARDIM_INTERFACE = register("digital_tardim_interface", DigitalInterfaceBlock::new);
 
     // Tile Entities
     public static final RegistryObject<BlockEntityType<DigitalInterfaceTileEntity>> DIGITAL_TARDIM_INTERFACE_TILEENTITY = Registration.BLOCK_ENTITIES.register("digital_tardim_interface", () -> new BlockEntityType<>(DigitalInterfaceTileEntity::new, Sets.newHashSet(DIGITAL_TARDIM_INTERFACE.get()), null));
