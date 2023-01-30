@@ -1,7 +1,12 @@
 package su.a71.tardim_ic.tardim_ic;
 
+import com.mojang.datafixers.util.Pair;
+import com.swdteam.common.command.tardim.CommandTardimBase;
 import com.swdteam.common.command.tardim.CommandTravel;
 import com.swdteam.common.data.DimensionMapReloadListener;
+import com.swdteam.common.init.TRDSounds;
+import com.swdteam.common.item.ItemTardim;
+import com.swdteam.main.Tardim;
 import dan200.computercraft.api.lua.LuaFunction;
 import dan200.computercraft.api.peripheral.IComputerAccess;
 import dan200.computercraft.api.peripheral.IPeripheral;
@@ -10,12 +15,19 @@ import dan200.computercraft.api.lua.LuaException;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.players.PlayerList;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
@@ -430,7 +442,7 @@ public class DigitalInterfacePeripheral implements IPeripheral {
      * Set the rotation of the TARDIM's door
      * @param rotation  String of the door rotation ("north", "south", "east", "west")
      */
-    @LuaFunction
+    @LuaFunction(mainThread = true)
     public final void setDoorRotation(String rotation) throws LuaException {
     	TardimData data = getTardimData();
         switch (rotation) {
@@ -447,7 +459,7 @@ public class DigitalInterfacePeripheral implements IPeripheral {
     /**
      * Toggle the rotation of the TARDIM's door (north -> east -> south -> west -> north)
      */
-    @LuaFunction
+    @LuaFunction(mainThread = true)
     public final void toggleDoorRotation() throws LuaException {
     	TardimData data = getTardimData();
         if (data.getTravelLocation() == null) {
@@ -474,7 +486,7 @@ public class DigitalInterfacePeripheral implements IPeripheral {
      * @param axis  String of the axis ("x", "y", "z")
      * @param amount    Number to add to the axis
      */
-    @LuaFunction
+    @LuaFunction(mainThread = true)
     public final void coordAdd(String axis, int amount) throws LuaException {
     	TardimData data = getTardimData();
     	if (data.getTravelLocation() == null) {
@@ -490,7 +502,194 @@ public class DigitalInterfacePeripheral implements IPeripheral {
     	}
     }
 
-    // I would love to add this, however it requires TARDIM source code.
-    // TODO: If I am ever part of the TARDIM team, I will add this.
-    // TODO: locateBiome, demat, remat, setFacing, toggleFacing
+    /**
+     * Dematerialize the TARDIM
+     */
+    @LuaFunction(mainThread = true)
+    public final void demat() throws LuaException {
+    	TardimData data = getTardimData();
+
+        if (data.isInFlight()) {
+            throw new LuaException("TARDIM is already in flight");
+        }
+        Location loc = data.getCurrentLocation();
+        ServerLevel level = ServerLifecycleHooks.getCurrentServer().getLevel(loc.getLevel());
+        ItemTardim.destroyTardim(level, loc.getPos(), Direction.NORTH);
+        data.setInFlight(true);
+    	if (data.getTravelLocation() == null) {
+            data.setTravelLocation(new Location(data.getCurrentLocation()));
+        }
+
+        // TODO: This is a horrendous way of doing this. Please fix.
+        String level_str = "tardim:tardis_dimension";
+        ServerLifecycleHooks.getCurrentServer().getLevel(ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(level_str))).playSound(null, this.tileEntity.getPos(), (SoundEvent) TRDSounds.TARDIM_TAKEOFF.get(), SoundSource.AMBIENT, 1.0F, 1.0F);
+
+        data.save();
+    }
+
+    /**
+     * Materialize the TARDIM at the destination
+     * <p>
+     * Has a LOT of checks to make sure the TARDIM can materialize, so please implement error handling if you use this.
+     */
+    @LuaFunction(mainThread = true)
+    public final void remat() throws LuaException {
+        TardimData data = getTardimData();
+
+        if (data.isInFlight()) {
+            if (data.getTimeEnteredFlight() < System.currentTimeMillis() / 1000L - 10L) {
+                Location loc = data.getTravelLocation();
+                ServerLevel level = ServerLifecycleHooks.getCurrentServer().getLevel(loc.getLevel());
+                double fuel = data.calculateFuelForJourney(
+                        ServerLifecycleHooks.getCurrentServer().getLevel(data.getCurrentLocation().getLevel()), level, data.getCurrentLocation().getPos(), loc.getPos()
+                );
+                if (data.getFuel() >= fuel) {
+                    level.getChunk(loc.getPos());
+                    BlockPos landingPosButBetter = CommandTravel.getLandingPosition(level, loc.getPos());
+                    boolean recalc = false;
+
+                    for(int jj = 0; jj < 32; ++jj) {
+                        if (!Block.canSupportRigidBlock(level, landingPosButBetter.below())) {
+                            BlockPos pos2 = landingPosButBetter.offset(
+                                    level.random.nextInt(10) * (level.random.nextBoolean() ? 1 : -1),
+                                    0,
+                                    level.random.nextInt(10) * (level.random.nextBoolean() ? 1 : -1)
+                            );
+                            landingPosButBetter = CommandTravel.getLandingPosition(level, pos2);
+                            if (Block.canSupportRigidBlock(level, landingPosButBetter.below())) {
+                                recalc = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!recalc) {
+                        for(int jj = 0; jj < 32; ++jj) {
+                            if (!Block.canSupportRigidBlock(level, landingPosButBetter.below())) {
+                                BlockPos pos2 = landingPosButBetter.offset(
+                                        level.random.nextInt(30) * (level.random.nextBoolean() ? 1 : -1),
+                                        0,
+                                        level.random.nextInt(30) * (level.random.nextBoolean() ? 1 : -1)
+                                );
+                                landingPosButBetter = CommandTravel.getLandingPosition(level, pos2);
+                                if (Block.canSupportRigidBlock(level, landingPosButBetter.below())) {
+                                    recalc = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if (!recalc) {
+                        for(int jj = 0; jj < 32; ++jj) {
+                            if (!Block.canSupportRigidBlock(level, landingPosButBetter.below())) {
+                                BlockPos pos2 = landingPosButBetter.offset(
+                                        level.random.nextInt(50) * (level.random.nextBoolean() ? 1 : -1),
+                                        0,
+                                        level.random.nextInt(50) * (level.random.nextBoolean() ? 1 : -1)
+                                );
+                                landingPosButBetter = CommandTravel.getLandingPosition(level, pos2);
+                                if (Block.canSupportRigidBlock(level, landingPosButBetter.below())) {
+                                    recalc = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if (Block.canSupportRigidBlock(level, landingPosButBetter.below())) {
+                        loc.setPosition(landingPosButBetter.getX(), landingPosButBetter.getY(), landingPosButBetter.getZ());
+                        if (Tardim.isPosValid(level, loc.getPos())) {
+                            ItemTardim.buildTardim(level, loc.getPos(), data.getTravelLocation().getFacing(), data.getId());
+                            data.setCurrentLocation(data.getTravelLocation());
+                            data.setTravelLocation(null);
+                            data.setInFlight(false);
+                            data.addFuel(-fuel);
+                            data.save();
+
+//                            if (!recalc) {
+//                                sendResponse(player, "TARDIM is landing", CommandTardimBase.ResponseType.COMPLETE, source);
+//                            } else {
+//                                sendResponse(player, "Landing recalculated due to obstruction", CommandTardimBase.ResponseType.INFO, source);
+//                                sendResponse(player, "TARDIM is landing", CommandTardimBase.ResponseType.COMPLETE, source);
+//                            }
+
+                            String level_str = "tardim:tardis_dimension";
+                            ServerLifecycleHooks.getCurrentServer().getLevel(ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(level_str))).playSound(null, this.tileEntity.getPos(), (SoundEvent) TRDSounds.TARDIM_LANDING.get(), SoundSource.AMBIENT, 1.0F, 1.0F);
+
+                        } else {
+                            throw new LuaException("TARDIM landing obstructed. Aborting...");
+                        }
+                    } else {
+                        throw new LuaException("TARDIM landing obstructed. Aborting...");
+                    }
+                } else {
+                    throw new LuaException("Not enough fuel for journey");
+                }
+            } else {
+                throw new LuaException("TARDIM is still taking off");
+            }
+        } else {
+            throw new LuaException("TARDIM has already landed");
+        }
+    }
+
+    /**
+     * Locate a biome
+     * @param biome_str String of the biome e.g. "minecraft:plains"
+     */
+    @LuaFunction(mainThread = true)
+    public final void locateBiome(String biome_str) throws LuaException {
+        TardimData data = getTardimData();
+        if (data.getTravelLocation() == null) {
+            data.setTravelLocation(new Location(data.getCurrentLocation()));
+        }
+
+        Optional<Biome> biome = ServerLifecycleHooks.getCurrentServer()
+                .registryAccess()
+                .registryOrThrow(Registry.BIOME_REGISTRY)
+                .getOptional(new ResourceLocation(biome_str));
+        if (biome != null && biome.isPresent()) {
+            if (data.getTravelLocation() == null) {
+                data.setTravelLocation(new Location(data.getCurrentLocation()));
+            }
+
+            ServerLevel level = ServerLifecycleHooks.getCurrentServer().getLevel(data.getTravelLocation().getLevel());
+            BlockPos blockpos = new BlockPos(
+                    data.getTravelLocation().getPos().getX(),
+                    level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, data.getTravelLocation().getPos()).getY(),
+                    data.getTravelLocation().getPos().getZ()
+            );
+            BlockPos blockpos1 = this.findNearestBiome(level, (Biome)biome.get(), blockpos, 6400, 8);
+            if (blockpos1 != null) {
+                data.getTravelLocation().setPosition(blockpos1.getX(), blockpos1.getY(), blockpos1.getZ());
+                data.save();
+            } else {
+                throw new LuaException("Biome not found");
+            }
+        } else {
+            throw new LuaException("Unknown biome");
+        }
+    }
+
+    public BlockPos findNearestBiome(ServerLevel level, Biome biome, BlockPos pos, int i, int j) {
+        Pair<BlockPos, Holder<Biome>> bb = level.getChunkSource()
+                .getGenerator()
+                .getBiomeSource()
+                .findBiomeHorizontal(
+                        pos.getX(),
+                        pos.getY(),
+                        pos.getZ(),
+                        i,
+                        j,
+                        b_val -> b_val.value() == biome,
+                        level.random,
+                        true,
+                        level.getChunkSource().randomState().sampler()
+                );
+        return bb != null && bb.getFirst() != null ? (BlockPos)bb.getFirst() : null;
+    }
+
+    // I would love to add this, but the methods are very hard so I will slowly remove the backlog
+    // TODO: demat, remat
 }

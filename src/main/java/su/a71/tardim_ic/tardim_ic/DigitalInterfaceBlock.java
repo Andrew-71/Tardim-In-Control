@@ -10,9 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
-/**
- * This is our block. To tell minecraft that this block has a block entity, we need to implement {@link EntityBlock}
- */
+
 public class DigitalInterfaceBlock extends Block implements EntityBlock {
 
     public DigitalInterfaceBlock() {
