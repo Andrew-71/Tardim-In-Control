@@ -294,20 +294,19 @@ public class DigitalInterfacePeripheral implements IPeripheral {
     @LuaFunction(mainThread = true)
     public final ObjectLuaTable getTravelLocation() throws LuaException {
     	TardimData data = getTardimData();
-        if (data.getTravelLocation() != null) {
-        	Location loc = data.getTravelLocation();
-            return new ObjectLuaTable(Map.of(
+        if (data.getTravelLocation() == null) {
+            data.setTravelLocation(data.getCurrentLocation());
+        }
+        Location loc = data.getTravelLocation();
+        return new ObjectLuaTable(Map.of(
                 "dimension", loc.getLevel().location().toString(),
                 "pos", new ObjectLuaTable(Map.of(
                     "x", loc.getPos().getX(),
                     "y", loc.getPos().getY(),
                     "z", loc.getPos().getZ()
                 )),
-            "facing", loc.getFacing().toString()
-            ));
-        } else {
-        	return null;
-        }
+                "facing", loc.getFacing().toString()
+        ));
     }
 
     /**
