@@ -51,26 +51,48 @@ public class DigitalInterfacePeripheral implements IPeripheral {
 
     /**
      * @param tileEntity the tile entity of this peripheral
+     * @hidden
      */
     public DigitalInterfacePeripheral(DigitalInterfaceTileEntity tileEntity) {
         this.tileEntity = tileEntity;
     }
 
-    // Setting name for the peripheral. A computer will see it as "digital_tardim_interface_n"
+    /** Setting name for the peripheral. A computer will see it as "digital_tardim_interface_n"
+     * @hidden
+     */
     @Nonnull
     @Override
     public String getType() { return "digital_tardim_interface"; }
 
-    // Apparently CC uses this to check if the peripheral in front of a modem is this one
+    /** Apparently CC uses this to check if the peripheral in front of a modem is this one
+     * @hidden
+     * @param iPeripheral The peripheral to compare against. This may be {@code null}.
+     * @return {@code true} if the peripheral is the same as this one.
+     */
     @Override
     public boolean equals(@Nullable IPeripheral iPeripheral) { return this == iPeripheral; }
 
-    // Called when a computer connects/disconnects from the peripheral
+    /** Called when a computer disconnects from the peripheral
+     * @hidden
+     * @param computer The interface to the computer that is being detached. Remember that multiple computers can be
+     *                 attached to a peripheral at once.
+     */
     @Override
     public void detach(@Nonnull IComputerAccess computer) { connectedComputers.remove(computer); }
+
+    /** Called when a computer connects to the peripheral
+     * @hidden
+     * @param computer The interface to the computer that is being attached. Remember that multiple computers can be
+     *                 attached to a peripheral at once.
+     */
     @Override
     public void attach(@Nonnull IComputerAccess computer) { connectedComputers.add(computer); }
 
+    /**
+     * I *think* I use this to get peripheral's world position
+     * @hidden
+     * @return
+     */
     public DigitalInterfaceTileEntity getTileEntity() {
         return tileEntity;
     }
@@ -90,7 +112,8 @@ public class DigitalInterfacePeripheral implements IPeripheral {
      *
      * @return TardimData of the TARDIM that the peripheral is in
      * @throws LuaException if the peripheral is not in a TARDIM
-     * */
+     * @hidden
+     */
     public TardimData getTardimData() throws LuaException {
         int X = getTileEntity().getPos().getX(), Z = getTileEntity().getPos().getZ();
 
@@ -672,6 +695,16 @@ public class DigitalInterfacePeripheral implements IPeripheral {
         }
     }
 
+    /**
+     * Helper method to find a biome
+     * @param level ServerLevel to search
+     * @param biome Biome to find
+     * @param pos   BlockPos to start from
+     * @param i Idk what this is, likely a radius
+     * @param j No idea about this either
+     * @return BlockPos of the biome
+     * @hidden
+     */
     public BlockPos findNearestBiome(ServerLevel level, Biome biome, BlockPos pos, int i, int j) {
         Pair<BlockPos, Holder<Biome>> bb = level.getChunkSource()
                 .getGenerator()
@@ -689,7 +722,4 @@ public class DigitalInterfacePeripheral implements IPeripheral {
                 );
         return bb != null && bb.getFirst() != null ? (BlockPos)bb.getFirst() : null;
     }
-
-    // I would love to add this, but the methods are very hard so I will slowly remove the backlog
-    // TODO: demat, remat
 }
