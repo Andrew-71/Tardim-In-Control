@@ -1,4 +1,4 @@
-package su.a71.tardim_ic.tardim_ic;
+package su.a71.tardim_ic.tardim_ic.digital_interface;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
@@ -7,6 +7,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import org.jetbrains.annotations.NotNull;
+import su.a71.tardim_ic.tardim_ic.Registration;
 
 import javax.annotation.Nullable;
 

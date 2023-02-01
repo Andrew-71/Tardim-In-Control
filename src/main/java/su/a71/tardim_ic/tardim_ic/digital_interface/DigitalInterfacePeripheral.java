@@ -1,17 +1,6 @@
-package su.a71.tardim_ic.tardim_ic;
+package su.a71.tardim_ic.tardim_ic.digital_interface;
 
 import com.mojang.datafixers.util.Pair;
-import com.swdteam.common.command.tardim.CommandTardimBase;
-import com.swdteam.common.command.tardim.CommandTravel;
-import com.swdteam.common.data.DimensionMapReloadListener;
-import com.swdteam.common.init.TRDSounds;
-import com.swdteam.common.item.ItemTardim;
-import com.swdteam.main.Tardim;
-import dan200.computercraft.api.lua.LuaFunction;
-import dan200.computercraft.api.peripheral.IComputerAccess;
-import dan200.computercraft.api.peripheral.IPeripheral;
-import dan200.computercraft.api.lua.ObjectLuaTable;
-import dan200.computercraft.api.lua.LuaException;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -31,12 +20,24 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
+import dan200.computercraft.api.lua.LuaFunction;
+import dan200.computercraft.api.peripheral.IComputerAccess;
+import dan200.computercraft.api.peripheral.IPeripheral;
+import dan200.computercraft.api.lua.ObjectLuaTable;
+import dan200.computercraft.api.lua.LuaException;
+
 // TODO: Fabric and Forge diffirence? (Bottom: Fabric)
 import com.swdteam.tardim.TardimData;
 import com.swdteam.tardim.TardimManager;
 import com.swdteam.tardim.TardimData.Location;
 //import com.swdteam.tardim.tardim.TardimManager;
 //import com.swdteam.tardim.tardim.TardimData;
+
+import com.swdteam.common.command.tardim.CommandTravel;
+import com.swdteam.common.data.DimensionMapReloadListener;
+import com.swdteam.common.init.TRDSounds;
+import com.swdteam.common.item.ItemTardim;
+import com.swdteam.main.Tardim;
 
 
 import javax.annotation.Nonnull;
@@ -316,11 +317,11 @@ public class DigitalInterfacePeripheral implements IPeripheral {
     @LuaFunction(mainThread = true)
     public final ObjectLuaTable getCompanions() throws LuaException {
     	TardimData data = getTardimData();
-    	ObjectLuaTable companions = new ObjectLuaTable(Map.of());
+        Map<Integer, String> companions = new HashMap<>();
     	for (int i = 0; i < data.getCompanions().size(); i++) {
     		companions.put(i + 1, data.getCompanions().get(i).getUsername());
     	}
-    	return companions;
+    	return new ObjectLuaTable(companions);
     }
 
     /**
@@ -422,16 +423,18 @@ public class DigitalInterfacePeripheral implements IPeripheral {
 
     /**
      * Get online players. Useful for making a GUI for the locate function or just a nice dashboard.
+     *
      * @return ObjectLuaTable of the online players
      */
     @LuaFunction(mainThread = true)
     public final ObjectLuaTable getOnlinePlayers() throws LuaException {
     	PlayerList playerList = ServerLifecycleHooks.getCurrentServer().getPlayerList();
-    	ObjectLuaTable players = new ObjectLuaTable(Map.of());
-    	for (int i = 0; i < playerList.getPlayers().size(); i++) {
-    		players.put(i + 1, playerList.getPlayers().get(i).getGameProfile().getName());
-    	}
-    	return players;
+        Map<Integer, String> players = new HashMap<>();
+        for (int i = 0; i < playerList.getPlayers().size(); i++) {
+            players.put(i + 1, playerList.getPlayers().get(i).getGameProfile().getName());
+        }
+
+    	return new ObjectLuaTable(players);
     }
 
     /**
