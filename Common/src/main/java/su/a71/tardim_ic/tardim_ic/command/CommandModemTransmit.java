@@ -1,8 +1,8 @@
 package su.a71.tardim_ic.tardim_ic.command;
 
 // This will be added whenever I manage to convince TARDIM devs to make CommandManager.register public
+// 13.04.23 ITS ALIVE
 
-import com.mojang.brigadier.Command;
 import com.swdteam.common.command.tardim.CommandTardimBase;
 import com.swdteam.common.command.tardim.ICommand;
 import com.swdteam.tardim.TardimData;
@@ -19,7 +19,7 @@ import static com.swdteam.common.command.tardim.CommandTardimBase.sendResponse;
 public class CommandModemTransmit implements ICommand {
     @Override
     public void execute(String[] args, Player player, BlockPos pos, CommandTardimBase.CommandSource source) {
-        if (args.length == 3) {
+        if (args.length == 3) {  // TODO: 3 or 4???
             TardimData data = TardimManager.getFromPos(pos);
             if (data != null) {
                 if (data.hasPermission(player)) {
@@ -41,16 +41,16 @@ public class CommandModemTransmit implements ICommand {
                             ComputerCraftAPI.getWirelessNetwork().transmitSameDimension(new Packet(sendChannel, replyChannel, message,
                                     new CommandSender(player, data.getTravelLocation().getPos())), 300);
                         }
-                        sendResponse(player, "Sent modem message", CommandTardimBase.ResponseType.COMPLETE, source);
+                        CommandTardimBase.sendResponse(player, "Sent modem message", CommandTardimBase.ResponseType.COMPLETE, source);
                     } catch (Exception var9) {
-                        sendResponse(player, "Invalid coordinates", CommandTardimBase.ResponseType.FAIL, source);
+                        CommandTardimBase.sendResponse(player, "Invalid coordinates", CommandTardimBase.ResponseType.FAIL, source);
                     }
                 } else {
-                    sendResponse(player, "You do not have permission", CommandTardimBase.ResponseType.FAIL, source);
+                    CommandTardimBase.sendResponse(player, "You do not have permission", CommandTardimBase.ResponseType.FAIL, source);
                 }
             }
         } else {
-            sendResponse(player, this.getUsage(), CommandTardimBase.ResponseType.FAIL, source);
+            CommandTardimBase.sendResponse(player, this.getUsage(), CommandTardimBase.ResponseType.FAIL, source);
         }
     }
 

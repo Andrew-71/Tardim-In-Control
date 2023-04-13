@@ -21,9 +21,25 @@ minecraft {
     }
 }
 
+repositories {
+    maven {
+        url "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+}
+
 dependencies {
      compileOnly group:'org.spongepowered', name:'mixin', version:'0.8.5'
      implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+
+    // CC: R and TARDIM
+    //implementation("curse.maven:cc-restitched-462672:3908334")
+    compileOnly("org.squiddev:cc-tweaked-1.19.1:${cc_version}")
+    compileOnly("curse.maven:tardim-531315:4453925")
+    //implementation ("org.squiddev:cc-tweaked-1.19.1:${cc_version}")
+
 }
 
 processResources {

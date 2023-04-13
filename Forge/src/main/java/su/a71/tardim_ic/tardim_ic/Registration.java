@@ -1,6 +1,7 @@
 package su.a71.tardim_ic.tardim_ic;
 
 import com.google.common.collect.Sets;
+import com.swdteam.common.command.tardim.ICommand;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
