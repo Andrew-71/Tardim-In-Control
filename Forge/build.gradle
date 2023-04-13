@@ -76,7 +76,7 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     compileOnly project(":Common")
 
-    implementation fg.deobf("curse.maven:tardim-531315:3983700")
+    implementation fg.deobf("curse.maven:tardim-531315:4453925")
     implementation fg.deobf("org.squiddev:cc-tweaked-1.19.1:${cc_version}")
 }
 

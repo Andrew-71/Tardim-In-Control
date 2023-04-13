@@ -1,25 +1,37 @@
-# MultiLoader Template
+# TARDIM: In Control
+### All of time and space, *now automated*.
 
-This project provides a Gradle project template that can compile mods for both Forge and Fabric using a common sourceset. This project does not require any third party libraries or dependencies.
+This mod is an addon for the [TARDIM mod](https://modrinth.com/mod/tardim), and adds a way to control your time (but mostly space) machine with [ComputerCraft: Tweaked](https://tweaked.cc) computers and redstone using a new blocks and peripherals.
 
-## Getting Started
+### Features:
+* Digital TARDIM interface: ComputerCraft peripheral that lets you control a TARDIM using CC methods! Full list of methods is available in the [Javadoc](http://andrey71.me/TARDIM-ic-docs/su/a71/tardim_ic/tardim_ic/DigitalInterfacePeripheral.html) (Sorry for  that, this is the best auto-generated docs I could find for now). The peripheral supports almost all commands that the TARDIM computer panel has.
+* Redstone TARDIM Input: New control block that lets you execute a TARDIM command with the power of redstone! After saving a command, this block executes it every time it gets powered by redstone
+* *This is just the beginning, there are more features to come!*
 
-## IntelliJ IDEA
-This guide will show how to import the MultiLoader Template into IntelliJ IDEA. The setup process is roughly equivalent to setting up Forge and Fabric independently and should be very familiar to anyone who has worked with their MDKs.
+### Note
+This is important, due to nature of the mod **anyone** inside your TARDIM with access to a computer and this mod's peripheral
+will be able to run **any** methods. There is no fix that I know of (aside from disabling any commands except "getters" like fuel info), so if you want to have this on your server
+and do not trust everyone not to steal your blue box, make sure there is some kind of plot claim mod. If there will be demand for it I can try adding a config option to disable all but "harmless" methods.\
+And another thing: the method that sets destination dimension doesn't check if the dimension is valid, if you cannot land just change dimension to a valid one.
 
-1. Clone or download this repository to your computer.
-2. Configure the project by editing the `group`, `mod_name`, `mod_author`, and `mod_id` properties in the `gradle.properties` file. You will also need to change the `rootProject.name`  property in `settings.gradle`.
-3. Open the template's root folder as a new project in IDEA. This is the folder that contains this README file and the gradlew executable.
-4. If your default JVM/JDK is not Java 17 you will encounter an error when opening the project. This error is fixed by going to `File > Settings > Build, Execution, Deployment > Build Tools > Gradle > Gradle JVM`and changing the value to a valid Java 17 JVM. You will also need to set the Project SDK to Java 17. This can be done by going to `File > Project Structure > Project SDK`. Once both have been set open the Gradle tab in IDEA and click the refresh button to reload the project.
-5. Open the Gradle tab in IDEA if it has not already been opened. Navigate to `Your Project > Common > Tasks > vanilla gradle > decompile`. Run this task to decompile Minecraft.
-6. Open the Gradle tab in IDEA if it has not already been opened. Navigate to `Your Project > Forge > Tasks > forgegradle runs > genIntellijRuns`. Run this task to set up run configurations for Forge.
-7. Open your Run/Debug Configurations. Under the Application category there should now be options to run Forge and Fabric projects. Select one of the client options and try to run it.
-8. Assuming you were able to run the game in step 7 your workspace should now be set up.
+### Example use-cases
+* Make a dashboard to monitor fuel levels, current location, and other information on a screen in a nice way.
+* Get refined control over your TARDIM, such as saving and loading locations, or setting a destination in a GUI.
+* Add visual effects that activate during flight e.g. note blocks or Create mod contraptions.
 
-### Eclipse
-While it is possible to use this template in Eclipse it is not recommended. During the development of this template multiple critical bugs and quirks related to Eclipse were found at nearly every level of the required build tools. While we continue to work with these tools to report and resolve issues support for projects like these are not there yet. For now Eclipse is considered unsupported by this project. The development cycle for build tools is notoriously slow so there are no ETAs available.
+The possibilities are endless, the only limit is your imagination! (And coding skills)
 
-## Development Guide
-When using this template the majority of your mod is developed in the Common project. The Common project is compiled against the vanilla game and is used to hold code that is shared between the different loader-specific versions of your mod. The Common project has no knowledge or access to ModLoader specific code, apis, or concepts. Code that requires something from a specific loader must be done through the project that is specific to that loader, such as the Forge or Fabric project.
+### FAQ
 
-Loader specific projects such as the Forge and Fabric project are used to load the Common project into the game. These projects also define code that is specific to that loader. Loader specific projects can access all of the code in the Common project. It is important to remember that the Common project can not access code from loader specific projects.
+**Is this for Fabric or Forge?**
+: As a Fabric player who recognises Forge's large playerbase, I intend to support both major modloaders.
+Right now, only Forge version is present. However, as of April 13th 2023, I started to port to multi-loader system and intend to have a Fabric version soon.
+
+**Can I use this in my modpack?**
+: Sure, as long as you credit me and link to this page.
+
+**Will there be a 1.19.3 version and beyond?**
+: Yes, I will try my best to update to later versions as soon as **both** ComputerCraft: Tweaked and TARDIM receive stable versions for them.
+
+**I don't know CC, will this always be a CC-only mod?**
+: OK, fine, nobody actually asked that. But in case you did, good news: No! As you might've noticed, version 0.8 add a block that make it possible to integrate your TARDIM into good old redstone! Going forward, I plan to add some way to get redstone *output* from the TARDIM as well, and maybe even streamline things like the cloister bell for those who don't want to code their own implementations!
