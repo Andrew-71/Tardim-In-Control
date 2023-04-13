@@ -2,6 +2,7 @@ package su.a71.tardim_ic.tardim_ic.digital_interface;
 
 import com.mojang.datafixers.util.Pair;
 
+import com.swdteam.common.init.TardimRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -625,7 +626,8 @@ public class DigitalInterfacePeripheral implements IPeripheral {
                     if (Block.canSupportRigidBlock(level, landingPosButBetter.below())) {
                         loc.setPosition(landingPosButBetter.getX(), landingPosButBetter.getY(), landingPosButBetter.getZ());
                         if (Tardim.isPosValid(level, loc.getPos())) {
-                            ItemTardim.buildTardim(level, loc.getPos(), data.getTravelLocation().getFacing(), data.getId());
+                            TardimRegistry.TardimBuilder builder = TardimRegistry.getTardimBuilder(data.getTardimID());
+                            builder.buildTardim(level, loc.getPos(), data.getTravelLocation().getFacing(), data.getId());
                             data.setCurrentLocation(data.getTravelLocation());
                             data.setTravelLocation(null);
                             data.setInFlight(false);
