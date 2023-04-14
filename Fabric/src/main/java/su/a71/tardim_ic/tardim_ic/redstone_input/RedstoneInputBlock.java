@@ -1,14 +1,15 @@
-package su.a71.tardim_ic.tardim_ic.redsone_input;
+package su.a71.tardim_ic.tardim_ic.redstone_input;
 
-import com.swdteam.common.block.BlockBaseTardimPanel;
-import com.swdteam.common.init.TRDDimensions;
-import com.swdteam.common.init.TRDSounds;
-import com.swdteam.network.NetworkHandler;
-import com.swdteam.network.packets.PacketOpenEditGui;
-import com.swdteam.tardim.TardimData;
-import com.swdteam.tardim.TardimManager;
-import com.swdteam.tileentity.TileEntityBaseTardimPanel;
+import com.swdteam.tardim.common.block.BlockBaseTardimPanel;
+import com.swdteam.tardim.common.init.TRDDimensions;
+import com.swdteam.tardim.common.init.TRDSounds;
+import com.swdteam.tardim.network.NetworkHandler;
+import com.swdteam.tardim.network.PacketOpenEditGui;
+import com.swdteam.tardim.tardim.TardimData;
+import com.swdteam.tardim.tardim.TardimManager;
+import com.swdteam.tardim.tileentity.TileEntityBaseTardimPanel;
 
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -25,41 +26,41 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 
-import net.minecraftforge.common.util.FakePlayerFactory;  // TODO: ???
-import net.minecraftforge.server.ServerLifecycleHooks;
-
 import org.jetbrains.annotations.NotNull;
-import javax.annotation.Nullable;
-
 import su.a71.tardim_ic.tardim_ic.Registration;
+
+import javax.annotation.Nullable;
 
 public class RedstoneInputBlock extends BlockBaseTardimPanel implements EntityBlock {
     private boolean isPowered = false;
+    private Player lastPlayer = null;
     public RedstoneInputBlock() {
-        super(Properties.of(Material.METAL).strength(2, 4).noOcclusion());
+        super(FabricBlockSettings.of(Material.METAL).strength(2, 4));  // No occlusion?
     }
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-        return Registration.REDSTONE_TARDIM_INPUT_TILEENTITY.get().create(pos, state);
+        return Registration.REDSTONE_TARDIM_INPUT_TILEENTITY.create(pos, state);
     }
 
     @Override
     public InteractionResult use(BlockState blockState, Level w, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult p_60508_) {
         if (!w.isClientSide) {
 
-            w.playSound((Player)null, blockPos, (SoundEvent) TRDSounds.TARDIM_BEEP.get(), SoundSource.BLOCKS, 0.3F, 0.5F);
+            w.playSound(null, blockPos, TRDSounds.TARDIM_BEEP, SoundSource.BLOCKS, 0.3F, 0.5F);
 
             BlockEntity be = w.getBlockEntity(blockPos);
             if (be instanceof TileEntityBaseTardimPanel && w.dimension() == TRDDimensions.TARDIS) {
                 TardimData data = TardimManager.getFromPos(blockPos);
                 if (data != null && data.hasPermission(player)) {
-                    NetworkHandler.sendTo((ServerPlayer)player, new PacketOpenEditGui(1, blockPos));
+                    this.lastPlayer = player;
+                    NetworkHandler.sendTo((ServerPlayer)player, new PacketOpenEditGui(blockPos, 1));
                     return InteractionResult.CONSUME;
                 }
 
@@ -87,9 +88,9 @@ public class RedstoneInputBlock extends BlockBaseTardimPanel implements EntityBl
             BlockEntity be = level.getBlockEntity(blockPos);
             if (be instanceof TileEntityBaseTardimPanel && level.dimension() == TRDDimensions.TARDIS) {
                 TardimData data = TardimManager.getFromPos(blockPos);
-                if (data != null) {
+                if (data != null && !level.isClientSide && this.lastPlayer != null) {
                     if (((TileEntityBaseTardimPanel)be).hasCommand()) {
-                        ((TileEntityBaseTardimPanel)be).execute(FakePlayerFactory.getMinecraft(ServerLifecycleHooks.getCurrentServer().getLevel(level.dimension())));
+                        ((TileEntityBaseTardimPanel)be).execute(this.lastPlayer);
                     }
                 }
             }

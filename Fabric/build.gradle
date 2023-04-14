@@ -13,6 +13,12 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
     implementation project(":Common")
+
+    modApi 'com.electronwill.night-config:core:3.6.3'
+    modApi 'com.electronwill.night-config:toml:3.6.3'
+
+    modImplementation "curse.maven:tardim-531315:4453924"
+    modImplementation "curse.maven:cc-restitched-462672:3908334"
 }
 
 loom {
