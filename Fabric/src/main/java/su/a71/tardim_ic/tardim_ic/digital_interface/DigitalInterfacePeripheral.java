@@ -1,6 +1,7 @@
 package su.a71.tardim_ic.tardim_ic.digital_interface;
 
 import com.mojang.datafixers.util.Pair;
+import com.swdteam.tardim.common.command.tardim.CommandTardimBase;
 import com.swdteam.tardim.common.command.tardim.CommandTravel;
 import com.swdteam.tardim.common.data.DimensionMapReloadListener;
 import com.swdteam.tardim.common.init.TRDSounds;
@@ -755,5 +756,42 @@ public class DigitalInterfacePeripheral implements IPeripheral {
                         level.getChunkSource().randomState().sampler()
                 );
         return bb != null && bb.getFirst() != null ? (BlockPos)bb.getFirst() : null;
+    }
+
+    @LuaFunction(mainThread = true)
+    public final void setSkin(String skin) throws LuaException {
+        if (this.tileEntity.getLevel().isClientSide()) {
+            return;
+        }
+
+        TardimData data = getTardimData();
+
+        ResourceLocation skinToApply = null;
+        Iterator var13 = TardimRegistry.getRegistry().keySet().iterator();
+
+        label39: {
+            ResourceLocation builder;
+            TardimRegistry.TardimBuilder b;
+            do {
+                if (!var13.hasNext()) {
+                    break label39;
+                }
+
+                builder = (ResourceLocation)var13.next();
+                b = TardimRegistry.getTardimBuilder(builder);
+            } while(!b.getDisplayName().equalsIgnoreCase(skin) && !builder.toString().equalsIgnoreCase(skin));
+
+            skinToApply = builder;
+        }
+
+        if (skinToApply == null) {
+            throw new LuaException("Skin" + skin + "' not found");
+        }
+
+        TardimData.Location loc = data.getCurrentLocation();
+        ServerLevel level = this.tileEntity.getLevel().getServer().getLevel(loc.getLevel());
+        data.setIdentifier(skinToApply);
+
+        //TardimRegistry.getTardimBuilder(skinToApply).changeTardimSkin(data, level, loc.getPos(), loc.getFacing(), player);
     }
 }

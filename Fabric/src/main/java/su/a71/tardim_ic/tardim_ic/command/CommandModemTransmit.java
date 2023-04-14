@@ -3,16 +3,16 @@ package su.a71.tardim_ic.tardim_ic.command;
 // This will be added whenever I manage to convince TARDIM devs to make CommandManager.register public
 // 13.04.23 ITS ALIVE
 
-import com.swdteam.common.command.tardim.CommandTardimBase;
-import com.swdteam.common.command.tardim.ICommand;
-import com.swdteam.tardim.TardimData;
-import com.swdteam.tardim.TardimManager;
+import com.swdteam.tardim.common.command.tardim.CommandTardimBase;
+import com.swdteam.tardim.common.command.tardim.ICommand;
+import com.swdteam.tardim.tardim.TardimData;
+import com.swdteam.tardim.tardim.TardimManager;
+
+import dan200.computercraft.api.ComputerCraftAPI;
+import dan200.computercraft.api.network.Packet;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
-
-import dan200.computercraft.api.network.Packet;
-import dan200.computercraft.api.ComputerCraftAPI;
 
 public class CommandModemTransmit implements ICommand {
     @Override

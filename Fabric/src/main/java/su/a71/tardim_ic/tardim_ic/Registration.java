@@ -22,6 +22,7 @@ import su.a71.tardim_ic.tardim_ic.redstone_input.RedstoneInputBlock;
 import su.a71.tardim_ic.tardim_ic.redstone_input.RedstoneInputTileEntity;
 
 import su.a71.tardim_ic.tardim_ic.Constants;
+import su.a71.tardim_ic.tardim_ic.registration.CommandInit;
 
 public class Registration {
     // Blocks
@@ -58,5 +59,6 @@ public class Registration {
         Registry.register(Registry.ITEM, new ResourceLocation(Constants.MOD_ID, "digital_tardim_interface"), new BlockItem(DIGITAL_TARDIM_INTERFACE, new FabricItemSettings().tab(TARDIM_IC_TAB)));
 
         ComputerCraftAPI.registerPeripheralProvider(new DigitalInterfacePeripheralProvider());
+        CommandInit.init();
     }
 }
