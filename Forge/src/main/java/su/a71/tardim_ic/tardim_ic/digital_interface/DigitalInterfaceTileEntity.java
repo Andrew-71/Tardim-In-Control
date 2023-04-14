@@ -4,15 +4,17 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+
 import org.jetbrains.annotations.NotNull;
 import su.a71.tardim_ic.tardim_ic.Registration;
 
 import dan200.computercraft.api.peripheral.IPeripheral;
 import static dan200.computercraft.shared.Capabilities.CAPABILITY_PERIPHERAL;
 
-public class DigitalInterfaceTileEntity extends BlockEntity {
+public class DigitalInterfaceTileEntity extends BlockEntity implements IDigitalInterfaceTileEntity {
 
     public DigitalInterfaceTileEntity(BlockPos pos, BlockState state) {
         super(Registration.DIGITAL_TARDIM_INTERFACE_TILEENTITY.get(), pos, state);

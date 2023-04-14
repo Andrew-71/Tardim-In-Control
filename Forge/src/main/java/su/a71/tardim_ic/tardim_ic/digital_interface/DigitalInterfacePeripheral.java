@@ -1,8 +1,6 @@
 package su.a71.tardim_ic.tardim_ic.digital_interface;
 
 import com.mojang.datafixers.util.Pair;
-
-import com.swdteam.common.init.TardimRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -19,7 +17,6 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.server.ServerLifecycleHooks;
 
 import dan200.computercraft.api.lua.LuaFunction;
 import dan200.computercraft.api.peripheral.IComputerAccess;
@@ -31,6 +28,7 @@ import dan200.computercraft.api.lua.LuaException;
 import com.swdteam.tardim.TardimData;
 import com.swdteam.tardim.TardimManager;
 import com.swdteam.tardim.TardimData.Location;
+import com.swdteam.common.init.TardimRegistry;
 //import com.swdteam.tardim.tardim.TardimManager;
 //import com.swdteam.tardim.tardim.TardimData;
 
@@ -378,6 +376,9 @@ public class DigitalInterfacePeripheral implements IPeripheral {
      */
     @LuaFunction(mainThread = true)
     public final void home() throws LuaException {
+        if (this.tileEntity.getLevel().isClientSide()) {
+            return;
+        }
     	TardimData data = getTardimData();
 
         UUID uuid = data.getOwner();
@@ -386,7 +387,7 @@ public class DigitalInterfacePeripheral implements IPeripheral {
             throw new LuaException("TARDIM has no owner");
         }
 
-        PlayerList playerList = ServerLifecycleHooks.getCurrentServer().getPlayerList();
+        PlayerList playerList = this.tileEntity.getLevel().getServer().getPlayerList();
         ServerPlayer player = playerList.getPlayer(uuid);
         if (player == null) {
             throw new LuaException("TARDIM owner is not online");
@@ -408,8 +409,13 @@ public class DigitalInterfacePeripheral implements IPeripheral {
      */
     @LuaFunction(mainThread = true)
     public final void locatePlayer(String username) throws LuaException {
-    	PlayerList playerList = ServerLifecycleHooks.getCurrentServer().getPlayerList();
-    	ServerPlayer player = playerList.getPlayerByName(username);
+        if (this.tileEntity.getLevel().isClientSide()) {
+            return;
+        }
+
+        PlayerList playerList = this.tileEntity.getLevel().getServer().getPlayerList();
+
+        ServerPlayer player = playerList.getPlayerByName(username);
     	if (player == null) {
     		throw new LuaException("Player not found");
     	}
@@ -428,7 +434,11 @@ public class DigitalInterfacePeripheral implements IPeripheral {
      */
     @LuaFunction(mainThread = true)
     public final ObjectLuaTable getOnlinePlayers() throws LuaException {
-    	PlayerList playerList = ServerLifecycleHooks.getCurrentServer().getPlayerList();
+        if (this.tileEntity.getLevel().isClientSide()) {
+            return null;
+        }
+
+    	PlayerList playerList = this.tileEntity.getLevel().getServer().getPlayerList();
         Map<Integer, String> players = new HashMap<>();
         for (int i = 0; i < playerList.getPlayers().size(); i++) {
             players.put(i + 1, playerList.getPlayers().get(i).getGameProfile().getName());
@@ -533,13 +543,17 @@ public class DigitalInterfacePeripheral implements IPeripheral {
      */
     @LuaFunction(mainThread = true)
     public final void demat() throws LuaException {
+        if (this.tileEntity.getLevel().isClientSide()) {
+            return;
+        }
+
     	TardimData data = getTardimData();
 
         if (data.isInFlight()) {
             throw new LuaException("TARDIM is already in flight");
         }
         Location loc = data.getCurrentLocation();
-        ServerLevel level = ServerLifecycleHooks.getCurrentServer().getLevel(loc.getLevel());
+        ServerLevel level = this.tileEntity.getLevel().getServer().getLevel(loc.getLevel());
         ItemTardim.destroyTardim(level, loc.getPos(), Direction.NORTH);
         data.setInFlight(true);
     	if (data.getTravelLocation() == null) {
@@ -548,7 +562,7 @@ public class DigitalInterfacePeripheral implements IPeripheral {
 
         // TODO: This is a horrendous way of doing this. Please fix.
         String level_str = "tardim:tardis_dimension";
-        ServerLifecycleHooks.getCurrentServer().getLevel(ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(level_str))).playSound(null, this.tileEntity.getPos(), (SoundEvent) TRDSounds.TARDIM_TAKEOFF.get(), SoundSource.AMBIENT, 1.0F, 1.0F);
+        this.tileEntity.getLevel().getServer().getLevel(ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(level_str))).playSound(null, this.tileEntity.getPos(), (SoundEvent) TRDSounds.TARDIM_TAKEOFF.get(), SoundSource.AMBIENT, 1.0F, 1.0F);
 
         data.save();
     }
@@ -560,14 +574,18 @@ public class DigitalInterfacePeripheral implements IPeripheral {
      */
     @LuaFunction(mainThread = true)
     public final void remat() throws LuaException {
+        if (this.tileEntity.getLevel().isClientSide()) {
+            return;
+        }
+
         TardimData data = getTardimData();
 
         if (data.isInFlight()) {
             if (data.getTimeEnteredFlight() < System.currentTimeMillis() / 1000L - 10L) {
                 Location loc = data.getTravelLocation();
-                ServerLevel level = ServerLifecycleHooks.getCurrentServer().getLevel(loc.getLevel());
+                ServerLevel level = this.tileEntity.getLevel().getServer().getLevel(loc.getLevel());
                 double fuel = data.calculateFuelForJourney(
-                        ServerLifecycleHooks.getCurrentServer().getLevel(data.getCurrentLocation().getLevel()), level, data.getCurrentLocation().getPos(), loc.getPos()
+                        this.tileEntity.getLevel().getServer().getLevel(data.getCurrentLocation().getLevel()), level, data.getCurrentLocation().getPos(), loc.getPos()
                 );
                 if (data.getFuel() >= fuel) {
                     level.getChunk(loc.getPos());
@@ -642,7 +660,7 @@ public class DigitalInterfacePeripheral implements IPeripheral {
 //                            }
 
                             String level_str = "tardim:tardis_dimension";
-                            ServerLifecycleHooks.getCurrentServer().getLevel(ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(level_str))).playSound(null, this.tileEntity.getPos(), (SoundEvent) TRDSounds.TARDIM_LANDING.get(), SoundSource.AMBIENT, 1.0F, 1.0F);
+                            this.tileEntity.getLevel().getServer().getLevel(ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(level_str))).playSound(null, this.tileEntity.getPos(), (SoundEvent) TRDSounds.TARDIM_LANDING.get(), SoundSource.AMBIENT, 1.0F, 1.0F);
 
                         } else {
                             throw new LuaException("TARDIM landing obstructed. Aborting...");
@@ -667,12 +685,16 @@ public class DigitalInterfacePeripheral implements IPeripheral {
      */
     @LuaFunction(mainThread = true)
     public final void locateBiome(String biome_str) throws LuaException {
+        if (this.tileEntity.getLevel().isClientSide()) {
+            return;
+        }
+
         TardimData data = getTardimData();
         if (data.getTravelLocation() == null) {
             data.setTravelLocation(new Location(data.getCurrentLocation()));
         }
 
-        Optional<Biome> biome = ServerLifecycleHooks.getCurrentServer()
+        Optional<Biome> biome = this.tileEntity.getLevel().getServer()
                 .registryAccess()
                 .registryOrThrow(Registry.BIOME_REGISTRY)
                 .getOptional(new ResourceLocation(biome_str));
@@ -681,7 +703,7 @@ public class DigitalInterfacePeripheral implements IPeripheral {
                 data.setTravelLocation(new Location(data.getCurrentLocation()));
             }
 
-            ServerLevel level = ServerLifecycleHooks.getCurrentServer().getLevel(data.getTravelLocation().getLevel());
+            ServerLevel level = this.tileEntity.getLevel().getServer().getLevel(data.getTravelLocation().getLevel());
             BlockPos blockpos = new BlockPos(
                     data.getTravelLocation().getPos().getX(),
                     level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, data.getTravelLocation().getPos()).getY(),

@@ -37,7 +37,7 @@ side = "BOTH"
 modId = "tardim"
 mandatory = true
 versionRange = "1.2.2"
-ordering = "NONE"
+ordering = "AFTER"
 side = "BOTH"
 [[dependencies.tardim_ic]]
 modId = "minecraft"
