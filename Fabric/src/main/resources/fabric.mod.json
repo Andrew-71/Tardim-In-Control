@@ -1,39 +1,34 @@
 {
     "schemaVersion": 1,
-    "id": "modid",
+    "id": "tardim_ic",
     "version": "${version}",
   
-    "name": "Example Mod",
-    "description": "This is an example description! Tell everyone what your mod is about!",
+    "name": "Tardim: In Control",
+    "description": "All of time and space, now automated. Control your TARDIM using ComputerCraft: Tweaked.",
     "authors": [
-      "Me!"
+      "Andrew_7_1"
     ],
     "contact": {
       "homepage": "https://fabricmc.net/",
       "sources": "https://github.com/FabricMC/fabric-example-mod"
     },
   
-    "license": "CC0-1.0",
-    "icon": "assets/modid/icon.png",
+    "license": "MIT",
+    "icon": "icon.png",
   
     "environment": "*",
     "entrypoints": {
       "main": [
-        "com.example.examplemod.ExampleMod"
+        "su.a71.tardim_ic.tardim_ic.TardimInControl"
       ]
     },
-    "mixins": [
-      "modid.mixins.json"
-    ],
   
     "depends": {
-      "fabricloader": ">=0.14",
+      "fabricloader": ">=0.14.10",
       "fabric": "*",
       "minecraft": "1.19.x",
-      "java": ">=17"
-    },
-    "suggests": {
-      "another-mod": "*"
+      "java": ">=17",
+      "tardim": ">=1.2.2"
     }
   }
   

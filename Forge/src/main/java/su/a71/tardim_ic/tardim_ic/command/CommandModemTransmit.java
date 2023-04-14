@@ -14,8 +14,6 @@ import net.minecraft.world.entity.player.Player;
 import dan200.computercraft.api.network.Packet;
 import dan200.computercraft.api.ComputerCraftAPI;
 
-import static com.swdteam.common.command.tardim.CommandTardimBase.sendResponse;
-
 public class CommandModemTransmit implements ICommand {
     @Override
     public void execute(String[] args, Player player, BlockPos pos, CommandTardimBase.CommandSource source) {

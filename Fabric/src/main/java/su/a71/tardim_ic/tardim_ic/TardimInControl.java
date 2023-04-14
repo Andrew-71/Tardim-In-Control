@@ -6,5 +6,6 @@ public class TardimInControl implements ModInitializer {
     
     @Override
     public void onInitialize() {
+        Registration.register();
     }
 }

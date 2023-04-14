@@ -3,8 +3,6 @@ package su.a71.tardim_ic.tardim_ic;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 
-import su.a71.tardim_ic.tardim_ic.Constants;
-
 import su.a71.tardim_ic.tardim_ic.registration.CommandInit;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -12,7 +10,7 @@ import su.a71.tardim_ic.tardim_ic.registration.CommandInit;
 public class TardimInControl {
 
     // Our mod id
-    public static final String MODID = "tardim_ic";
+    public static final String MODID = Constants.MOD_ID;
 
     public TardimInControl() {
         Registration.register();

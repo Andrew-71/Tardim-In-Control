@@ -1,4 +1,4 @@
-# TARDIM: In Control
+# TARDIM: In Control ![Modrinth Downloads](https://img.shields.io/modrinth/dt/tardim-in-control?color=00AF5C&label=modrinth&style=flat&logo=modrinth)
 ### All of time and space, *now automated*.
 
 This mod is an addon for the [TARDIM mod](https://modrinth.com/mod/tardim), and adds a way to control your time (but mostly space) machine with [ComputerCraft: Tweaked](https://tweaked.cc) computers and redstone using a new blocks and peripherals.

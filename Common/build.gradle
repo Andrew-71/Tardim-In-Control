@@ -36,10 +36,9 @@ dependencies {
 
     // CC: R and TARDIM
     //implementation("curse.maven:cc-restitched-462672:3908334")
-    compileOnly("org.squiddev:cc-tweaked-1.19.1:${cc_version}")
-    compileOnly("curse.maven:tardim-531315:4453925")
+    //compileOnly("org.squiddev:cc-tweaked-1.19.1:${cc_version}")
+    //compileOnly("curse.maven:tardim-531315:4453925")
     //implementation ("org.squiddev:cc-tweaked-1.19.1:${cc_version}")
-
 }
 
 processResources {
