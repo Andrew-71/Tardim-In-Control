@@ -14,7 +14,7 @@ import su.a71.tardim_ic.tardim_ic.Registration;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import static dan200.computercraft.shared.Capabilities.CAPABILITY_PERIPHERAL;
 
-public class DigitalInterfaceTileEntity extends BlockEntity implements IDigitalInterfaceTileEntity {
+public class DigitalInterfaceTileEntity extends BlockEntity implements IDigitalInterfaceEntity {
 
     public DigitalInterfaceTileEntity(BlockPos pos, BlockState state) {
         super(Registration.DIGITAL_TARDIM_INTERFACE_TILEENTITY.get(), pos, state);

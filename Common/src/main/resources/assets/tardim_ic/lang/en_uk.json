@@ -1,5 +1,6 @@
 {
   "block.tardim_ic.digital_tardim_interface": "Digital TARDIM Interface",
   "block.tardim_ic.redstone_tardim_input": "Redstone TARDIM Input",
-  "itemGroup.tardim_ic": "TARDIM: In Control"
+  "itemGroup.tardim_ic": "TARDIM: In Control",
+  "itemGroup.minecraft.tardim_ic": "TARDIM: In Control"
 }

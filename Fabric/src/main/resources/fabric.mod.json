@@ -28,7 +28,8 @@
       "fabric": "*",
       "minecraft": "1.19.x",
       "java": ">=17",
-      "tardim": ">=1.2.2"
+      "tardim": ">=1.2.2",
+      "computercraft": ">=1.101.0"
     }
   }
   

@@ -14,8 +14,11 @@ dependencies {
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
     implementation project(":Common")
 
+    // Blame CC: Restitched for this...
     modApi 'com.electronwill.night-config:core:3.6.3'
     modApi 'com.electronwill.night-config:toml:3.6.3'
+    modApi 'org.squiddev:Cobalt:0.5.5'
+    modImplementation "io.netty:netty-codec-http:4.1.77.Final"
 
     modImplementation "curse.maven:tardim-531315:4453924"
     modImplementation "curse.maven:cc-restitched-462672:3908334"
