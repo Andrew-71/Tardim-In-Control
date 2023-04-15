@@ -24,20 +24,17 @@ import dan200.computercraft.api.peripheral.IPeripheral;
 import dan200.computercraft.api.lua.ObjectLuaTable;
 import dan200.computercraft.api.lua.LuaException;
 
-// TODO: Fabric and Forge diffirence? (Bottom: Fabric)
 import com.swdteam.tardim.TardimData;
 import com.swdteam.tardim.TardimManager;
 import com.swdteam.tardim.TardimData.Location;
 import com.swdteam.common.init.TardimRegistry;
-//import com.swdteam.tardim.tardim.TardimManager;
-//import com.swdteam.tardim.tardim.TardimData;
-
 import com.swdteam.common.command.tardim.CommandTravel;
 import com.swdteam.common.data.DimensionMapReloadListener;
 import com.swdteam.common.init.TRDSounds;
 import com.swdteam.common.item.ItemTardim;
 import com.swdteam.main.Tardim;
 
+import su.a71.tardim_ic.tardim_ic.utils.FakePlayer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -747,5 +744,73 @@ public class DigitalInterfacePeripheral implements IPeripheral {
                         level.getChunkSource().randomState().sampler()
                 );
         return bb != null && bb.getFirst() != null ? (BlockPos)bb.getFirst() : null;
+    }
+
+    /**
+     * Set the skin of the TARDIM
+     * @param skin Skin name to change to
+     * @hidden
+     */
+    @LuaFunction(mainThread = true)
+    public final void setSkin(String skin) throws LuaException {
+        if (this.tileEntity.getLevel().isClientSide()) {
+            return;
+        }
+
+        TardimData data = getTardimData();
+
+        ResourceLocation skinToApply = null;
+        Iterator var13 = TardimRegistry.getRegistry().keySet().iterator();
+
+        label39: {
+            ResourceLocation builder;
+            TardimRegistry.TardimBuilder b;
+            do {
+                if (!var13.hasNext()) {
+                    break label39;
+                }
+
+                builder = (ResourceLocation)var13.next();
+                b = TardimRegistry.getTardimBuilder(builder);
+            } while(!b.getDisplayName().equalsIgnoreCase(skin) && !builder.toString().equalsIgnoreCase(skin));
+
+            skinToApply = builder;
+        }
+
+        if (skinToApply == null) {
+            throw new LuaException("Skin '" + skin + "' not found");
+        }
+
+        TardimData.Location loc = data.getCurrentLocation();
+        ServerLevel level = this.tileEntity.getLevel().getServer().getLevel(loc.getLevel());
+        data.setIdentifier(skinToApply);
+
+        // FakePlayer...
+        TardimRegistry.getTardimBuilder(skinToApply).changeTardimSkin(data, level, loc.getPos(), loc.getFacing(), new FakePlayer(this.tileEntity.getLevel(), this.tileEntity.getPos()));
+    }
+
+    /**
+     * Get all available TARDIM skins. Useful for making a GUI skin selection.
+     *
+     * @return ObjectLuaTable of the available skins
+     */
+    @LuaFunction(mainThread = true)
+    public final ObjectLuaTable getSkins() throws LuaException {
+        if (this.tileEntity.getLevel().isClientSide()) {
+            return null;
+        }
+
+        Map<Integer, String> skins = new HashMap<>();
+
+        Iterator var5 = TardimRegistry.getRegistry().keySet().iterator();
+        int i = 0;
+        while(var5.hasNext()) {
+            ResourceLocation builder = (ResourceLocation)var5.next();
+            TardimRegistry.TardimBuilder b = TardimRegistry.getTardimBuilder(builder);
+            skins.put(i + 1, b.getDisplayName());
+            i++;
+        }
+
+        return new ObjectLuaTable(skins);
     }
 }
