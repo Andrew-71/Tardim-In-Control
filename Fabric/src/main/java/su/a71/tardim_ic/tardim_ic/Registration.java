@@ -23,12 +23,15 @@ import su.a71.tardim_ic.tardim_ic.redstone_input.RedstoneInputTileEntity;
 
 import su.a71.tardim_ic.tardim_ic.Constants;
 import su.a71.tardim_ic.tardim_ic.registration.CommandInit;
+import su.a71.tardim_ic.tardim_ic.tardim_dock.TardimDockBlock;
+import su.a71.tardim_ic.tardim_ic.tardim_dock.TardimDockBlockEntity;
 
 public class Registration {
     // Blocks
 
     public static final Block DIGITAL_TARDIM_INTERFACE = new DigitalInterfaceBlock();
     public static final Block REDSTONE_TARDIM_INPUT = new RedstoneInputBlock();
+    public static final Block TARDIM_DOCK = new TardimDockBlock();
 
     // Tile Entities
     //public static final RegistryObject<BlockEntityType<DigitalInterfaceTileEntity>> DIGITAL_TARDIM_INTERFACE_TILEENTITY = Registration.BLOCK_ENTITIES.register("digital_tardim_interface", () -> new BlockEntityType<>(DigitalInterfaceTileEntity::new, Sets.newHashSet(DIGITAL_TARDIM_INTERFACE.get()), null));
@@ -44,6 +47,12 @@ public class Registration {
             FabricBlockEntityTypeBuilder.create(RedstoneInputTileEntity::new, DIGITAL_TARDIM_INTERFACE).build()
     );
 
+    public static final BlockEntityType<TardimDockBlockEntity> TARDIM_DOCK_BLOCKENTITY = Registry.register(
+            Registry.BLOCK_ENTITY_TYPE,
+            new ResourceLocation("tardim_ic", "tardim_dock"),
+            FabricBlockEntityTypeBuilder.create(TardimDockBlockEntity::new, TARDIM_DOCK).build()
+    );
+
     private static final CreativeModeTab TARDIM_IC_TAB = FabricItemGroupBuilder
             .create(new ResourceLocation("tardim_ic"))
             .icon(() -> new ItemStack(DIGITAL_TARDIM_INTERFACE))
@@ -57,6 +66,9 @@ public class Registration {
 
         Registry.register(Registry.BLOCK, new ResourceLocation(Constants.MOD_ID, "digital_tardim_interface"), DIGITAL_TARDIM_INTERFACE);
         Registry.register(Registry.ITEM, new ResourceLocation(Constants.MOD_ID, "digital_tardim_interface"), new BlockItem(DIGITAL_TARDIM_INTERFACE, new FabricItemSettings().tab(TARDIM_IC_TAB)));
+
+        Registry.register(Registry.BLOCK, new ResourceLocation(Constants.MOD_ID, "tardim_dock"), TARDIM_DOCK);
+        Registry.register(Registry.ITEM, new ResourceLocation(Constants.MOD_ID, "tardim_dock"), new BlockItem(TARDIM_DOCK, new FabricItemSettings().tab(TARDIM_IC_TAB)));
 
         ComputerCraftAPI.registerPeripheralProvider(new DigitalInterfacePeripheralProvider());
         CommandInit.init();

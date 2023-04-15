@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "tardim_ic:block/tardim_dock"
+    }
+  }
+}
