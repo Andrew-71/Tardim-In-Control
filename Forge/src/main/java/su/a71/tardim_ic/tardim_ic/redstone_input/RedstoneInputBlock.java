@@ -1,4 +1,4 @@
-package su.a71.tardim_ic.tardim_ic.redsone_input;
+package su.a71.tardim_ic.tardim_ic.redstone_input;
 
 import com.swdteam.common.block.BlockBaseTardimPanel;
 import com.swdteam.common.init.TRDDimensions;
@@ -29,16 +29,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 
-import net.minecraftforge.common.util.FakePlayerFactory;  // TODO: ???
-import net.minecraftforge.server.ServerLifecycleHooks;
-
 import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 
 import su.a71.tardim_ic.tardim_ic.Registration;
+import su.a71.tardim_ic.tardim_ic.utils.FakePlayer;
 
 public class RedstoneInputBlock extends BlockBaseTardimPanel implements EntityBlock {
-    private boolean isPowered = false;
     public RedstoneInputBlock() {
         super(Properties.of(Material.METAL).strength(2, 4).noOcclusion());
     }
@@ -59,6 +56,7 @@ public class RedstoneInputBlock extends BlockBaseTardimPanel implements EntityBl
             if (be instanceof TileEntityBaseTardimPanel && w.dimension() == TRDDimensions.TARDIS) {
                 TardimData data = TardimManager.getFromPos(blockPos);
                 if (data != null && data.hasPermission(player)) {
+                    ((RedstoneInputTileEntity) be).lastPlayer = player.getGameProfile().getId();
                     NetworkHandler.sendTo((ServerPlayer)player, new PacketOpenEditGui(1, blockPos));
                     return InteractionResult.CONSUME;
                 }
@@ -79,22 +77,26 @@ public class RedstoneInputBlock extends BlockBaseTardimPanel implements EntityBl
     public void neighborChanged(BlockState blockState, Level level, BlockPos blockPos, Block block, BlockPos fromPos, boolean isMoving) {
         DebugPackets.sendNeighborsUpdatePacket(level, blockPos);
 
+        BlockEntity be = level.getBlockEntity(blockPos);
+        if (!(be instanceof RedstoneInputTileEntity)) {
+            return;
+        }
+
         // get redstone signal
         Direction direction = blockState.getValue(FACING);
         int redstoneSignal = level.getSignal(blockPos, direction);
-        if (redstoneSignal > 0 && !isPowered) {
-            isPowered = true;
-            BlockEntity be = level.getBlockEntity(blockPos);
-            if (be instanceof TileEntityBaseTardimPanel && level.dimension() == TRDDimensions.TARDIS) {
+        if (redstoneSignal > 0 && !((RedstoneInputTileEntity) be).isPowered) {
+            ((RedstoneInputTileEntity) be).isPowered = true;
+            if (level.dimension() == TRDDimensions.TARDIS) {
                 TardimData data = TardimManager.getFromPos(blockPos);
-                if (data != null) {
+                if (data != null && !level.isClientSide && ((RedstoneInputTileEntity) be).lastPlayer != null) {
                     if (((TileEntityBaseTardimPanel)be).hasCommand()) {
-                        ((TileEntityBaseTardimPanel)be).execute(FakePlayerFactory.getMinecraft(ServerLifecycleHooks.getCurrentServer().getLevel(level.dimension())));
+                        ((TileEntityBaseTardimPanel)be).execute(new FakePlayer(level, blockPos, ((RedstoneInputTileEntity) be).lastPlayer));
                     }
                 }
             }
 
-        } else if (redstoneSignal == 0 && isPowered)
-            isPowered = false;
+        } else if (redstoneSignal == 0 && ((RedstoneInputTileEntity) be).isPowered)
+            ((RedstoneInputTileEntity) be).isPowered = false;
     }
 }

@@ -4,16 +4,13 @@ import com.swdteam.tardim.common.command.tardim.CommandTardimBase;
 import com.swdteam.tardim.common.command.tardim.ICommand;
 import com.swdteam.tardim.tardim.TardimData;
 import com.swdteam.tardim.tardim.TardimManager;
+
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
-
-import com.swdteam.tardim.common.init.TRDDimensions;
 import net.minecraft.world.level.Level;
-import su.a71.tardim_ic.tardim_ic.Registration;
 
-//import static com.swdteam.common.command.tardim.CommandTardimBase.sendResponse;
+import su.a71.tardim_ic.tardim_ic.Registration;
 
 public class CommandCloisterBell implements ICommand {
     @Override
@@ -34,8 +31,6 @@ public class CommandCloisterBell implements ICommand {
                                     1f
                             );
                         }
-
-                        CommandTardimBase.sendResponse(player, "<Insert Cloister bell>", CommandTardimBase.ResponseType.COMPLETE, source);
                     } catch (Exception var9) {
                         CommandTardimBase.sendResponse(player, "There was an error", CommandTardimBase.ResponseType.FAIL, source);
                     }
@@ -55,7 +50,7 @@ public class CommandCloisterBell implements ICommand {
 
     @Override
     public String getUsage() {
-        return "cloister-bell";
+        return "/cloister-bell";
     }
 
     @Override

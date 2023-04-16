@@ -8,6 +8,6 @@ import com.swdteam.common.init.CommandManager;
 public class CommandInit {
     public static void init() {
         CommandManager.register(new CommandModemTransmit());
-        //CommandManager.register(new CommandCloisterBell());
+        CommandManager.register(new CommandCloisterBell());
     }
 }

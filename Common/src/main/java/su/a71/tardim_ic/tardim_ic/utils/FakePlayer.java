@@ -10,7 +10,12 @@ import java.util.UUID;
 public class FakePlayer extends Player {
 
     public FakePlayer(Level lvl, BlockPos blockPos) {
-        super(lvl, blockPos, 0, new GameProfile(UUID.randomUUID(), "DigitalInterfaceFakePlayer"), null);
+        super(lvl, blockPos, 0, new GameProfile(UUID.randomUUID(), "FakePlayer_tardimic"), null);
+    }
+
+    public FakePlayer(Level lvl, BlockPos blockPos, UUID id) {
+        super(lvl, blockPos, 0, new GameProfile(id, "FakePlayer_tardimic"), null);
+
     }
 
     @Override

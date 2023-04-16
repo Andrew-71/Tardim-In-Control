@@ -10,6 +10,7 @@ import su.a71.tardim_ic.tardim_ic.Registration;
 
 public class TardimDockBlockEntity extends BlockEntity {
     public int dock_id;
+    public DockData data;
 
     public TardimDockBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(Registration.TARDIM_DOCK_BLOCKENTITY, blockPos, blockState);

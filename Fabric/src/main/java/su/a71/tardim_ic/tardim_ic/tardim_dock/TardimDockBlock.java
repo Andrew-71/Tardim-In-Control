@@ -35,14 +35,8 @@ import su.a71.tardim_ic.tardim_ic.Registration;
 
 public class TardimDockBlock extends Block implements EntityBlock {
     public TardimDockBlock() {
-        super(FabricBlockSettings.of(Material.METAL).strength(2, 4).noOcclusion());  // No occlusion?
+        super(FabricBlockSettings.of(Material.METAL).strength(2, 4).noOcclusion());
     }
-
-//    @Nullable
-//    @Override
-//    public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-//        return Registration.REDSTONE_TARDIM_INPUT_TILEENTITY.create(pos, state);
-//    }
 
     @Override
     public InteractionResult use(BlockState blockState, Level w, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult p_60508_) {

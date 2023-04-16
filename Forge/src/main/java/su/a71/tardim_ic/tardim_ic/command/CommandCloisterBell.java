@@ -13,8 +13,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import su.a71.tardim_ic.tardim_ic.Registration;
 
 //import static com.swdteam.common.command.tardim.CommandTardimBase.sendResponse;
+
 
 public class CommandCloisterBell implements ICommand {
     @Override
@@ -24,7 +27,17 @@ public class CommandCloisterBell implements ICommand {
             if (data != null) {
                 if (data.hasPermission(player)) {
                     try {
-                        CommandTardimBase.sendResponse(player, "<Insert Cloister bell>", CommandTardimBase.ResponseType.COMPLETE, source);
+                        Level lvl = player.getLevel();
+                        if (!lvl.isClientSide) {
+                            lvl.playSound(
+                                    null,
+                                    pos,
+                                    Registration.CLOISTER_SOUND.get(),
+                                    SoundSource.BLOCKS,
+                                    1.5f,
+                                    1f
+                            );
+                        }
                     } catch (Exception var9) {
                         CommandTardimBase.sendResponse(player, "There was an error", CommandTardimBase.ResponseType.FAIL, source);
                     }
@@ -39,12 +52,12 @@ public class CommandCloisterBell implements ICommand {
 
     @Override
     public String getCommandName() {
-        return "cloisterBell";
+        return "cloister-bell";
     }
 
     @Override
     public String getUsage() {
-        return "cloisterBell";
+        return "/cloister-bell";
     }
 
     @Override

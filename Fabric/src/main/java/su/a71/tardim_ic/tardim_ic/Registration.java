@@ -1,8 +1,11 @@
 package su.a71.tardim_ic.tardim_ic;
 
 import dan200.computercraft.api.ComputerCraftAPI;
+
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -25,6 +28,10 @@ import su.a71.tardim_ic.tardim_ic.Constants;
 import su.a71.tardim_ic.tardim_ic.registration.CommandInit;
 import su.a71.tardim_ic.tardim_ic.tardim_dock.TardimDockBlock;
 import su.a71.tardim_ic.tardim_ic.tardim_dock.TardimDockBlockEntity;
+
+import com.swdteam.tardim.tileentity.TileEntityFuelStorage;
+import com.swdteam.tardim.common.block.BlockFuelStorage;
+
 
 public class Registration {
     // Blocks
@@ -58,6 +65,10 @@ public class Registration {
             .icon(() -> new ItemStack(DIGITAL_TARDIM_INTERFACE))
             .build();
 
+    // Cloister bell
+    public static final ResourceLocation CLOISTER_SOUND = new ResourceLocation("tardim_ic:cloister");
+    public static SoundEvent CLOISTER_SOUND_EVENT = new SoundEvent(CLOISTER_SOUND);
+
 
     // Register our stuff
     public static void register() {
@@ -69,6 +80,8 @@ public class Registration {
 
         Registry.register(Registry.BLOCK, new ResourceLocation(Constants.MOD_ID, "tardim_dock"), TARDIM_DOCK);
         Registry.register(Registry.ITEM, new ResourceLocation(Constants.MOD_ID, "tardim_dock"), new BlockItem(TARDIM_DOCK, new FabricItemSettings().tab(TARDIM_IC_TAB)));
+
+        Registry.register(Registry.SOUND_EVENT, CLOISTER_SOUND, CLOISTER_SOUND_EVENT);
 
         ComputerCraftAPI.registerPeripheralProvider(new DigitalInterfacePeripheralProvider());
         CommandInit.init();

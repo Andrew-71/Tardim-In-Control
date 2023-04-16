@@ -1,18 +1,14 @@
 # TARDIM: In Control ![Modrinth Downloads](https://img.shields.io/modrinth/dt/tardim-in-control?color=00AF5C&label=modrinth&style=flat&logo=modrinth)
 ### All of time and space, *now automated*.
 
-This mod is an addon for the [TARDIM mod](https://modrinth.com/mod/tardim), and adds a way to control your time (but mostly space) machine with [ComputerCraft: Tweaked](https://tweaked.cc) computers and redstone using a new blocks and peripherals.
+![Example dashboard](https://cdn.modrinth.com/data/xsv4H3pa/images/a6726a966b6ceb6cbfa81d4886b26375ee500854.png)
+
+This mod is an addon for the [TARDIM mod](https://www.curseforge.com/minecraft/mc-mods/tardim), and adds a way to control your time (but mostly space) machine with [ComputerCraft: Tweaked](https://tweaked.cc) computers and redstone using new blocks and peripherals.
 
 ### Features:
-* Digital TARDIM interface: ComputerCraft peripheral that lets you control a TARDIM using CC methods! Full list of methods is available in the [Javadoc](http://andrey71.me/TARDIM-ic-docs/su/a71/tardim_ic/tardim_ic/DigitalInterfacePeripheral.html) (Sorry for  that, this is the best auto-generated docs I could find for now). The peripheral supports almost all commands that the TARDIM computer panel has.
-* Redstone TARDIM Input: New control block that lets you execute a TARDIM command with the power of redstone! After saving a command, this block executes it every time it gets powered by redstone
+* Digital TARDIM interface: ComputerCraft peripheral that lets you control a TARDIM using computers! Full list of methods is available in the [Javadoc](http://andrey71.me/TARDIM-ic-docs/su/a71/tardim_ic/tardim_ic/DigitalInterfacePeripheral.html) (Sorry for  that, this is the best auto-generated docs I could find for now). The peripheral supports almost all commands that the TARDIM computer panel has.
+* Redstone TARDIM Input: New block that lets you execute a TARDIM command with the power of redstone! After saving a command, this block executes it every time it gets powered by redstone
 * *This is just the beginning, there are more features to come!*
-
-### Note
-This is important, due to nature of the mod **anyone** inside your TARDIM with access to a computer and this mod's peripheral
-will be able to run **any** methods. There is no fix that I know of (aside from disabling any commands except "getters" like fuel info), so if you want to have this on your server
-and do not trust everyone not to steal your blue box, make sure there is some kind of plot claim mod. If there will be demand for it I can try adding a config option to disable all but "harmless" methods.\
-And another thing: the method that sets destination dimension doesn't check if the dimension is valid, if you cannot land just change dimension to a valid one.
 
 ### Example use-cases
 * Make a dashboard to monitor fuel levels, current location, and other information on a screen in a nice way.
@@ -21,17 +17,27 @@ And another thing: the method that sets destination dimension doesn't check if t
 
 The possibilities are endless, the only limit is your imagination! (And coding skills)
 
+### Note
+Due to nature of the mod **anyone** inside your TARDIM with access to a computer and this mod's peripheral
+will be able to run **any** methods. There is no fix that I know of (aside from disabling any commands except "getters" like fuel info), so if you want to use this mod on your server,
+please don't let untrustworthy players anywhere near your computer.\
+And another thing: the method that sets destination dimension can't check if the dimension is valid. If you cannot land just change dimension to a valid one like overworld or nether.
+
 ### FAQ
 
 **Is this for Fabric or Forge?**
-: As a Fabric player who recognises Forge's large playerbase, I intend to support both major modloaders.
-Right now, only Forge version is present. However, as of April 13th 2023, I started to port to multi-loader system and intend to have a Fabric version soon.
+: Both! As a Fabric player who recognises Forge's large playerbase, I support both major modloaders.
 
 **Can I use this in my modpack?**
-: Sure, as long as you credit me and link to this page.
+: Sure, as long as you don't claim the mod as your own. A link to this mod's page would be appreciated too.
 
 **Will there be a 1.19.3 version and beyond?**
-: Yes, I will try my best to update to later versions as soon as **both** ComputerCraft: Tweaked and TARDIM receive stable versions for them.
+: Right now my focus on 1.19.2, but I will try my best to update to later versions as soon as this mod is fully stable.
 
-**I don't know CC, will this always be a CC-only mod?**
-: OK, fine, nobody actually asked that. But in case you did, good news: No! As you might've noticed, version 0.8 add a block that make it possible to integrate your TARDIM into good old redstone! Going forward, I plan to add some way to get redstone *output* from the TARDIM as well, and maybe even streamline things like the cloister bell for those who don't want to code their own implementations!
+**I encountered a bug or have a suggestion. What do I do?**
+: If you have a problem or suggestion, the best way to get them to me is through the project's Discord server.
+
+**I don't know ComputerCraft, will this always be a CC-only mod?**
+: Ok fine, nobody actually asked that. But in case you did, good news: No! The mod already adds things like Redstone TARDIM Input, 
+which let you integrate your TARDIM into good old redstone. Going forward, 
+I plan to add even more ways to control the TARDIM without computers for those who don't want to code their own implementation.

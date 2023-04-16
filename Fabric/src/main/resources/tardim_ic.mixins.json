@@ -1,0 +1,14 @@
+
+"required": true,
+"minVersion": "0.8",
+"package": "su.a71.tardim_ic.mixin",
+"compatibilityLevel": "JAVA_17",
+"mixins": [
+],
+"client": [
+"FuelTank"
+],
+"injectors": {
+"defaultRequire": 1
+}
+}
