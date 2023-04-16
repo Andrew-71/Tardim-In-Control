@@ -3,5 +3,6 @@
   "block.tardim_ic.redstone_tardim_input": "Редстоуновый ввод TARDIM",
   "block.tardim_ic.tardim_dock": "Стыковочная станция для TARDIM",
   "itemGroup.tardim_ic": "TARDIM: In Control",
-  "itemGroup.minecraft.tardim_ic": "TARDIM: In Control"
+  "itemGroup.minecraft.tardim_ic": "TARDIM: In Control",
+  "subtitles.tardim_ic.cloister": "Звон монастырского колокола"
 }

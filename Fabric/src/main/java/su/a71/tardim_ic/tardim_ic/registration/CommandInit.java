@@ -9,6 +9,6 @@ import su.a71.tardim_ic.tardim_ic.command.CommandModemTransmit;
 public class CommandInit {
     public static void init() {
         CommandManager.register(new CommandModemTransmit());
-        //CommandManager.register(new CommandCloisterBell());
+        CommandManager.register(new CommandCloisterBell());
     }
 }
