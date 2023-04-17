@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import su.a71.tardim_ic.tardim_ic.registration.CommandInit;
 
+// TARDIM loads commands a bit later on Forge, so we have to use mixins for this :/
 @Mixin(value = CommandManager.class, remap = false)
 public abstract class Commands {
     @Inject(method="init()V", at=@At("TAIL"))

@@ -5,19 +5,11 @@ import com.swdteam.common.command.tardim.ICommand;
 import com.swdteam.tardim.TardimData;
 import com.swdteam.tardim.TardimManager;
 
-
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import su.a71.tardim_ic.tardim_ic.Registration;
-
-//import static com.swdteam.common.command.tardim.CommandTardimBase.sendResponse;
-
 
 public class CommandCloisterBell implements ICommand {
     @Override

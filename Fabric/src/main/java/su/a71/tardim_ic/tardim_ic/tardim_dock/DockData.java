@@ -8,14 +8,15 @@ public class DockData {
     public BlockPos blockPos;
     public Level level;
     public boolean active = true;
+    public boolean occupied = false;
 
-    public DockData(int id, Level level, BlockPos blockPos) {
-        this.level = level;
+    public DockData(BlockPos blockPos) {
         this.blockPos = blockPos;
         this.name = DockManager.addDock(this);
     }
 
     public void setActive(boolean setting) {
         this.active = setting;
+        DockManager.updateDock(this.name, this);
     }
 }

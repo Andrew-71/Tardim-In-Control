@@ -1,10 +1,21 @@
 package su.a71.tardim_ic.tardim_ic;
 
+import com.swdteam.tardim.common.command.*;
+import com.swdteam.tardim.common.init.TRDDimensions;
+import com.swdteam.tardim.main.Config;
+import com.swdteam.tardim.tardim.TardimData;
+import com.swdteam.tardim.tardim.TardimIDMap;
+import com.swdteam.tardim.tardim.TardimManager;
+import com.swdteam.tardim.tardim.TardimSaveHandler;
+import com.swdteam.tardim.util.world.SchematicUtils;
 import dan200.computercraft.api.ComputerCraftAPI;
 
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -26,11 +37,15 @@ import su.a71.tardim_ic.tardim_ic.redstone_input.RedstoneInputTileEntity;
 
 import su.a71.tardim_ic.tardim_ic.Constants;
 import su.a71.tardim_ic.tardim_ic.registration.CommandInit;
+import su.a71.tardim_ic.tardim_ic.tardim_dock.DockManager;
 import su.a71.tardim_ic.tardim_ic.tardim_dock.TardimDockBlock;
 import su.a71.tardim_ic.tardim_ic.tardim_dock.TardimDockBlockEntity;
 
 import com.swdteam.tardim.tileentity.TileEntityFuelStorage;
 import com.swdteam.tardim.common.block.BlockFuelStorage;
+
+import java.util.Iterator;
+import java.util.Map;
 
 
 public class Registration {
@@ -41,7 +56,6 @@ public class Registration {
     public static final Block TARDIM_DOCK = new TardimDockBlock();
 
     // Tile Entities
-    //public static final RegistryObject<BlockEntityType<DigitalInterfaceTileEntity>> DIGITAL_TARDIM_INTERFACE_TILEENTITY = Registration.BLOCK_ENTITIES.register("digital_tardim_interface", () -> new BlockEntityType<>(DigitalInterfaceTileEntity::new, Sets.newHashSet(DIGITAL_TARDIM_INTERFACE.get()), null));
     public static final BlockEntityType<RedstoneInputTileEntity> REDSTONE_TARDIM_INPUT_TILEENTITY = Registry.register(
             Registry.BLOCK_ENTITY_TYPE,
             new ResourceLocation("tardim_ic", "redstone_tardim_input"),
@@ -85,5 +99,26 @@ public class Registration {
 
         ComputerCraftAPI.registerPeripheralProvider(new DigitalInterfacePeripheralProvider());
         CommandInit.init();
+
+        ServerLifecycleEvents.SERVER_STARTING.register((server) -> {
+            DockManager.server = server;
+            DockManager.clearCahce();
+
+            try {
+                DockManager.load();
+            } catch (Exception var2) {
+                var2.printStackTrace();
+            }
+        });
+        ServerWorldEvents.UNLOAD.register((server, world) -> {
+            try {
+                if (DockManager.server == null) {
+                    return;
+                }
+                DockManager.save();
+            } catch (Exception var5) {
+                var5.printStackTrace();
+            }
+        });
     }
 }

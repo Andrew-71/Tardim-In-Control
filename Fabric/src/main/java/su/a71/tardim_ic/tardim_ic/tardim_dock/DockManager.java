@@ -9,6 +9,7 @@ import com.swdteam.tardim.main.Tardim;
 import com.swdteam.tardim.tardim.TardimData;
 import com.swdteam.tardim.tardim.TardimManager;
 import com.swdteam.tardim.tardim.TardimSaveHandler;
+import com.swdteam.tardim.tardim.TardimIDMap;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.storage.LevelResource;
 
@@ -21,7 +22,8 @@ import java.util.Map;
 
 public class DockManager {
     private static Map<String, DockData> DOCK_DATA = new HashMap<>();
-    Gson gson = new Gson();
+    static Gson gson = new Gson();
+    public static MinecraftServer server;
 
 
     public DockManager() {
@@ -32,21 +34,26 @@ public class DockManager {
     }
 
     public static String addDock(DockData dockData) {
-        String new_id = Integer.toString(DOCK_DATA.size());
-        DOCK_DATA.put(new_id, dockData);
-        return new_id;
+        int new_id = DOCK_DATA.size();
+        while (DOCK_DATA.containsKey(Integer.toString(new_id))) {
+            System.out.println(new_id + "Was taken so we try another");
+            new_id++;
+        }
+        System.out.println("PICKED ID: " + new_id);
+
+        DOCK_DATA.put(Integer.toString(new_id), dockData);
+        return Integer.toString(new_id);
     }
 
-    public void toggleActive(String name, boolean active) {
-        DockData dockData = DOCK_DATA.get(name);
-        dockData.setActive(active);
+    public static void removeDock(String name) {
+        DOCK_DATA.remove(name);
     }
 
-    public void updateDock(String name, DockData dockData) {
+    public static void updateDock(String name, DockData dockData) {
         DOCK_DATA.put(name, dockData);
     }
 
-    public void load(MinecraftServer server) throws Exception {
+    public static void load() throws Exception {
         File file = new File(server.getWorldPath(LevelResource.ROOT) + "/tardim_ic/dock_map.json");
 
         // Check if file exists
@@ -68,7 +75,7 @@ public class DockManager {
         System.out.println("Loaded TARDIM: IC docks");
     }
 
-    public void save(MinecraftServer server) throws Exception {
+    public static void save() throws Exception {
         File file = new File(server.getWorldPath(LevelResource.ROOT) + "/tardim_ic/dock_map.json");
 
         // Check if file exists
@@ -84,5 +91,9 @@ public class DockManager {
         writer.close();
 
         System.out.println("Saved TARDIM: IC docks");
+    }
+
+    public static void clearCahce() {
+        DOCK_DATA.clear();
     }
 }
