@@ -1,7 +1,6 @@
 package su.a71.tardim_ic.tardim_ic;
 
 import com.google.common.collect.Sets;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.BlockItem;
@@ -20,7 +19,6 @@ import su.a71.tardim_ic.tardim_ic.digital_interface.DigitalInterfaceBlock;
 import su.a71.tardim_ic.tardim_ic.digital_interface.DigitalInterfaceTileEntity;
 import su.a71.tardim_ic.tardim_ic.redstone_input.RedstoneInputBlock;
 import su.a71.tardim_ic.tardim_ic.redstone_input.RedstoneInputTileEntity;
-import su.a71.tardim_ic.tardim_ic.registration.CommandInit;
 
 import java.util.function.Supplier;
 
