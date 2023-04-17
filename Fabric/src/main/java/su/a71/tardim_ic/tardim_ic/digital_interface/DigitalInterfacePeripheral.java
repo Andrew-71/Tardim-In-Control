@@ -33,6 +33,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
+import su.a71.tardim_ic.tardim_ic.Registration;
 import su.a71.tardim_ic.tardim_ic.utils.FakePlayer;
 
 import javax.annotation.Nonnull;
@@ -825,5 +826,30 @@ public class DigitalInterfacePeripheral implements IPeripheral {
         }
 
         return new ObjectLuaTable(skins);
+    }
+
+    /**
+     * Play cloister bell sound.
+     */
+    @LuaFunction(mainThread = true)
+    public final void cloisterBell() throws LuaException {
+        if (this.tileEntity.getLevel().isClientSide()) {
+            return;
+        }
+        try {
+            Level lvl = this.tileEntity.getLevel();
+            if (!lvl.isClientSide) {
+                lvl.playSound(
+                        null,
+                        this.tileEntity.getPos(),
+                        Registration.CLOISTER_SOUND_EVENT,
+                        SoundSource.BLOCKS,
+                        1.5f,
+                        1f
+                );
+            }
+        } catch (Exception var9) {
+            throw new LuaException("There was an error trying to play the sound");
+        }
     }
 }
