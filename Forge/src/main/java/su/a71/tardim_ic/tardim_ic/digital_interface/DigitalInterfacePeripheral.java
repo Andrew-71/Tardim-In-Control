@@ -1,6 +1,7 @@
 package su.a71.tardim_ic.tardim_ic.digital_interface;
 
 import com.mojang.datafixers.util.Pair;
+import com.swdteam.common.command.tardim.CommandTardimBase;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -34,6 +35,7 @@ import com.swdteam.common.init.TRDSounds;
 import com.swdteam.common.item.ItemTardim;
 import com.swdteam.main.Tardim;
 
+import su.a71.tardim_ic.tardim_ic.Registration;
 import su.a71.tardim_ic.tardim_ic.utils.FakePlayer;
 
 import javax.annotation.Nonnull;
@@ -812,5 +814,30 @@ public class DigitalInterfacePeripheral implements IPeripheral {
         }
 
         return new ObjectLuaTable(skins);
+    }
+
+    /**
+     * Play cloister bell sound.
+     */
+    @LuaFunction(mainThread = true)
+    public final void cloisterBell() throws LuaException {
+        if (this.tileEntity.getLevel().isClientSide()) {
+            return;
+        }
+        try {
+            Level lvl = this.tileEntity.getLevel();
+            if (!lvl.isClientSide) {
+                lvl.playSound(
+                        null,
+                        this.tileEntity.getPos(),
+                        Registration.CLOISTER_SOUND.get(),
+                        SoundSource.BLOCKS,
+                        1.5f,
+                        1f
+                );
+            }
+        } catch (Exception var9) {
+            throw new LuaException("There was an error trying to play the sound");
+        }
     }
 }
