@@ -1,0 +1,124 @@
+{
+  "variants": {
+    "facing=north,half=lower,open=false,front=false": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_sides_bottom"
+    },
+    "facing=north,half=lower,open=false,front=true": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_bottom_closed"
+    },
+    "facing=north,half=upper,open=false,front=false": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_sides_top"
+    },
+    "facing=north,half=upper,open=false,front=true": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_top_front_closed"
+    },
+    "facing=west,half=lower,open=false,front=false": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_sides_bottom",
+      "y": 270
+    },
+    "facing=west,half=lower,open=false,front=true": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_bottom_closed",
+      "y": 270
+    },
+    "facing=west,half=upper,open=false,front=false": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_sides_top",
+      "y": 270
+    },
+    "facing=west,half=upper,open=false,front=true": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_top_front_closed",
+      "y": 270
+    },
+    "facing=east,half=lower,open=false,front=false": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_sides_bottom",
+      "y": 90
+    },
+    "facing=east,half=lower,open=false,front=true": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_bottom_closed",
+      "y": 90
+    },
+    "facing=east,half=upper,open=false,front=false": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_sides_top",
+      "y": 90
+    },
+    "facing=east,half=upper,open=false,front=true": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_top_front_closed",
+      "y": 90
+    },
+    "facing=south,half=lower,open=false,front=false": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_sides_bottom",
+      "y": 180
+    },
+    "facing=south,half=lower,open=false,front=true": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_bottom_closed",
+      "y": 180
+    },
+    "facing=south,half=upper,open=false,front=false": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_sides_top",
+      "y": 180
+    },
+    "facing=south,half=upper,open=false,front=true": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_top_front_closed",
+      "y": 180
+    },
+    "facing=north,half=lower,open=true,front=false": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_sides_bottom"
+    },
+    "facing=north,half=lower,open=true,front=true": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_bottom_open"
+    },
+    "facing=north,half=upper,open=true,front=false": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_sides_top"
+    },
+    "facing=north,half=upper,open=true,front=true": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_top_front_open"
+    },
+    "facing=west,half=lower,open=true,front=false": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_sides_bottom",
+      "y": 270
+    },
+    "facing=west,half=lower,open=true,front=true": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_bottom_open",
+      "y": 270
+    },
+    "facing=west,half=upper,open=true,front=false": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_sides_top",
+      "y": 270
+    },
+    "facing=west,half=upper,open=true,front=true": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_top_front_open",
+      "y": 270
+    },
+    "facing=east,half=lower,open=true,front=false": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_sides_bottom",
+      "y": 90
+    },
+    "facing=east,half=lower,open=true,front=true": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_bottom_open",
+      "y": 90
+    },
+    "facing=east,half=upper,open=true,front=false": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_sides_top",
+      "y": 90
+    },
+    "facing=east,half=upper,open=true,front=true": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_top_front_open",
+      "y": 90
+    },
+    "facing=south,half=lower,open=true,front=false": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_sides_bottom",
+      "y": 180
+    },
+    "facing=south,half=lower,open=true,front=true": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_bottom_open",
+      "y": 180
+    },
+    "facing=south,half=upper,open=true,front=false": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_sides_top",
+      "y": 180
+    },
+    "facing=south,half=upper,open=true,front=true": {
+      "model": "tardim_ic:block/tardim_soviet_chronobox/tardim_door_top_front_open",
+      "y": 180
+    }
+  }
+}

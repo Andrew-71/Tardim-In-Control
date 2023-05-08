@@ -45,7 +45,6 @@ public class DigitalInterfacePeripheral implements IPeripheral {
 
     private final List<IComputerAccess> connectedComputers = new ArrayList<>();  // List of computers connected to the peripheral
     private final IDigitalInterfaceEntity tileEntity;  // Peripheral's BlockEntity, used for accessing coordinates
-
     /**
      * @param tileEntity the tile entity of this peripheral
      * @hidden
@@ -111,7 +110,7 @@ public class DigitalInterfacePeripheral implements IPeripheral {
      * @throws LuaException if the peripheral is not in a TARDIM
      * @hidden
      */
-    public TardimData getTardimData() throws LuaException {
+    public TardimData getTardimDataInitial() {
         int X = getTileEntity().getPos().getX(), Z = getTileEntity().getPos().getZ();
 
         int index = 0;
@@ -154,15 +153,24 @@ public class DigitalInterfacePeripheral implements IPeripheral {
         }
 
         // We really don't want to access a ghost TARDIM, do we?
+        // If we fail checks here are not inside a TARDIM
         if (!found) {
-            throw new LuaException("Peripheral is not inside a TARDIM");
+            return null;
         }
         TardimData T = TardimManager.getTardim(index);
         if (T.getCurrentLocation() == null || T.getOwnerName() == null) {
-            throw new LuaException("Peripheral is not inside a TARDIM");
+            return null;
         }
 
     	return T;
+    }
+
+    public TardimData getTardimData() throws LuaException {
+        TardimData data = this.getTileEntity().getTardim();
+        if (data == null || data.getCurrentLocation() == null || data.getOwnerName() == null) {
+            throw new LuaException("Peripheral is not inside a TARDIM");
+        }
+        return data;
     }
 
     // Peripheral methods ===============================================================
