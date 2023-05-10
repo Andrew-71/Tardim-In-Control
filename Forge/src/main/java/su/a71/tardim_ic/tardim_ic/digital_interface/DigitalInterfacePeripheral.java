@@ -107,7 +107,6 @@ public class DigitalInterfacePeripheral implements IPeripheral {
      * This is mostly a copy of getIDForXZ function with some added checks
      *
      * @return TardimData of the TARDIM that the peripheral is in
-     * @throws LuaException if the peripheral is not in a TARDIM
      * @hidden
      */
     public TardimData getTardimDataInitial() {

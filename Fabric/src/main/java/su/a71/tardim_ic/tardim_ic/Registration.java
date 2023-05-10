@@ -33,6 +33,7 @@ import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 
 import su.a71.tardim_ic.tardim_ic.digital_interface.DigitalInterfaceBlock;
 import su.a71.tardim_ic.tardim_ic.digital_interface.DigitalInterfacePeripheralProvider;
+import su.a71.tardim_ic.tardim_ic.digital_interface.DigitalInterfaceTileEntity;
 import su.a71.tardim_ic.tardim_ic.redstone_input.RedstoneInputBlock;
 import su.a71.tardim_ic.tardim_ic.redstone_input.RedstoneInputTileEntity;
 import su.a71.tardim_ic.tardim_ic.Constants;
@@ -57,10 +58,10 @@ public class Registration {
             FabricBlockEntityTypeBuilder.create(RedstoneInputTileEntity::new, REDSTONE_TARDIM_INPUT).build()
     );
 
-    public static final BlockEntityType<RedstoneInputTileEntity> DIGITAL_TARDIM_INTERFACE_TILEENTITY = Registry.register(
+    public static final BlockEntityType<DigitalInterfaceTileEntity> DIGITAL_TARDIM_INTERFACE_TILEENTITY = Registry.register(
             Registry.BLOCK_ENTITY_TYPE,
             new ResourceLocation("tardim_ic", "digital_tardim_interface"),
-            FabricBlockEntityTypeBuilder.create(RedstoneInputTileEntity::new, DIGITAL_TARDIM_INTERFACE).build()
+            FabricBlockEntityTypeBuilder.create(DigitalInterfaceTileEntity::new, DIGITAL_TARDIM_INTERFACE).build()
     );
 
     private static final CreativeModeTab TARDIM_IC_TAB = FabricItemGroupBuilder
