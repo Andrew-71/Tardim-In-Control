@@ -1,0 +1,22 @@
+{
+	"credit": "Made by karoter2",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "tardim_ic:blocks/tardim_soviet_chronobox",
+		"particle": "tardim_ic:blocks/tardim_soviet_chronobox"
+	},
+	"elements": [
+		{
+			"from": [-4, 16, 4.15],
+			"to": [20, 24, 4.15],
+			"faces": {
+				"north": {"uv": [0, 2, 6, 4], "texture": "#0"},
+				"east": {"uv": [0, 0, 0, 2], "texture": "#0"},
+				"south": {"uv": [0, 2, 6, 4], "texture": "#0"},
+				"west": {"uv": [0, 0, 0, 2], "texture": "#0"},
+				"up": {"uv": [0, 0, 6, 0], "texture": "#0"},
+				"down": {"uv": [0, 0, 6, 0], "texture": "#0"}
+			}
+		}
+	]
+}

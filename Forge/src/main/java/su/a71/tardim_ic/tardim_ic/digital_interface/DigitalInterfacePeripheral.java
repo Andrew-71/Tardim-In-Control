@@ -2,6 +2,21 @@ package su.a71.tardim_ic.tardim_ic.digital_interface;
 
 import com.mojang.datafixers.util.Pair;
 import com.swdteam.common.command.tardim.CommandTardimBase;
+import com.swdteam.common.command.tardim.CommandTravel;
+import com.swdteam.common.data.DimensionMapReloadListener;
+import com.swdteam.common.init.TRDSounds;
+import com.swdteam.common.init.TardimRegistry;
+import com.swdteam.common.item.ItemTardim;
+import com.swdteam.main.Tardim;
+import com.swdteam.tardim.TardimData;
+import com.swdteam.tardim.TardimData.Location;
+import com.swdteam.tardim.TardimManager;
+
+import dan200.computercraft.api.lua.LuaException;
+import dan200.computercraft.api.lua.LuaFunction;
+import dan200.computercraft.api.lua.ObjectLuaTable;
+import dan200.computercraft.api.peripheral.IComputerAccess;
+import dan200.computercraft.api.peripheral.IPeripheral;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -10,31 +25,14 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.PlayerList;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
-import net.minecraft.server.players.PlayerList;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
-
-import dan200.computercraft.api.lua.LuaFunction;
-import dan200.computercraft.api.peripheral.IComputerAccess;
-import dan200.computercraft.api.peripheral.IPeripheral;
-import dan200.computercraft.api.lua.ObjectLuaTable;
-import dan200.computercraft.api.lua.LuaException;
-
-import com.swdteam.tardim.TardimData;
-import com.swdteam.tardim.TardimManager;
-import com.swdteam.tardim.TardimData.Location;
-import com.swdteam.common.init.TardimRegistry;
-import com.swdteam.common.command.tardim.CommandTravel;
-import com.swdteam.common.data.DimensionMapReloadListener;
-import com.swdteam.common.init.TRDSounds;
-import com.swdteam.common.item.ItemTardim;
-import com.swdteam.main.Tardim;
-
 import su.a71.tardim_ic.tardim_ic.Registration;
 import su.a71.tardim_ic.tardim_ic.utils.FakePlayer;
 
@@ -46,13 +44,12 @@ import java.util.*;
 public class DigitalInterfacePeripheral implements IPeripheral {
 
     private final List<IComputerAccess> connectedComputers = new ArrayList<>();  // List of computers connected to the peripheral
-    private final DigitalInterfaceTileEntity tileEntity;  // Peripheral's BlockEntity, used for accessing coordinates
-
+    private final IDigitalInterfaceEntity tileEntity;  // Peripheral's BlockEntity, used for accessing coordinates
     /**
      * @param tileEntity the tile entity of this peripheral
      * @hidden
      */
-    public DigitalInterfacePeripheral(DigitalInterfaceTileEntity tileEntity) {
+    public DigitalInterfacePeripheral(IDigitalInterfaceEntity tileEntity) {
         this.tileEntity = tileEntity;
     }
 
@@ -92,7 +89,7 @@ public class DigitalInterfacePeripheral implements IPeripheral {
      * @hidden
      * @return
      */
-    public DigitalInterfaceTileEntity getTileEntity() {
+    public IDigitalInterfaceEntity getTileEntity() {
         return tileEntity;
     }
 
@@ -110,10 +107,9 @@ public class DigitalInterfacePeripheral implements IPeripheral {
      * This is mostly a copy of getIDForXZ function with some added checks
      *
      * @return TardimData of the TARDIM that the peripheral is in
-     * @throws LuaException if the peripheral is not in a TARDIM
      * @hidden
      */
-    public TardimData getTardimData() throws LuaException {
+    public TardimData getTardimDataInitial() {
         int X = getTileEntity().getPos().getX(), Z = getTileEntity().getPos().getZ();
 
         int index = 0;
@@ -156,15 +152,24 @@ public class DigitalInterfacePeripheral implements IPeripheral {
         }
 
         // We really don't want to access a ghost TARDIM, do we?
+        // If we fail checks here are not inside a TARDIM
         if (!found) {
-            throw new LuaException("Peripheral is not inside a TARDIM");
+            return null;
         }
         TardimData T = TardimManager.getTardim(index);
         if (T.getCurrentLocation() == null || T.getOwnerName() == null) {
-            throw new LuaException("Peripheral is not inside a TARDIM");
+            return null;
         }
 
-    	return T;
+        return T;
+    }
+
+    public TardimData getTardimData() throws LuaException {
+        TardimData data = this.getTileEntity().getTardim();
+        if (data == null || data.getCurrentLocation() == null || data.getOwnerName() == null) {
+            throw new LuaException("Peripheral is not inside a TARDIM");
+        }
+        return data;
     }
 
     // Peripheral methods ===============================================================
@@ -173,7 +178,7 @@ public class DigitalInterfacePeripheral implements IPeripheral {
      * Return how much fuel is left in the TARDIM
      *
      * @return Fuel left (Out of 100)
-    */
+     */
     @LuaFunction(mainThread = true)
     public final double getFuel() throws LuaException {
         return getTardimData().getFuel();
@@ -182,7 +187,7 @@ public class DigitalInterfacePeripheral implements IPeripheral {
     /**
      * Get how much fuel it would take to travel to the destination
      * @return Amount of fuel needed (Out of 100)
-    */
+     */
     @LuaFunction(mainThread = true)
     public final double calculateFuelForJourney() throws LuaException {
         TardimData data = getTardimData();
@@ -266,15 +271,15 @@ public class DigitalInterfacePeripheral implements IPeripheral {
      */
     @LuaFunction(mainThread = true)
     public final ObjectLuaTable getCurrentLocation() throws LuaException {
-    	Location loc = getTardimData().getCurrentLocation();
+        Location loc = getTardimData().getCurrentLocation();
         return new ObjectLuaTable(Map.of(
-            "dimension", loc.getLevel().location().toString(),
-            "pos", new ObjectLuaTable(Map.of(
-                "x", loc.getPos().getX(),
-                "y", loc.getPos().getY(),
-                "z", loc.getPos().getZ()
-            )),
-        "facing", loc.getFacing().toString()
+                "dimension", loc.getLevel().location().toString(),
+                "pos", new ObjectLuaTable(Map.of(
+                        "x", loc.getPos().getX(),
+                        "y", loc.getPos().getY(),
+                        "z", loc.getPos().getZ()
+                )),
+                "facing", loc.getFacing().toString()
         ));
     }
 
@@ -291,7 +296,7 @@ public class DigitalInterfacePeripheral implements IPeripheral {
      */
     @LuaFunction(mainThread = true)
     public final ObjectLuaTable getTravelLocation() throws LuaException {
-    	TardimData data = getTardimData();
+        TardimData data = getTardimData();
         if (data.getTravelLocation() == null) {
             data.setTravelLocation(data.getCurrentLocation());
         }
@@ -299,9 +304,9 @@ public class DigitalInterfacePeripheral implements IPeripheral {
         return new ObjectLuaTable(Map.of(
                 "dimension", loc.getLevel().location().toString(),
                 "pos", new ObjectLuaTable(Map.of(
-                    "x", loc.getPos().getX(),
-                    "y", loc.getPos().getY(),
-                    "z", loc.getPos().getZ()
+                        "x", loc.getPos().getX(),
+                        "y", loc.getPos().getY(),
+                        "z", loc.getPos().getZ()
                 )),
                 "facing", loc.getFacing().toString()
         ));
@@ -313,13 +318,14 @@ public class DigitalInterfacePeripheral implements IPeripheral {
      */
     @LuaFunction(mainThread = true)
     public final ObjectLuaTable getCompanions() throws LuaException {
-    	TardimData data = getTardimData();
+        TardimData data = getTardimData();
         Map<Integer, String> companions = new HashMap<>();
-    	for (int i = 0; i < data.getCompanions().size(); i++) {
-    		companions.put(i + 1, data.getCompanions().get(i).getUsername());
-    	}
-    	return new ObjectLuaTable(companions);
+        for (int i = 0; i < data.getCompanions().size(); i++) {
+            companions.put(i + 1, data.getCompanions().get(i).getUsername());
+        }
+        return new ObjectLuaTable(companions);
     }
+
 
     /**
      * Set dimension for the TARDIM to travel to
@@ -331,7 +337,7 @@ public class DigitalInterfacePeripheral implements IPeripheral {
      */
     @LuaFunction(mainThread = true)
     public final void setDimension(String dimension) throws LuaException {
-    	TardimData data = getTardimData();
+        TardimData data = getTardimData();
 
         String key = dimension;
         dimension = DimensionMapReloadListener.toTitleCase(dimension);
@@ -378,7 +384,7 @@ public class DigitalInterfacePeripheral implements IPeripheral {
         if (this.tileEntity.getLevel().isClientSide()) {
             return;
         }
-    	TardimData data = getTardimData();
+        TardimData data = getTardimData();
 
         UUID uuid = data.getOwner();
         String username = data.getOwnerName();
@@ -415,15 +421,15 @@ public class DigitalInterfacePeripheral implements IPeripheral {
         PlayerList playerList = this.tileEntity.getLevel().getServer().getPlayerList();
 
         ServerPlayer player = playerList.getPlayerByName(username);
-    	if (player == null) {
-    		throw new LuaException("Player not found");
-    	}
+        if (player == null) {
+            throw new LuaException("Player not found");
+        }
 
-    	ResourceKey<Level> dim = player.getCommandSenderWorld().dimension();
-    	BlockPos pos = player.blockPosition();
+        ResourceKey<Level> dim = player.getCommandSenderWorld().dimension();
+        BlockPos pos = player.blockPosition();
 
-    	setDimension(dim.location().toString());
-    	setTravelLocation(pos.getX(), pos.getY(), pos.getZ());
+        setDimension(dim.location().toString());
+        setTravelLocation(pos.getX(), pos.getY(), pos.getZ());
     }
 
     /**
@@ -437,13 +443,13 @@ public class DigitalInterfacePeripheral implements IPeripheral {
             return null;
         }
 
-    	PlayerList playerList = this.tileEntity.getLevel().getServer().getPlayerList();
+        PlayerList playerList = this.tileEntity.getLevel().getServer().getPlayerList();
         Map<Integer, String> players = new HashMap<>();
         for (int i = 0; i < playerList.getPlayers().size(); i++) {
             players.put(i + 1, playerList.getPlayers().get(i).getGameProfile().getName());
         }
 
-    	return new ObjectLuaTable(players);
+        return new ObjectLuaTable(players);
     }
 
     /**
@@ -452,8 +458,8 @@ public class DigitalInterfacePeripheral implements IPeripheral {
      */
     @LuaFunction(mainThread = true)
     public final String getDoorRotation() throws LuaException {
-    	TardimData data = getTardimData();
-    	Direction rotation = data.getTravelLocation().getFacing();
+        TardimData data = getTardimData();
+        Direction rotation = data.getTravelLocation().getFacing();
         switch (rotation) {
             case NORTH -> {
                 return "north";
@@ -479,7 +485,7 @@ public class DigitalInterfacePeripheral implements IPeripheral {
      */
     @LuaFunction(mainThread = true)
     public final void setDoorRotation(String rotation) throws LuaException {
-    	TardimData data = getTardimData();
+        TardimData data = getTardimData();
         switch (rotation) {
             case "north" -> data.getTravelLocation().setFacing(Direction.NORTH);
             case "east" -> data.getTravelLocation().setFacing(Direction.EAST);
@@ -496,7 +502,7 @@ public class DigitalInterfacePeripheral implements IPeripheral {
      */
     @LuaFunction(mainThread = true)
     public final void toggleDoorRotation() throws LuaException {
-    	TardimData data = getTardimData();
+        TardimData data = getTardimData();
         if (data.getTravelLocation() == null) {
             data.setTravelLocation(new Location(data.getCurrentLocation()));
         }
@@ -523,18 +529,18 @@ public class DigitalInterfacePeripheral implements IPeripheral {
      */
     @LuaFunction(mainThread = true)
     public final void coordAdd(String axis, int amount) throws LuaException {
-    	TardimData data = getTardimData();
-    	if (data.getTravelLocation() == null) {
-    		data.setTravelLocation(new Location(data.getCurrentLocation()));
-    	}
+        TardimData data = getTardimData();
+        if (data.getTravelLocation() == null) {
+            data.setTravelLocation(new Location(data.getCurrentLocation()));
+        }
 
-    	Location location = data.getTravelLocation();
-    	switch (axis) {
-    		case "x" -> location.addPosition(amount, 0, 0);
+        Location location = data.getTravelLocation();
+        switch (axis) {
+            case "x" -> location.addPosition(amount, 0, 0);
             case "y" -> location.addPosition(0, amount, 0);
             case "z" -> location.addPosition(0, 0, amount);
             default -> throw new LuaException("Invalid axis");
-    	}
+        }
     }
 
     /**
@@ -546,7 +552,7 @@ public class DigitalInterfacePeripheral implements IPeripheral {
             return;
         }
 
-    	TardimData data = getTardimData();
+        TardimData data = getTardimData();
 
         if (data.isInFlight()) {
             throw new LuaException("TARDIM is already in flight");
@@ -555,7 +561,7 @@ public class DigitalInterfacePeripheral implements IPeripheral {
         ServerLevel level = this.tileEntity.getLevel().getServer().getLevel(loc.getLevel());
         ItemTardim.destroyTardim(level, loc.getPos(), Direction.NORTH);
         data.setInFlight(true);
-    	if (data.getTravelLocation() == null) {
+        if (data.getTravelLocation() == null) {
             data.setTravelLocation(new Location(data.getCurrentLocation()));
         }
 
