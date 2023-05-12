@@ -8,6 +8,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import org.jetbrains.annotations.NotNull;
 import su.a71.tardim_ic.tardim_ic.Registration;
+import su.a71.tardim_ic.tardim_ic.registration.ComputerCraftCompat;
 
 import javax.annotation.Nullable;
 
@@ -21,6 +22,6 @@ public class DigitalInterfaceBlock extends Block implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-        return Registration.DIGITAL_TARDIM_INTERFACE_TILEENTITY.create(pos, state);
+        return ComputerCraftCompat.DIGITAL_TARDIM_INTERFACE_TILEENTITY.create(pos, state);
     }
 }
