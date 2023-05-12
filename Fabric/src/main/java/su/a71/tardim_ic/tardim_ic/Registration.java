@@ -40,7 +40,6 @@ import su.a71.tardim_ic.tardim_ic.Constants;
 import su.a71.tardim_ic.tardim_ic.registration.CommandInit;
 import su.a71.tardim_ic.tardim_ic.soviet_chronobox.SovietChronoboxTileEntity;
 
-
 public class Registration {
     // Blocks
     public static Block DOOR_SOVIET_CHRONOBOX;
