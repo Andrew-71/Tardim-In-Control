@@ -1,7 +1,6 @@
 package su.a71.tardim_ic.tardim_ic.digital_interface;
 
 import com.mojang.datafixers.util.Pair;
-import com.swdteam.tardim.common.command.tardim.CommandTardimBase;
 import com.swdteam.tardim.common.command.tardim.CommandTravel;
 import com.swdteam.tardim.common.data.DimensionMapReloadListener;
 import com.swdteam.tardim.common.init.TRDSounds;
@@ -28,17 +27,21 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
+import org.squiddev.cobalt.Lua;
 import su.a71.tardim_ic.tardim_ic.Registration;
 import su.a71.tardim_ic.tardim_ic.utils.FakePlayer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
+
+import static su.a71.tardim_ic.tardim_ic.Registration.LOCATION_JAMMER;
 
 
 public class DigitalInterfacePeripheral implements IPeripheral {
@@ -437,6 +440,12 @@ public class DigitalInterfacePeripheral implements IPeripheral {
     	if (player == null) {
     		throw new LuaException("Player not found");
     	}
+
+        for (ItemStack armour : player.getArmorSlots()) {
+            if (armour.is(LOCATION_JAMMER)) {
+                throw new LuaException("Player location jammed");
+            };
+        }
 
     	ResourceKey<Level> dim = player.getCommandSenderWorld().dimension();
     	BlockPos pos = player.blockPosition();

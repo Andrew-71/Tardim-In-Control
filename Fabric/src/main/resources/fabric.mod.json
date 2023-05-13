@@ -21,6 +21,9 @@
         "su.a71.tardim_ic.tardim_ic.TardimInControl"
       ]
     },
+  "mixins": [
+    "mixins.tardim_ic.json"
+  ],
   
     "depends": {
       "fabricloader": ">=0.14.10",

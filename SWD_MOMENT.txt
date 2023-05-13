@@ -1,4 +1,4 @@
 === HOW MANY PROBLEMS TARDIM HAS?! ===
 1. A few log messages definitely left from testing (e.g. aklfjsjsfw)
-2. isValidFlightPath is private of Fabric
+2. isValidFlightPath is private on Fabric
 3. FABRIC AND FORGE HAVE DIFFERENT JAVA IMPORT PATHS

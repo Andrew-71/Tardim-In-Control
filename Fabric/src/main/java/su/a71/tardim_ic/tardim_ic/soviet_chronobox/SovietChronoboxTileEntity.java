@@ -5,9 +5,10 @@ import com.swdteam.tardim.tileentity.TileEntityTardim;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import su.a71.tardim_ic.tardim_ic.Registration;
+import su.a71.tardim_ic.tardim_ic.registration.Exteriors;
 
 public class SovietChronoboxTileEntity extends TileEntityTardim {
     public SovietChronoboxTileEntity(BlockPos pos, BlockState state) {
-        super(Registration.TILE_SOVIET_CHRONOBOX, pos, state);
+        super(Exteriors.TILE_SOVIET_CHRONOBOX, pos, state);
     }
 }
