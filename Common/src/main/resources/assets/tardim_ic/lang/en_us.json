@@ -1,8 +1,9 @@
 {
-  "block.tardim_ic.digital_tardim_interface": "Digital TARDIM Interface",
-  "block.tardim_ic.redstone_tardim_input": "Redstone TARDIM Input",
-  "block.tardim_ic.tardim_dock": "TARDIM Dock",
+  "block.tardim_ic.digital_tardim_interface": "Digital TARDIM interface",
+  "block.tardim_ic.redstone_tardim_input": "Redstone TARDIM input",
+  "block.tardim_ic.tardim_dock": "TARDIM dock",
   "itemGroup.tardim_ic": "TARDIM: In Control",
   "itemGroup.minecraft.tardim_ic": "TARDIM: In Control",
-  "subtitles.tardim_ic.cloister": "Cloister bell rings"
+  "subtitles.tardim_ic.cloister": "Cloister bell rings",
+  "display_source.fuel_level": "TARDIM fuel level"
 }

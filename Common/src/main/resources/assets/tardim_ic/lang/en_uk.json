@@ -4,5 +4,6 @@
   "block.tardim_ic.tardim_dock": "TARDIM Dock",
   "itemGroup.tardim_ic": "TARDIM: In Control",
   "itemGroup.minecraft.tardim_ic": "TARDIM: In Control",
-  "subtitles.tardim_ic.cloister": "Cloister bell rings"
+  "subtitles.tardim_ic.cloister": "Cloister bell rings",
+  "display_source.fuel_level": "TARDIM fuel level"
 }

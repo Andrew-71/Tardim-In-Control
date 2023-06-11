@@ -2,3 +2,8 @@
 1. A few log messages definitely left from testing (e.g. aklfjsjsfw)
 2. isValidFlightPath is private on Fabric
 3. FABRIC AND FORGE HAVE DIFFERENT JAVA IMPORT PATHS
+4. [FIXED] Adding custom commands was private for literally 0 reason
+5. com.swdteam.tardim.common.data.DimensionMapReloadListener has modid tutorial in
+        public ResourceLocation getFabricId() {
+            return new ResourceLocation("tutorial", "tardim_dimension_lookup");
+        }

@@ -25,6 +25,9 @@ dependencies {
     //.. maybe?
     modApi "curse.maven:cc-restitched-462672:3908334"
     modCompileOnly "curse.maven:cc-restitched-462672:3908334"
+
+    // Create!
+    modCompileOnly "curse.maven:create-fabric-624165:4537370"
 }
 
 loom {
