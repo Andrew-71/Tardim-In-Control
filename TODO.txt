@@ -1,0 +1,47 @@
+TODO for 1.2 and beyond
+
+Blocks:
+    Food Dispenser - one button iterates over food types, another dispenses it at cost of some fuel
+    Cartridge Loader - one button to write to the cartridge, another to load information from it (Right now just location, in the future maybe other too)
+    Dock Station - lets you get into locations you often visit better, good tool for shop keepers as well. On RP servers could prevent liftoff.
+    Roundels? - Both normal and storage.
+Items:
+    Personal Location Jammer - when worn, prevents others from locating you. Possibly add some kind of power mechanic to make it less OP
+    Location Cartridge - a cartridge that stores a location to later visit it with a TARDIM. Can be locked like map. Potentially add a way to write in the field.
+Commands:
+    Quick return - set destination to previous materialisation point.
+Compat:
+    CC - add more meaningful peripherals to things like fuel tank
+    Create - Port to 0.5.1, add display sources to more things. Also look into mechanical TARDIM power-up
+
+Mixins:
+    Location jammer working
+    Better fuel tank (More fuel sources, do not eat buckets)
+    Into demat for quick return mixin
+    Fuel tank should give off comparator output based on how full it is, and time rotor based on whether we are in flight
+    Potentially let name change appearance of TARDIM Controls?
+Code:
+    Make better and coherent file structure. Unify Forge and Fabric where possible. Prepare for if SWDTeam ever unify more things.
+
+
+Achievements/Advancements:
+    "Nobody needs soup more than me"
+        Get soup from TARDIM's food machine
+
+    "Power of the Redstone"
+        Activate a redstone input
+
+    "From Russia with love"
+        Set exterior to Soviet Chronobox (or any other potential USSR-themed exteriors)
+
+    "Cyber-Upgrade"
+        Craft a digital interface
+
+    "???"
+        Register a dock
+
+    "I prefer jelly"
+        Put on a location jammer
+
+    "I will always remember..."
+        Save (or maybe lock like a map?) a location cartridge

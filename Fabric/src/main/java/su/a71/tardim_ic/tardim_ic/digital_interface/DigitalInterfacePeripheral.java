@@ -868,4 +868,40 @@ public class DigitalInterfacePeripheral implements IPeripheral {
             throw new LuaException("There was an error trying to play the sound");
         }
     }
+
+    /**
+     * Get a table with all registered biomes' names.
+     * Useful for creating advanced navigation systems.
+     * @return ObjectLuaTable with all biomes' technical names
+     */
+    @LuaFunction(mainThread = true)
+    public final ObjectLuaTable getBiomes() throws LuaException {
+        Map<Integer, String> biomes = new HashMap<>();
+        Registry<Biome> biomeRegistry = tileEntity.getLevel().registryAccess().registryOrThrow(Registry.BIOME_REGISTRY);
+        Iterator<ResourceLocation> biome_it = biomeRegistry.keySet().iterator();
+        int i = 0;
+        while (biome_it.hasNext()) {
+            biomes.put(i + 1, biome_it.next().toString());
+            i++;
+        }
+
+        return new ObjectLuaTable(biomes);
+    }
+
+    /**
+     * Get a table with all registered dimensions' names.
+     * Useful for creating advanced navigation systems.
+     * @return ObjectLuaTable with all dimensions' technical names
+     */
+    @LuaFunction(mainThread = true)
+    public final ObjectLuaTable getDimensions() throws LuaException {
+        Iterator<ServerLevel> dim_it = this.tileEntity.getLevel().getServer().getAllLevels().iterator();  // TODO: Does this really work?
+        Map<Integer, String> dimensions = new HashMap<>();
+        int i = 0;
+        while (dim_it.hasNext()) {
+            dimensions.put(i + 1, dim_it.next().dimension().location().toString());
+            i++;
+        }
+        return new ObjectLuaTable(dimensions);
+    }
 }
