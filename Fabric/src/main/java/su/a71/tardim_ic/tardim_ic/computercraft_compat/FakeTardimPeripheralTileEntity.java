@@ -1,17 +1,17 @@
-package su.a71.tardim_ic.tardim_ic.digital_interface;
+package su.a71.tardim_ic.tardim_ic.computercraft_compat;
 
 import com.swdteam.tardim.tardim.TardimData;
 import com.swdteam.tardim.tardim.TardimManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 
-public class FakeDigitalInterfaceTileEntity implements IDigitalInterfaceEntity {
+public class FakeTardimPeripheralTileEntity implements ITardimPeripheralTileEntity {
     public BlockPos blockPos;
     public Level level;
     public TardimData data;  // Our TARDIM
 
 
-    FakeDigitalInterfaceTileEntity(BlockPos in_block, Level in_level) {
+    public FakeTardimPeripheralTileEntity(BlockPos in_block, Level in_level) {
         this.blockPos = in_block;
         this.level = in_level;
         this.data = getTardimDataInitial();

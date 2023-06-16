@@ -1,4 +1,4 @@
-package su.a71.tardim_ic.tardim_ic.digital_interface;
+package su.a71.tardim_ic.tardim_ic.computercraft_compat.blocks.digital_interface;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;

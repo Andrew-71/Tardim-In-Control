@@ -8,9 +8,16 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.FurnaceFuelSlot;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
 
 
+/*
+This command prints list of all biomes into the console to find technical names
+You can also pass an argument to search for entries with this string (e.g. amethyst for terralith:amethyst_rainforest
+ */
 public class CommandListBiomes implements ICommand{
     @Override
     public void execute(String[] args, Player player, BlockPos pos, CommandTardimBase.CommandSource source) {
@@ -23,7 +30,7 @@ public class CommandListBiomes implements ICommand{
                     biomeRegistry.keySet().forEach(
                             (ResourceLocation res) -> {
                                 String out = res.toString();
-                                if (args.length == 0 || (args[0].equals(out.split(":")[0]))) {
+                                if (args.length == 0 || out.toLowerCase().contains(args[0].toLowerCase())) {
                                     CommandTardimBase.sendResponse(player, out, CommandTardimBase.ResponseType.INFO, source);
                                 }
                             }
@@ -44,7 +51,7 @@ public class CommandListBiomes implements ICommand{
 
     @Override
     public String getUsage() {
-        return "/list-biomes";
+        return "/list-biomes <..search_query>";  // TODO: how to communicate this better
     }
 
     @Override

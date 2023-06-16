@@ -1,4 +1,4 @@
-package su.a71.tardim_ic.tardim_ic.redstone_input;
+package su.a71.tardim_ic.tardim_ic.blocks.redstone_input;
 
 import com.swdteam.tardim.common.block.BlockBaseTardimPanel;
 import com.swdteam.tardim.common.init.TRDDimensions;

@@ -22,14 +22,14 @@ import static su.a71.tardim_ic.tardim_ic.Registration.LOCATION_JAMMER;
 
 @Mixin(value = CommandLocate.class, remap = false)
 public class JammerMixin {
-    @Inject(method="execute()V", at=@At(value = "INVOKE", target = "Lcom/swdteam/tardim/tardim/TardimData;setTravelLocation(Lcom/swdteam/tardim/tardim/TardimData$Location;)V"))
-    public void execute(CallbackInfo ci) {
-        LOG.info("test");
-//        for (ItemStack armour : player.getArmorSlots()) {
-//            if (armour.is(LOCATION_JAMMER)) {
-//                sendResponse(player, "Player's location is jammed", CommandTardimBase.ResponseType.FAIL, source);
-//                ci.cancel();
-//            };
-//        }
-    }
+//    @Inject(method="execute()V", at=@At(value = "INVOKE", target = "Lcom/swdteam/tardim/tardim/TardimData;setTravelLocation(Lcom/swdteam/tardim/tardim/TardimData$Location;)V"))
+//    public void execute(CallbackInfo ci) {
+//        LOG.info("test");
+////        for (ItemStack armour : player.getArmorSlots()) {
+////            if (armour.is(LOCATION_JAMMER)) {
+////                sendResponse(player, "Player's location is jammed", CommandTardimBase.ResponseType.FAIL, source);
+////                ci.cancel();
+////            };
+////        }
+//    }
 }

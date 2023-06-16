@@ -14,10 +14,11 @@ import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 
+import su.a71.tardim_ic.tardim_ic.blocks.food_machine.FoodMachineBlock;
+import su.a71.tardim_ic.tardim_ic.blocks.food_machine.FoodMachineTileEntity;
 import su.a71.tardim_ic.tardim_ic.jammer.LocationJammerMaterial;
-import su.a71.tardim_ic.tardim_ic.redstone_input.RedstoneInputBlock;
-import su.a71.tardim_ic.tardim_ic.redstone_input.RedstoneInputTileEntity;
-import su.a71.tardim_ic.tardim_ic.Constants;
+import su.a71.tardim_ic.tardim_ic.blocks.redstone_input.RedstoneInputBlock;
+import su.a71.tardim_ic.tardim_ic.blocks.redstone_input.RedstoneInputTileEntity;
 import su.a71.tardim_ic.tardim_ic.registration.CommandInit;
 import su.a71.tardim_ic.tardim_ic.registration.ComputerCraftCompat;
 import su.a71.tardim_ic.tardim_ic.registration.CreateCompat;
@@ -26,12 +27,19 @@ import su.a71.tardim_ic.tardim_ic.registration.Exteriors;
 public class Registration {
     // Blocks
     public static final Block REDSTONE_TARDIM_INPUT = new RedstoneInputBlock();
+    public static final Block FOOD_MACHINE = new FoodMachineBlock();
 
     // Tile Entities
     public static final BlockEntityType<RedstoneInputTileEntity> REDSTONE_TARDIM_INPUT_TILEENTITY = Registry.register(
             Registry.BLOCK_ENTITY_TYPE,
             new ResourceLocation("tardim_ic", "redstone_tardim_input"),
             FabricBlockEntityTypeBuilder.create(RedstoneInputTileEntity::new, REDSTONE_TARDIM_INPUT).build()
+    );
+
+    public static final BlockEntityType<FoodMachineTileEntity> FOOD_MACHINE_TILEENTITY = Registry.register(
+            Registry.BLOCK_ENTITY_TYPE,
+            new ResourceLocation("tardim_ic", "food_machine"),
+            FabricBlockEntityTypeBuilder.create(FoodMachineTileEntity::new, FOOD_MACHINE).build()
     );
 
     public static final CreativeModeTab TARDIM_IC_TAB = FabricItemGroupBuilder
@@ -60,6 +68,9 @@ public class Registration {
 
         Registry.register(Registry.BLOCK, new ResourceLocation(Constants.MOD_ID, "redstone_tardim_input"), REDSTONE_TARDIM_INPUT);
         Registry.register(Registry.ITEM, new ResourceLocation(Constants.MOD_ID, "redstone_tardim_input"), new BlockItem(REDSTONE_TARDIM_INPUT, new FabricItemSettings().tab(TARDIM_IC_TAB)));
+
+        Registry.register(Registry.BLOCK, new ResourceLocation(Constants.MOD_ID, "food_machine"), FOOD_MACHINE);
+        Registry.register(Registry.ITEM, new ResourceLocation(Constants.MOD_ID, "food_machine"), new BlockItem(FOOD_MACHINE, new FabricItemSettings().tab(TARDIM_IC_TAB)));
 
         Registry.register(Registry.SOUND_EVENT, CLOISTER_SOUND, CLOISTER_SOUND_EVENT);
 

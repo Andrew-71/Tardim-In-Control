@@ -12,6 +12,9 @@ import net.minecraft.world.level.Level;
 
 import su.a71.tardim_ic.tardim_ic.Registration;
 
+/*
+This command transmits the cloister bell sound in a big enough radius that you could hear it in any reasonably sized interior.
+ */
 public class CommandCloisterBell implements ICommand {
     @Override
     public void execute(String[] args, Player player, BlockPos pos, CommandTardimBase.CommandSource source) {

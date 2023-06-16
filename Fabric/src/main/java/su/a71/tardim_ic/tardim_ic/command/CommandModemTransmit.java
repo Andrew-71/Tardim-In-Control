@@ -14,6 +14,11 @@ import dan200.computercraft.api.network.Packet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 
+/*
+This command sends out a ComputerCraft modem signal
+This could be useful for connecting advanced navigation systems into "vanilla" controls
+You can specify both channels, message and even make the message go across dimensions
+ */
 public class CommandModemTransmit implements ICommand {
     @Override
     public void execute(String[] args, Player player, BlockPos pos, CommandTardimBase.CommandSource source) {

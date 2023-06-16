@@ -11,7 +11,7 @@ Items:
 Commands:
     Quick return - set destination to previous materialisation point.
 Compat:
-    CC - add more meaningful peripherals to things like fuel tank
+    CC - add more meaningful peripherals to things like fuel tank, CREATIVE INTERFACE?
     Create - Port to 0.5.1, add display sources to more things. Also look into mechanical TARDIM power-up
 
 Mixins:
@@ -45,3 +45,7 @@ Achievements/Advancements:
 
     "I will always remember..."
         Save (or maybe lock like a map?) a location cartridge
+
+Crafting recipe for floppy with tardim tutorial installer
+
+Power indicator for redstone interface

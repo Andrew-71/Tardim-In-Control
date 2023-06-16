@@ -1,20 +1,19 @@
-package su.a71.tardim_ic.tardim_ic.redstone_input;
-
-import com.swdteam.tardim.tileentity.TileEntityBaseTardimPanel;
+package su.a71.tardim_ic.tardim_ic.blocks.food_machine;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import su.a71.tardim_ic.tardim_ic.Registration;
 
 import java.util.UUID;
 
-
-public class RedstoneInputTileEntity extends TileEntityBaseTardimPanel {
+public class FoodMachineTileEntity extends BlockEntity {
     public boolean isPowered = false;
     public UUID lastPlayer = null;
 
-    public RedstoneInputTileEntity(BlockPos pos, BlockState state) {
+    public FoodMachineTileEntity(BlockPos pos, BlockState state) {
         super(Registration.REDSTONE_TARDIM_INPUT_TILEENTITY, pos, state);
     }
 

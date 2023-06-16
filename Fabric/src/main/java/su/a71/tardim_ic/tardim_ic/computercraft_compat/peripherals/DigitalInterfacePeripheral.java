@@ -1,6 +1,5 @@
-package su.a71.tardim_ic.tardim_ic.digital_interface;
+package su.a71.tardim_ic.tardim_ic.computercraft_compat.peripherals;
 
-import com.mojang.datafixers.util.Pair;
 import com.swdteam.tardim.common.command.tardim.CommandTravel;
 import com.swdteam.tardim.common.data.DimensionMapReloadListener;
 import com.swdteam.tardim.common.init.TRDSounds;
@@ -14,8 +13,9 @@ import com.swdteam.tardim.tardim.TardimManager;
 import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.lua.LuaFunction;
 import dan200.computercraft.api.lua.ObjectLuaTable;
-import dan200.computercraft.api.peripheral.IComputerAccess;
 import dan200.computercraft.api.peripheral.IPeripheral;
+
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -33,27 +33,23 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
-import org.squiddev.cobalt.Lua;
+
 import su.a71.tardim_ic.tardim_ic.Registration;
+import su.a71.tardim_ic.tardim_ic.computercraft_compat.FakeTardimPeripheralTileEntity;
 import su.a71.tardim_ic.tardim_ic.utils.FakePlayer;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
-
 import static su.a71.tardim_ic.tardim_ic.Registration.LOCATION_JAMMER;
 
+import javax.annotation.Nonnull;
+import java.util.*;
 
-public class DigitalInterfacePeripheral implements IPeripheral {
 
-    private final List<IComputerAccess> connectedComputers = new ArrayList<>();  // List of computers connected to the peripheral
-    private final IDigitalInterfaceEntity tileEntity;  // Peripheral's BlockEntity, used for accessing coordinates
+public class DigitalInterfacePeripheral extends TardimPeripheral implements IPeripheral {
     /**
      * @param tileEntity the tile entity of this peripheral
      * @hidden
      */
-    public DigitalInterfacePeripheral(IDigitalInterfaceEntity tileEntity) {
-        this.tileEntity = tileEntity;
+    public DigitalInterfacePeripheral(FakeTardimPeripheralTileEntity tileEntity) {
+        super(tileEntity);
     }
 
     /** Setting name for the peripheral. A computer will see it as "digital_tardim_interface_n"
@@ -62,118 +58,6 @@ public class DigitalInterfacePeripheral implements IPeripheral {
     @Nonnull
     @Override
     public String getType() { return "digital_tardim_interface"; }
-
-    /** Apparently CC uses this to check if the peripheral in front of a modem is this one
-     * @hidden
-     * @param iPeripheral The peripheral to compare against. This may be {@code null}.
-     * @return {@code true} if the peripheral is the same as this one.
-     */
-    @Override
-    public boolean equals(@Nullable IPeripheral iPeripheral) { return this == iPeripheral; }
-
-    /** Called when a computer disconnects from the peripheral
-     * @hidden
-     * @param computer The interface to the computer that is being detached. Remember that multiple computers can be
-     *                 attached to a peripheral at once.
-     */
-    @Override
-    public void detach(@Nonnull IComputerAccess computer) { connectedComputers.remove(computer); }
-
-    /** Called when a computer connects to the peripheral
-     * @hidden
-     * @param computer The interface to the computer that is being attached. Remember that multiple computers can be
-     *                 attached to a peripheral at once.
-     */
-    @Override
-    public void attach(@Nonnull IComputerAccess computer) { connectedComputers.add(computer); }
-
-    /**
-     * I *think* I use this to get peripheral's world position
-     * @hidden
-     * @return
-     */
-    public IDigitalInterfaceEntity getTileEntity() {
-        return tileEntity;
-    }
-
-
-    /**
-     *  Get TARDIM's data, which we need for *every* function
-     * <p>
-     * We can't do a simple
-     * <code>TardimManager.getFromPos(getTileEntity().getPos())</code>
-     * <p>
-     * because if someone attempts to call a method outside a TARDIM, this would create a new TARDIM/Point to the one with ID of 0 (Due to the way TardimSaveHandler.loadTardisData works).
-     * Which is obviously not what we want.
-     * <p>
-     * So instead we use this, and get the ability to give user a LuaException if they think that fiddling with time is funny
-     * This is mostly a copy of getIDForXZ function with some added checks
-     *
-     * @return TardimData of the TARDIM that the peripheral is in
-     * @hidden
-     */
-    public TardimData getTardimDataInitial() {
-        int X = getTileEntity().getPos().getX(), Z = getTileEntity().getPos().getZ();
-
-        int index = 0;
-        int x = 0;
-        int y = 0;
-        int dx = 0;
-        int dy = 1;
-        int segment_length = 1;
-        int segment_passed = 0;
-        boolean found = false;
-        long timecheck = System.currentTimeMillis();
-
-        while(true) {
-            if (System.currentTimeMillis() - timecheck > 10000L) {
-                System.out.println("Finding ID from XZ Coordinates is taking too long!");
-                break;
-            }
-
-            if (X >= x * TardimManager.INTERIOR_BOUNDS
-                    && X <= TardimManager.INTERIOR_BOUNDS + x * TardimManager.INTERIOR_BOUNDS
-                    && Z >= y * TardimManager.INTERIOR_BOUNDS
-                    && Z <= TardimManager.INTERIOR_BOUNDS + y * TardimManager.INTERIOR_BOUNDS) {
-                found = true;
-                break;
-            }
-
-            x += dx;
-            y += dy;
-            if (++segment_passed == segment_length) {
-                segment_passed = 0;
-                int buffer = dy;
-                dy = -dx;
-                dx = buffer;
-                if (buffer == 0) {
-                    ++segment_length;
-                }
-            }
-
-            ++index;
-        }
-
-        // We really don't want to access a ghost TARDIM, do we?
-        // If we fail checks here are not inside a TARDIM
-        if (!found) {
-            return null;
-        }
-        TardimData T = TardimManager.getTardim(index);
-        if (T.getCurrentLocation() == null || T.getOwnerName() == null) {
-            return null;
-        }
-
-    	return T;
-    }
-
-    public TardimData getTardimData() throws LuaException {
-        TardimData data = this.getTileEntity().getTardim();
-        if (data == null || data.getCurrentLocation() == null || data.getOwnerName() == null) {
-            throw new LuaException("Peripheral is not inside a TARDIM");
-        }
-        return data;
-    }
 
     // Peripheral methods ===============================================================
 
@@ -397,7 +281,7 @@ public class DigitalInterfacePeripheral implements IPeripheral {
      */
     @LuaFunction(mainThread = true)
     public final void home() throws LuaException {
-        if (this.tileEntity.getLevel().isClientSide()) {
+        if (this.getTileEntity().getLevel().isClientSide()) {
             return;
         }
     	TardimData data = getTardimData();
@@ -408,7 +292,7 @@ public class DigitalInterfacePeripheral implements IPeripheral {
             throw new LuaException("TARDIM has no owner");
         }
 
-        PlayerList playerList = this.tileEntity.getLevel().getServer().getPlayerList();
+        PlayerList playerList = this.getTileEntity().getLevel().getServer().getPlayerList();
         ServerPlayer player = playerList.getPlayer(uuid);
         if (player == null) {
             throw new LuaException("TARDIM owner is not online");
@@ -430,11 +314,11 @@ public class DigitalInterfacePeripheral implements IPeripheral {
      */
     @LuaFunction(mainThread = true)
     public final void locatePlayer(String username) throws LuaException {
-        if (this.tileEntity.getLevel().isClientSide()) {
+        if (this.getTileEntity().getLevel().isClientSide()) {
             return;
         }
 
-        PlayerList playerList = this.tileEntity.getLevel().getServer().getPlayerList();
+        PlayerList playerList = this.getTileEntity().getLevel().getServer().getPlayerList();
 
         ServerPlayer player = playerList.getPlayerByName(username);
     	if (player == null) {
@@ -461,11 +345,11 @@ public class DigitalInterfacePeripheral implements IPeripheral {
      */
     @LuaFunction(mainThread = true)
     public final ObjectLuaTable getOnlinePlayers() throws LuaException {
-        if (this.tileEntity.getLevel().isClientSide()) {
+        if (this.getTileEntity().getLevel().isClientSide()) {
             return null;
         }
 
-    	PlayerList playerList = this.tileEntity.getLevel().getServer().getPlayerList();
+    	PlayerList playerList = this.getTileEntity().getLevel().getServer().getPlayerList();
         Map<Integer, String> players = new HashMap<>();
         for (int i = 0; i < playerList.getPlayers().size(); i++) {
             players.put(i + 1, playerList.getPlayers().get(i).getGameProfile().getName());

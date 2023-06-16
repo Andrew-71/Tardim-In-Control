@@ -8,6 +8,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 
+/*
+This command prints list of all dimensions into the console to find technical names
+ */
 public class CommandListDimensions implements ICommand{
     @Override
     public void execute(String[] args, Player player, BlockPos pos, CommandTardimBase.CommandSource source) {
@@ -15,7 +18,6 @@ public class CommandListDimensions implements ICommand{
             TardimData data = TardimManager.getFromPos(pos);
             if (data != null) {
                 if (data.hasPermission(player)) {
-                    // TODO: Does this really work?
                     for (ServerLevel serverLevel : player.getLevel().getServer().getAllLevels()) {
                         CommandTardimBase.sendResponse(player, serverLevel.dimension().location().toString(), CommandTardimBase.ResponseType.INFO, source);
                     }

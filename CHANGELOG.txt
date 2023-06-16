@@ -1,0 +1,15 @@
+Added list-biomes and list-dimensions TARDIM commands + Corresponding ComputerCraft methods
+    This is a community-requested QOL feature that lets users scroll through available biomes and,
+    with lua methods, make advanced navigation dashboards even easier.
+
+Computercraft compatibility improvements
+    Made ComputerCraft optional
+    Added peripherals for fuel storage, time rotor and scanner blocks
+    Added digital interface methods that list biomes and dimensions
+
+Added Create compatibility
+    Added various display sources for fuel storage
+
+Improved TARDIM's fuel system
+    Any item that can be used as fuel in furnace should now be able to power up a TARDIM
+    Buckets no longer get destroyed, and only get their fluids taken
