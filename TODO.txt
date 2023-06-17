@@ -49,3 +49,9 @@ Achievements/Advancements:
 Crafting recipe for floppy with tardim tutorial installer
 
 Power indicator for redstone interface
+
+Treasure Disk with pre-installed code that users might enjoy
+
+Datapack-driven way to control where a TARDIM can travel and at what price (For instance, for liftoff)
+
+Possibly an enchantment that works same as personal jammer

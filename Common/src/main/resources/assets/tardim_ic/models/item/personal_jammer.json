@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tardim_ic:item/location_jammer"
+    "layer0": "tardim_ic:item/personal_jammer"
   }
 }

@@ -16,7 +16,7 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 
 import su.a71.tardim_ic.tardim_ic.blocks.food_machine.FoodMachineBlock;
 import su.a71.tardim_ic.tardim_ic.blocks.food_machine.FoodMachineTileEntity;
-import su.a71.tardim_ic.tardim_ic.jammer.LocationJammerMaterial;
+import su.a71.tardim_ic.tardim_ic.jammer.PersonalJammerMaterial;
 import su.a71.tardim_ic.tardim_ic.blocks.redstone_input.RedstoneInputBlock;
 import su.a71.tardim_ic.tardim_ic.blocks.redstone_input.RedstoneInputTileEntity;
 import su.a71.tardim_ic.tardim_ic.registration.CommandInit;
@@ -51,12 +51,12 @@ public class Registration {
     public static final ResourceLocation CLOISTER_SOUND = new ResourceLocation("tardim_ic:cloister");
     public static SoundEvent CLOISTER_SOUND_EVENT = new SoundEvent(CLOISTER_SOUND);
 
-    public static final ArmorMaterial LOCATION_JAMMER_MATERIAL = new LocationJammerMaterial();
-    public static final Item LOCATION_JAMMER = new ArmorItem(LOCATION_JAMMER_MATERIAL, EquipmentSlot.CHEST, new Item.Properties().tab(TARDIM_IC_TAB));
+    public static final ArmorMaterial PERSONAL_JAMMER_MATERIAL = new PersonalJammerMaterial();
+    public static final Item PERSONAL_JAMMER = new ArmorItem(PERSONAL_JAMMER_MATERIAL, EquipmentSlot.CHEST, new Item.Properties().tab(TARDIM_IC_TAB));
 
     // Register our stuff
     public static void register() {
-        Registry.register(Registry.ITEM, new ResourceLocation(Constants.MOD_ID, "location_jammer"), LOCATION_JAMMER);
+        Registry.register(Registry.ITEM, new ResourceLocation(Constants.MOD_ID, "personal_jammer"), PERSONAL_JAMMER);
 
         if (FabricLoader.getInstance().isModLoaded("computercraft")) {
             ComputerCraftCompat.register();  // Register ComputerCraft-related features

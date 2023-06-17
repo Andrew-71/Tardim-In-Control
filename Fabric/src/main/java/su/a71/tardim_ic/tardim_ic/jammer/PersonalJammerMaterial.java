@@ -9,7 +9,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.NotNull;
 
-public class LocationJammerMaterial implements ArmorMaterial {
+public class PersonalJammerMaterial implements ArmorMaterial {
     private static final int[] BASE_DURABILITY = new int[] {13, 15, 16, 11};
     private static final int[] PROTECTION_VALUES = new int[] {1, 1, 1, 1};
 
@@ -41,7 +41,7 @@ public class LocationJammerMaterial implements ArmorMaterial {
     @Override
     public @NotNull String getName() {
         // Must be all lowercase
-        return "location jammer";
+        return "personal_jammer";
     }
 
     @Override

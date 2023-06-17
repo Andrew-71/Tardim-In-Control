@@ -18,7 +18,7 @@ import su.a71.tardim_ic.tardim_ic.registration.CommandInit;
 
 import static com.swdteam.tardim.common.command.tardim.CommandTardimBase.sendResponse;
 import static su.a71.tardim_ic.tardim_ic.Constants.LOG;
-import static su.a71.tardim_ic.tardim_ic.Registration.LOCATION_JAMMER;
+import static su.a71.tardim_ic.tardim_ic.Registration.PERSONAL_JAMMER;
 
 @Mixin(value = CommandLocate.class, remap = false)
 public class JammerMixin {

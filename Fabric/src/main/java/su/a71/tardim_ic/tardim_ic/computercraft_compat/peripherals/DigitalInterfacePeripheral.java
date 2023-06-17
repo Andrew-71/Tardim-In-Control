@@ -37,7 +37,7 @@ import net.minecraft.world.phys.Vec3;
 import su.a71.tardim_ic.tardim_ic.Registration;
 import su.a71.tardim_ic.tardim_ic.computercraft_compat.FakeTardimPeripheralTileEntity;
 import su.a71.tardim_ic.tardim_ic.utils.FakePlayer;
-import static su.a71.tardim_ic.tardim_ic.Registration.LOCATION_JAMMER;
+import static su.a71.tardim_ic.tardim_ic.Registration.PERSONAL_JAMMER;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -326,7 +326,7 @@ public class DigitalInterfacePeripheral extends TardimPeripheral implements IPer
     	}
 
         for (ItemStack armour : player.getArmorSlots()) {
-            if (armour.is(LOCATION_JAMMER)) {
+            if (armour.is(PERSONAL_JAMMER)) {
                 throw new LuaException("Player location jammed");
             };
         }

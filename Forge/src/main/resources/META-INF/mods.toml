@@ -5,12 +5,12 @@ license = "MIT"
 [[mods]] #mandatory
 # The modid of the mod
 modId = "tardim_ic" #mandatory
-version = "1.1" #mandatory
+version = "1.2" #mandatory
 # A display name for the mod
 displayName = "TARDIM: In Control" #mandatory
 # The description text for the mod (multi line!) (#mandatory)
 description = '''
-    All of time and space, now automated. Control your TARDIM using ComputerCraft: Tweaked.
+    All of time and space, now automated and improved. This mod aims to make TARDIM even better.
 '''
 logoFile = "icon.png"
 authors = "Andrew_7_1"
