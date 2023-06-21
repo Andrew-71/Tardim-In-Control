@@ -12,7 +12,6 @@ import net.minecraft.core.Registry;
 
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 
 import su.a71.tardim_ic.tardim_ic.blocks.food_machine.FoodMachineBlock;
 import su.a71.tardim_ic.tardim_ic.blocks.food_machine.FoodMachineTileEntity;
@@ -67,10 +66,10 @@ public class Registration {
         Exteriors.register();  // Register custom TARDIM exteriors
 
         Registry.register(Registry.BLOCK, new ResourceLocation(Constants.MOD_ID, "redstone_tardim_input"), REDSTONE_TARDIM_INPUT);
-        Registry.register(Registry.ITEM, new ResourceLocation(Constants.MOD_ID, "redstone_tardim_input"), new BlockItem(REDSTONE_TARDIM_INPUT, new FabricItemSettings().tab(TARDIM_IC_TAB)));
+        Registry.register(Registry.ITEM, new ResourceLocation(Constants.MOD_ID, "redstone_tardim_input"), new BlockItem(REDSTONE_TARDIM_INPUT, new Item.Properties().tab(TARDIM_IC_TAB)));
 
         Registry.register(Registry.BLOCK, new ResourceLocation(Constants.MOD_ID, "food_machine"), FOOD_MACHINE);
-        Registry.register(Registry.ITEM, new ResourceLocation(Constants.MOD_ID, "food_machine"), new BlockItem(FOOD_MACHINE, new FabricItemSettings().tab(TARDIM_IC_TAB)));
+        Registry.register(Registry.ITEM, new ResourceLocation(Constants.MOD_ID, "food_machine"), new BlockItem(FOOD_MACHINE, new Item.Properties().tab(TARDIM_IC_TAB)));
 
         Registry.register(Registry.SOUND_EVENT, CLOISTER_SOUND, CLOISTER_SOUND_EVENT);
 

@@ -2,11 +2,8 @@ package su.a71.tardim_ic.tardim_ic;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.apache.logging.log4j.LogManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Random;
 
 public class Constants {
 

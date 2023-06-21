@@ -5,7 +5,8 @@
   "refmap": "refmap.tardim_ic.json",
   "mixins": [
     "BetterFuelMapMixin",
-    "BetterFuelStorageMixin"
+    "BetterFuelStorageMixin",
+    "JammerMixin"
   ],
   "client": [
   ],

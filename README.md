@@ -2,7 +2,7 @@
 ### All of time and space, *now automated and improved*.
 
 This mod is an addon for the [TARDIM mod](https://www.curseforge.com/minecraft/mc-mods/tardim), 
-and adds a way to control your time (but mostly space) machine with new blocks, redstone, 
+and adds a way to control and manage your time (but mostly space) machine with new blocks, redstone, 
 and even other mods like [ComputerCraft: Tweaked](https://tweaked.cc) computers or [Create](https://github.com/Creators-of-Create/Create)
 
 ### Features:
@@ -18,12 +18,6 @@ TODO: Re-make this for 1.2
 
 The possibilities are endless, the only limit is your imagination!
 
-### Note
-Due to nature of the mod **anyone** inside your TARDIM with access to a computer and this mod's peripheral
-will be able to run **any** methods. There is no fix that I know of (aside from disabling any commands except "getters" like fuel info), so if you want to use this mod on your server,
-please don't let untrustworthy players anywhere near your computer.\
-And another thing: the method that sets destination dimension can't check if the dimension is valid. If you cannot land just change dimension to a valid one like overworld or nether.
-
 ### FAQ
 
 **Is this for Fabric or Forge?**
@@ -34,7 +28,7 @@ And another thing: the method that sets destination dimension can't check if the
 
 **Will there be a 1.20 version and beyond?**
 : Right now my focus on 1.19.2, but I will try my best to move to later versions as soon as this mod is fully stable,
-and dependencies are out.
+and dependencies are out. The intention is to follow latest versions.
 
 **I encountered a bug or have a suggestion. What do I do?**
 : If you have a problem or suggestion, the best way to get them to me is through the project's Discord server.
