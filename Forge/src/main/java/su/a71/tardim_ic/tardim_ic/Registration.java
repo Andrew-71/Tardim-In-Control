@@ -26,10 +26,10 @@ import java.util.function.Supplier;
 
 public class Registration {
 
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, TardimInControl.MODID);
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, TardimInControl.MODID);
-    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, TardimInControl.MODID);
-    public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, TardimInControl.MODID);
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Constants.MOD_ID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Constants.MOD_ID);
+    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Constants.MOD_ID);
+    public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Constants.MOD_ID);
 
     public static final CreativeModeTab TARDIM_IC_TAB = new CreativeModeTab("tardim_ic") {
         @Override
@@ -52,7 +52,7 @@ public class Registration {
     public static final RegistryObject<BlockEntityType<RedstoneInputTileEntity>> REDSTONE_TARDIM_INPUT_TILEENTITY = Registration.BLOCK_ENTITIES.register("redstone_tardim_input", () -> new BlockEntityType<>(RedstoneInputTileEntity::new, Sets.newHashSet(REDSTONE_TARDIM_INPUT.get()), null));
 
     // Cloister bell
-    public static final RegistryObject<SoundEvent> CLOISTER_SOUND = SOUNDS.register("cloister", () -> new SoundEvent(new ResourceLocation(TardimInControl.MODID, "cloister")));
+    public static final RegistryObject<SoundEvent> CLOISTER_SOUND = SOUNDS.register("cloister", () -> new SoundEvent(new ResourceLocation(Constants.MOD_ID, "cloister")));
 
     // Register our stuff
     public static void register() {

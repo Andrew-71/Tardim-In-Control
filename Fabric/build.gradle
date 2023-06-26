@@ -27,7 +27,7 @@ dependencies {
     modCompileOnly "curse.maven:cc-restitched-462672:3908334"
 
     // Create!
-    modCompileOnly "curse.maven:create-fabric-624165:4537370"
+    modCompileOnly "curse.maven:create-fabric-624165:4597892"
 }
 
 loom {

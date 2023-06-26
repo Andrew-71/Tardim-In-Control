@@ -1,4 +1,1 @@
-"Base:"
-    * Quartz
-    * Deepslate
-    * Stone?
+Do we need more roundels?

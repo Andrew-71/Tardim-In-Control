@@ -1,0 +1,5 @@
+Display sources for the docking station:
+
+* Owner of docked TARDIM
+* Lock status
+* Docked TARDIM's companion list

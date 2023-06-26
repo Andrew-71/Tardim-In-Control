@@ -3,7 +3,7 @@
 
 This mod is an addon for the [TARDIM mod](https://www.curseforge.com/minecraft/mc-mods/tardim), 
 and adds a way to control and manage your time (but mostly space) machine with new blocks, redstone, 
-and even other mods like [ComputerCraft: Tweaked](https://tweaked.cc) computers or [Create](https://github.com/Creators-of-Create/Create)
+and even other mods like [ComputerCraft: Tweaked](https://tweaked.cc) or [Create](https://github.com/Creators-of-Create/Create)
 
 ### Features:
 TODO: Re-make this for 1.2
@@ -27,13 +27,13 @@ The possibilities are endless, the only limit is your imagination!
 : Sure, as long as you don't claim the mod as your own. A link to this mod's page would be appreciated too.
 
 **Will there be a 1.20 version and beyond?**
-: Right now my focus on 1.19.2, but I will try my best to move to later versions as soon as this mod is fully stable,
+: As of v1.2 my focus on 1.19.2, but I will try my best to move to later versions as soon as this mod is fully stable,
 and dependencies are out. The intention is to follow latest versions.
 
 **I encountered a bug or have a suggestion. What do I do?**
 : If you have a problem or suggestion, the best way to get them to me is through the project's Discord server.
 
-**Do I need to install ComputerCraft or Create for this mod?**
+**Do I need to install things like ComputerCraft or Create for this mod?**
 : Nope! While I highly suggest you do (because digital interface is in my opinion the star of the show), 
 you can enjoy a lot of TARDIM: In Control's features with only TARDIM installed. 
-If you ever decide to add other optional dependencies, the relevant blocks will become available!
+If you ever decide to add other optional dependencies, the relevant blocks will become available and craftable!

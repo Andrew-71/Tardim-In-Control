@@ -1,8 +1,8 @@
 package su.a71.tardim_ic.tardim_ic.create_compat.display_source.fuel_storage;
 
-import com.simibubi.create.content.logistics.block.display.DisplayLinkContext;
-import com.simibubi.create.content.logistics.block.display.source.NumericSingleLineDisplaySource;
-import com.simibubi.create.content.logistics.block.display.target.DisplayTargetStats;
+import com.simibubi.create.content.redstone.displayLink.DisplayLinkContext;
+import com.simibubi.create.content.redstone.displayLink.source.NumericSingleLineDisplaySource;
+import com.simibubi.create.content.redstone.displayLink.target.DisplayTargetStats;
 import com.simibubi.create.foundation.utility.Components;
 
 import com.swdteam.tardim.common.init.TRDDimensions;
@@ -19,7 +19,7 @@ public class RequiredFuelDisplaySource extends NumericSingleLineDisplaySource {
     protected MutableComponent provideLine(DisplayLinkContext displayLinkContext, DisplayTargetStats displayTargetStats) {
         if (displayLinkContext.level() != displayLinkContext.level().getServer().getLevel(TRDDimensions.TARDIS))
             return null;
-        BlockEntity te = displayLinkContext.getSourceTE();
+        BlockEntity te = displayLinkContext.getSourceBlockEntity();
         if (!(te instanceof TileEntityFuelStorage fuelStorage))
             return null;
         TardimData data = TardimManager.getFromPos(fuelStorage.getBlockPos());

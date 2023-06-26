@@ -7,9 +7,10 @@
         public ResourceLocation getFabricId() {
             return new ResourceLocation("tutorial", "tardim_dimension_lookup");
         }
+5.1 Forge's MANIFEST.MF too!
+6. Panel buttons might still be broken on 1.2.2 1.19.2
 
 Andrew71's proposals:
-
 1. Quick-return command
 2. add support for far more fuel sources via AbstractFurnaceBlockEntity.getFuel() on top of built-in TARDIM method
 3. Unify package names on Forge and Fabric

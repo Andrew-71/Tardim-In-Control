@@ -68,7 +68,6 @@ Blocks:
     Redstone TARDIM Interface - add powered blockstate
     (TARDIM) Fuel Storage - add comparator output based on fuel (0 - 9 I think)
     (TARDIM) Time Rotor - add comparator/redstone output when in flight
-
 Code:
     Add config&datapack support (e.g. disable compat, more food machine food, only getters from digital interface)
     Make 1WTC fix package names on forge and further improve multi-loader structure
@@ -80,6 +79,8 @@ Outside appearance:
     Update README and Modrinth/Curse pages
     Look into re-licensing and/or making proper public facing source code
     Improve Discord server
+    Improve/Change icon
+    Make background image for modrinth
 
 LOOK INTO ==============
 Things to overall re-search

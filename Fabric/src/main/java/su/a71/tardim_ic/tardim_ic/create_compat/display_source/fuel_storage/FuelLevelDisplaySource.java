@@ -1,7 +1,8 @@
 package su.a71.tardim_ic.tardim_ic.create_compat.display_source.fuel_storage;
 
-import com.simibubi.create.content.logistics.block.display.DisplayLinkContext;
-import com.simibubi.create.content.logistics.block.display.source.PercentOrProgressBarDisplaySource;
+
+import com.simibubi.create.content.redstone.displayLink.DisplayLinkContext;
+import com.simibubi.create.content.redstone.displayLink.source.PercentOrProgressBarDisplaySource;
 import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
 import com.simibubi.create.foundation.utility.Lang;
 
@@ -22,7 +23,7 @@ public class FuelLevelDisplaySource extends PercentOrProgressBarDisplaySource {
         if (context.level() != context.level().getServer().getLevel(TRDDimensions.TARDIS)) {
             return null;
         }
-        BlockEntity te = context.getSourceTE();
+        BlockEntity te = context.getSourceBlockEntity();
         if (!(te instanceof TileEntityFuelStorage fuelStorage))
             return null;
         TardimData data = TardimManager.getFromPos(fuelStorage.getBlockPos());

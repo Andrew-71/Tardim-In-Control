@@ -27,6 +27,7 @@ public class ComputerCraftCompat {
 
     public static void register() {
         Constants.LOG.info("Loaded ComputerCraft compatibility!");
+
         Registry.register(Registry.BLOCK, new ResourceLocation(Constants.MOD_ID, "digital_tardim_interface"), DIGITAL_TARDIM_INTERFACE);
         Registry.register(Registry.ITEM, new ResourceLocation(Constants.MOD_ID, "digital_tardim_interface"), new BlockItem(DIGITAL_TARDIM_INTERFACE, new FabricItemSettings().tab(Registration.TARDIM_IC_TAB)));
 

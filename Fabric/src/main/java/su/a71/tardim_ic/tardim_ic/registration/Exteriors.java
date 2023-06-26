@@ -52,6 +52,5 @@ public class Exteriors {
         DOOR_SOVIET_CHRONOBOX = Registry.register(Registry.BLOCK, new ResourceLocation(Constants.MOD_ID, "tardim_door_soviet"), new BlockTardimDoors(FabricBlockSettings.of(Material.WOOD).sounds(SoundType.WOOD).strength(-1.0F, 3600000.0F).noLootTable().noOcclusion()));
         ROOF_SOVIET_CHRONOBOX = Registry.register(Registry.BLOCK, new ResourceLocation(Constants.MOD_ID, "tardim_roof_soviet"), new BlockTardimRoof(FabricBlockSettings.of(Material.WOOD).sounds(SoundType.WOOD).strength(-1.0F, 3600000.0F).noLootTable().noOcclusion()));
         TARDIM_TYPE_SOVIET = new TardimRegistry.TardimBuilder(new ResourceLocation(Constants.MOD_ID, "tardim_soviet_chronobox"), "TARDIM Soviet Chronobox", ROOF_SOVIET_CHRONOBOX, DOOR_SOVIET_CHRONOBOX, FLOOR_SOVIET_CHRONOBOX);
-
     }
 }

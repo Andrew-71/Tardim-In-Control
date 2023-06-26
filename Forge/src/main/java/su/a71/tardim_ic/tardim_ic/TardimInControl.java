@@ -10,9 +10,6 @@ import com.swdteam.tardim.TardimSaveHandler;
 @Mod(Constants.MOD_ID)
 public class TardimInControl {
 
-    // Our mod id
-    public static final String MODID = Constants.MOD_ID;
-
     public TardimInControl() {
         Registration.register();
 

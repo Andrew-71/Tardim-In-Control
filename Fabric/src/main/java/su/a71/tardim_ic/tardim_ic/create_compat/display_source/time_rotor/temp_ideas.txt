@@ -1,0 +1,5 @@
+Display sources for the time rotor:
+
+* Both current and destination - X/Y/Z/Dimension
+* Flight status YES/NO
+*
