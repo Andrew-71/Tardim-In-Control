@@ -1,7 +1,8 @@
 {
   "variants": {
-    "": {
-      "model": "tardim_ic:block/tardim_dock"
-    }
+    "facing=north": { "model": "tardim_ic:block/tardim_dock"},
+    "facing=east":  { "model": "tardim_ic:block/tardim_dock", "y":  90},
+    "facing=south": { "model": "tardim_ic:block/tardim_dock", "y": 180},
+    "facing=west":  { "model": "tardim_ic:block/tardim_dock", "y": 270}
   }
 }
