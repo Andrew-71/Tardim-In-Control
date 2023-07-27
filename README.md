@@ -6,10 +6,9 @@ and adds a way to control and manage your time (but mostly space) machine with n
 and even other mods like [ComputerCraft: Tweaked](https://tweaked.cc) or [Create](https://github.com/Creators-of-Create/Create)
 
 ### Features:
-TODO: Re-make this for 1.2
 * Digital TARDIM interface: ComputerCraft peripheral that lets you control a TARDIM using computers! Full list of methods is available in the [Javadoc](http://andrey71.me/TARDIM-ic-docs/su/a71/tardim_ic/tardim_ic/DigitalInterfacePeripheral.html) (Sorry for  that, this is the best auto-generated docs I could find for now). The peripheral supports almost all commands that the TARDIM computer panel has.
 * Redstone TARDIM Input: New block that lets you execute a TARDIM command with the power of redstone! After saving a command, this block executes it every time it gets powered by redstone
-* *This is just the beginning, there are more features to come!*
+* **Important:** The next major version will add tons of features, these are a fraction of what is to come.
 
 ### Example use-cases
 * Make a dashboard to monitor fuel levels, current location, and other information on a screen in a nice way.
@@ -26,9 +25,9 @@ The possibilities are endless, the only limit is your imagination!
 **Can I use this in my modpack?**
 : Sure, as long as you don't claim the mod as your own. A link to this mod's page would be appreciated too.
 
-**Will there be a 1.20 version and beyond?**
-: As of v1.2 my focus on 1.19.2, but I will try my best to move to later versions as soon as this mod is fully stable,
-and dependencies are out. The intention is to follow latest versions.
+**Will there be a 1.20.1 version and beyond?**
+: I am in the process of moving to 1.20, but need TARDIM to update to that version first. Create mod's fabric port also affects the process. 
+Next major version, v1.2, will likely not be on 1.19.2. The intention is to follow latest versions.
 
 **I encountered a bug or have a suggestion. What do I do?**
 : If you have a problem or suggestion, the best way to get them to me is through the project's Discord server.
