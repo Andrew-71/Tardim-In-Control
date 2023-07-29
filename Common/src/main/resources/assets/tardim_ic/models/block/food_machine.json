@@ -2,8 +2,8 @@
   "credit": "Made by karoter2 (Feulim)",
   "texture_size": [128, 128],
   "textures": {
-    "0": "tardim_ic:blocks/food_machine",
-    "particle": "tardim_ic:blocks/food_machine"
+    "0": "tardim_ic:block/food_machine",
+    "particle": "tardim_ic:block/food_machine"
   },
   "elements": [
     {

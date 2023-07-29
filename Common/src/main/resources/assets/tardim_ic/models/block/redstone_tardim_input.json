@@ -3,9 +3,9 @@
   "parent": "block/cube_all",
   "ambientocclusion": false,
   "textures": {
-    "1": "tardim_ic:blocks/red_contr",
-    "2": "tardim_ic:blocks/red_contr2",
-    "particle": "tardim_ic:blocks/red_contr"
+    "1": "tardim_ic:block/redstone_input",
+    "2": "tardim_ic:block/redstone_input",
+    "particle": "tardim_ic:block/redstone_input"
   },
   "elements": [
     {

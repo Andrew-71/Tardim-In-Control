@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import su.a71.tardim_ic.tardim_ic.Constants;
-import su.a71.tardim_ic.tardim_ic.soviet_chronobox.SovietChronoboxTileEntity;
+import su.a71.tardim_ic.soviet_chronobox.SovietChronoboxTileEntity;
 
 public class Exteriors {
     // Soviet Chronobox

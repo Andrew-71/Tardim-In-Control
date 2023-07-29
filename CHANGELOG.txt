@@ -1,3 +1,5 @@
+TODO: Rewrite for 1.20
+
 Added list-biomes and list-dimensions TARDIM commands + Corresponding ComputerCraft methods
     This is a community-requested QOL feature that lets users scroll through available biomes and,
     with lua methods, make advanced navigation dashboards even easier.

@@ -1,48 +1,28 @@
-
 modLoader = "javafml" #mandatory
-loaderVersion="[43,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
-license = "MIT"
+loaderVersion = "[46,)" #mandatory This is typically bumped every Minecraft version by Forge. See https://files.minecraftforge.net/ for a list of versions.
+license = "C0-1.0" # Review your options at https://choosealicense.com/.
+#issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/" #optional
 [[mods]] #mandatory
-# The modid of the mod
-modId = "tardim_ic" #mandatory
-version = "1.2" #mandatory
-# A display name for the mod
-displayName = "TARDIM: In Control" #mandatory
-# The description text for the mod (multi line!) (#mandatory)
+modId = "multiloader" #mandatory
+version = "${file.jarVersion}" #mandatory
+displayName = "${mod_name}" #mandatory
+#updateJSONURL="https://change.me.example.invalid/updates.json" #optional (see https://mcforge.readthedocs.io/en/latest/gettingstarted/autoupdate/)
+#displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional (displayed in the mod UI)
+logoFile = "multiloader.png" #optional (needs to be in the root of your mod jar (root of your 'resources' folder))
+credits = "Thanks for this example mod goes to Java" #optional
+authors = "${mod_author}" #optional
 description = '''
-    All of time and space, now automated and improved. This mod aims to make TARDIM even better.
-'''
-logoFile = "icon.png"
-authors = "Andrew_7_1"
-# A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
-[[dependencies.tardim_ic]] #optional
-# the modid of the dependency
+This is a long form description of the mod. You can write whatever you want here
+''' #mandatory (Supports multiline text)
+[[dependencies.multiloader]] #optional
 modId = "forge" #mandatory
-# Does this dependency have to exist - if not, ordering below must be specified
 mandatory = true #mandatory
-# The version range of the dependency
-versionRange="[43,)" #mandatory
-# An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
-ordering = "NONE"
-# Side this dependency is applied on - BOTH, CLIENT or SERVER
-side = "BOTH"
-# Here's another dependency
-[[dependencies.tardim_ic]]
-modId = "computercraft"
-mandatory = true
-versionRange = "1.95.3"
-ordering = "NONE"
-side = "BOTH"
-[[dependencies.tardim_ic]]
-modId = "tardim"
-mandatory = true
-versionRange = "1.2.2"
-ordering = "AFTER"
-side = "BOTH"
-[[dependencies.tardim_ic]]
+versionRange = "[46,)" #mandatory
+ordering = "NONE" # The order that this dependency should load in relation to your mod, required to be either 'BEFORE' or 'AFTER' if the dependency is not mandatory
+side = "BOTH" # Side this dependency is applied on - 'BOTH', 'CLIENT' or 'SERVER'
+[[dependencies.multiloader]]
 modId = "minecraft"
 mandatory = true
-# This version range declares a minimum of the current minecraft version up to but not including the next major version
-versionRange = "1.19.2"
+versionRange = "[1.20,1.21)"
 ordering = "NONE"
 side = "BOTH"

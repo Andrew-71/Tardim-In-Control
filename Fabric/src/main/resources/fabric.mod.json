@@ -2,40 +2,35 @@
     "schemaVersion": 1,
     "id": "tardim_ic",
     "version": "${version}",
-  
-    "name": "Tardim: In Control",
-    "description": "All of time and space, now automated and improved. This mod aims to make TARDIM even better.",
+    "name": "${mod_name}",
+    "description": "All of time and space, now automated and improved. This mod aims to improve your TARDIM experience",
     "authors": [
-      "Andrew_7_1"
+        "${mod_author}"
     ],
     "contact": {
-      "sources": "https://github.com/Andrew-71/tardim-in-control"
+        "homepage": "https://tardim.a71.su/",
+        "sources": "https://github.com/Andrew-71/tardim-in-control"
     },
-  
     "license": "MIT",
-    "icon": "icon.png",
-  
+    "icon": "assets/tardim_ic/icon.png",
     "environment": "*",
     "entrypoints": {
-      "main": [
-        "su.a71.tardim_ic.tardim_ic.TardimInControl"
-      ]
+        "main": [
+            "su.a71.tardim_ic.TardimInControl"
+        ]
     },
-  "mixins": [
-    "mixins.tardim_ic.json"
-  ],
-  
+    "mixins": [
+        "tardim_ic.mixins.json",
+        "tardim_ic.fabric.mixins.json"
+    ],
     "depends": {
-      "fabricloader": ">=0.14.10",
-      "fabric": "*",
-      "minecraft": "1.19.x",
-      "java": ">=17",
-      "tardim": ">=1.2.2"
+        "fabricloader": ">=0.14",
+        "fabric": "*",
+        "minecraft": "1.20",
+        "java": ">=17",
+        "tardim": ">=1.2.2"
     },
-
-   "suggests": {
-     "computercraft": ">=1.101.0",
-     "create": ">=0.5.1"
-   }
-  }
-  
+    "suggests": {
+        "computercraft": ">=${cc_version}"
+    }
+}

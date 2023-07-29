@@ -11,10 +11,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import su.a71.tardim_ic.tardim_ic.Constants;
 import su.a71.tardim_ic.tardim_ic.Registration;
-import su.a71.tardim_ic.tardim_ic.command.CommandModemTransmit;
-import su.a71.tardim_ic.tardim_ic.computercraft_compat.TardimPeripheralProvider;
-import su.a71.tardim_ic.tardim_ic.computercraft_compat.blocks.digital_interface.DigitalInterfaceBlock;
-import su.a71.tardim_ic.tardim_ic.computercraft_compat.blocks.digital_interface.DigitalInterfaceTileEntity;
+import su.a71.tardim_ic.command.CommandModemTransmit;
+import su.a71.tardim_ic.computercraft_compat.TardimPeripheralProvider;
+import su.a71.tardim_ic.computercraft_compat.blocks.digital_interface.DigitalInterfaceBlock;
+import su.a71.tardim_ic.computercraft_compat.blocks.digital_interface.DigitalInterfaceTileEntity;
 
 public class ComputerCraftCompat {
     public static final Block DIGITAL_TARDIM_INTERFACE = new DigitalInterfaceBlock();
