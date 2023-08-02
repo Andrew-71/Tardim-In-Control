@@ -20,6 +20,8 @@ dependencies {
 
     // ComputerCraft
     compileOnly("cc.tweaked:cc-tweaked-$minecraft_version-common-api:$cc_version")
+
+    compileOnly(files("./tardim-1.2.2-dev.jar"))
 }
 
 publishing {

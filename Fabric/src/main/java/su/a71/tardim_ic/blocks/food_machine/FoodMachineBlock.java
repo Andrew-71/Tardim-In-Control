@@ -28,7 +28,7 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
-import su.a71.tardim_ic.Registration;
+import su.a71.tardim_ic.tardim_ic.registration.Registration;
 
 import javax.annotation.Nullable;
 
@@ -52,7 +52,7 @@ public class FoodMachineBlock extends HorizontalDirectionalBlock implements Enti
     @Nullable
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-        return Registration.FOOD_MACHINE_TILEENTITY.create(pos, state);
+        return Registration.FOOD_MACHINE_BE.create(pos, state);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class FoodMachineBlock extends HorizontalDirectionalBlock implements Enti
         if (!w.isClientSide) {
             w.playSound(null, blockPos, TRDSounds.TARDIM_BEEP, SoundSource.BLOCKS, 0.3F, 0.5F);
             BlockEntity be = w.getBlockEntity(blockPos);
-            if (be instanceof FoodMachineTileEntity && w.dimension() == TRDDimensions.TARDIS) {
+            if (be instanceof FoodMachineBlockEntity && w.dimension() == TRDDimensions.TARDIS) {
                 TardimData data = TardimManager.getFromPos(blockPos);
                 if (data != null && data.hasPermission(player)) {
                     if (data.getFuel() >= 0.05) {

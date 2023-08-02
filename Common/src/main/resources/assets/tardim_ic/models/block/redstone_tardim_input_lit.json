@@ -1,0 +1,8 @@
+{
+  "parent": "tardim_ic:block/redstone_tardim_input",
+  "textures": {
+    "1": "tardim_ic:block/redstone_input_lit",
+    "2": "tardim_ic:block/redstone_input_lit",
+    "particle": "tardim_ic:block/redstone_input_lit"
+  }
+}

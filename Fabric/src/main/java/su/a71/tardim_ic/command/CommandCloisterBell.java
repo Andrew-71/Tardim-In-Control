@@ -10,7 +10,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-import su.a71.tardim_ic.tardim_ic.Registration;
 
 /*
 This command transmits the cloister bell sound in a big enough radius that you could hear it in any reasonably sized interior.
@@ -23,16 +22,17 @@ public class CommandCloisterBell implements ICommand {
             if (data != null) {
                 if (data.hasPermission(player)) {
                     try {
-                        Level lvl = player.getLevel();
+                        Level lvl = player.level();
                         if (!lvl.isClientSide) {
-                            lvl.playSound(
-                                    null,
-                                    pos,
-                                    Registration.CLOISTER_SOUND_EVENT,
-                                    SoundSource.BLOCKS,
-                                    1.5f,
-                                    1f
-                            );
+//                            lvl.playSound(
+//                                    null,
+//                                    pos,
+//                                    Registration.CLOISTER_SOUND_EVENT,
+//                                    SoundSource.BLOCKS,
+//                                    1.5f,
+//                                    1f
+//                            );
+                            // TODO: Re-add
                         }
                     } catch (Exception var9) {
                         CommandTardimBase.sendResponse(player, "There was an error", CommandTardimBase.ResponseType.FAIL, source);

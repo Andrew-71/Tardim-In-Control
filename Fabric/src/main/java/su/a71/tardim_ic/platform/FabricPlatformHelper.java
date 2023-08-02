@@ -1,10 +1,9 @@
 package su.a71.tardim_ic.platform;
 
-import com.example.examplemod.platform.services.IPlatformHelper;
+import su.a71.tardim_ic.platform.services.IPlatformHelper;
 import net.fabricmc.loader.api.FabricLoader;
 
 public class FabricPlatformHelper implements IPlatformHelper {
-
     @Override
     public String getPlatformName() {
         return "Fabric";

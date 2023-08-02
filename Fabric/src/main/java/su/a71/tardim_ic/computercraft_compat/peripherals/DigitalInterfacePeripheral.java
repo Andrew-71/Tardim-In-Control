@@ -1,11 +1,9 @@
 package su.a71.tardim_ic.computercraft_compat.peripherals;
 
 import com.swdteam.tardim.common.command.tardim.CommandTravel;
-import com.swdteam.tardim.common.data.DimensionMapReloadListener;
 import com.swdteam.tardim.common.init.TRDSounds;
 import com.swdteam.tardim.common.init.TardimRegistry;
 import com.swdteam.tardim.common.item.ItemTardim;
-import com.swdteam.tardim.main.Tardim;
 import com.swdteam.tardim.tardim.TardimData;
 import com.swdteam.tardim.tardim.TardimData.Location;
 import com.swdteam.tardim.tardim.TardimManager;
@@ -32,33 +30,26 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 
-import su.a71.tardim_ic.computercraft_compat.FakeTardimPeripheralTileEntity;
-import su.a71.tardim_ic.Registration;
+import su.a71.tardim_ic.computercraft_compat.digital_interface.DigitalInterfaceBlock;
+import su.a71.tardim_ic.computercraft_compat.entity.FakeTardimPeripheralTileEntity;
 import su.a71.tardim_ic.utils.FakePlayer;
-import static su.a71.tardim_ic.Registration.PERSONAL_JAMMER;
 
-import javax.annotation.Nonnull;
 import java.util.*;
 
 
-public class DigitalInterfacePeripheral extends TardimPeripheral implements IPeripheral {
+public class DigitalInterfacePeripheral extends TardimPeripheral<DigitalInterfaceBlock> implements IPeripheral {
     /**
      * @param tileEntity the tile entity of this peripheral
      * @hidden
      */
     public DigitalInterfacePeripheral(FakeTardimPeripheralTileEntity tileEntity) {
-        super(tileEntity);
+        super(tileEntity, "digital_tardim_interface", (DigitalInterfaceBlock) tileEntity.getBlock());
     }
-
-    /** Setting name for the peripheral. A computer will see it as "digital_tardim_interface_n"
-     * @hidden
-     */
-    @Nonnull
-    @Override
-    public String getType() { return "digital_tardim_interface"; }
 
     // Peripheral methods ===============================================================
 
@@ -219,13 +210,39 @@ public class DigitalInterfacePeripheral extends TardimPeripheral implements IPer
      * SWDteam pls fix
      * @hidden
      */
-    private static boolean isValidPathTemp(String s) {
+    private boolean isValidPathTemp(String s) {
         for(int i = 0; i < s.length(); ++i) {
             if (!CommandTravel.validPathChar(s.charAt(i))) {
                 return false;
             }
         }
         return true;
+    }
+
+    /**
+     * DimensionMapReloadListener.toTitleCase is unavailable so we reverse engineer it! :D
+     * Fabric... pls fix?
+     * @hidden
+     */
+    private String toTitleCase(String input) {
+        StringBuilder titleCase = new StringBuilder(input.length());
+        boolean nextTitleCase = true;
+        char[] var3 = input.toCharArray();
+        int var4 = var3.length;
+
+        for(int var5 = 0; var5 < var4; ++var5) {
+            char c = var3[var5];
+            if (Character.isSpaceChar(c)) {
+                nextTitleCase = true;
+            } else if (nextTitleCase) {
+                c = Character.toTitleCase(c);
+                nextTitleCase = false;
+            }
+
+            titleCase.append(c);
+        }
+
+        return titleCase.toString();
     }
 
     /**
@@ -241,7 +258,7 @@ public class DigitalInterfacePeripheral extends TardimPeripheral implements IPer
     	TardimData data = getTardimData();
 
         String key = dimension;
-        dimension = DimensionMapReloadListener.toTitleCase(dimension);
+        dimension = toTitleCase(dimension);
         if (TardimManager.DIMENSION_MAP.containsKey(dimension)) {
             key = (String)TardimManager.DIMENSION_MAP.get(dimension);
         } else {
@@ -251,7 +268,7 @@ public class DigitalInterfacePeripheral extends TardimPeripheral implements IPer
         if (!isValidPathTemp(key)) {
             throw new LuaException("Invalid dimension");
         } else {
-            ResourceKey<Level> dim = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(dimension));
+            ResourceKey<Level> dim = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(dimension));
             if (data.getTravelLocation() == null) {
                 data.setTravelLocation(new Location(data.getCurrentLocation()));
             }
@@ -327,9 +344,10 @@ public class DigitalInterfacePeripheral extends TardimPeripheral implements IPer
     	}
 
         for (ItemStack armour : player.getArmorSlots()) {
-            if (armour.is(PERSONAL_JAMMER)) {
-                throw new LuaException("Player location jammed");
-            };
+//            if (armour.is(PERSONAL_JAMMER)) {
+//                throw new LuaException("Player location jammed");
+//            };
+            // TODO: Re-add
         }
 
     	ResourceKey<Level> dim = player.getCommandSenderWorld().dimension();
@@ -474,9 +492,27 @@ public class DigitalInterfacePeripheral extends TardimPeripheral implements IPer
 
         // TODO: This is a horrendous way of doing this. Please fix.
         String level_str = "tardim:tardis_dimension";
-        this.tileEntity.getLevel().getServer().getLevel(ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(level_str))).playSound(null, this.tileEntity.getPos(), (SoundEvent) TRDSounds.TARDIM_TAKEOFF, SoundSource.AMBIENT, 1.0F, 1.0F);
+        this.tileEntity.getLevel().getServer().getLevel(ResourceKey.create(Registries.DIMENSION, new ResourceLocation(level_str))).playSound(null, this.tileEntity.getPos(), (SoundEvent) TRDSounds.TARDIM_TAKEOFF, SoundSource.AMBIENT, 1.0F, 1.0F);
 
         data.save();
+    }
+
+    /**
+     * Way to use function from Tardim (ModInitializer)
+     * 1WTC pls fix
+     * @hidden
+     */
+    public static boolean isPosValid(Level level, BlockPos pos) {
+        return validPos(level, pos) && validPos(level, pos.above()) && validPos(level, pos.above().above()) && validPos(level, pos.north()) && validPos(level, pos.north().above()) && validPos(level, pos.south()) && validPos(level, pos.south().above()) && validPos(level, pos.east()) && validPos(level, pos.east().above()) && validPos(level, pos.west()) && validPos(level, pos.west().above());
+    }
+
+    /**
+     * @see DigitalInterfacePeripheral#isPosValid(Level, BlockPos)
+     * @hidden
+     */
+    private static boolean validPos(Level l, BlockPos pos) {
+        BlockState blockstate = l.getBlockState(pos);
+        return !blockstate.canBeReplaced() && blockstate.getBlock() != Blocks.SNOW ? blockstate.isAir() : true;
     }
 
     /**
@@ -555,7 +591,7 @@ public class DigitalInterfacePeripheral extends TardimPeripheral implements IPer
 
                     if (Block.canSupportRigidBlock(level, landingPosButBetter.below())) {
                         loc.setPosition(landingPosButBetter.getX(), landingPosButBetter.getY(), landingPosButBetter.getZ());
-                        if (Tardim.isPosValid(level, loc.getPos())) {
+                        if (isPosValid(level, loc.getPos())) {
                             TardimRegistry.TardimBuilder builder = TardimRegistry.getTardimBuilder(data.getTardimID());
                             builder.buildTardim(level, loc.getPos(), data.getTravelLocation().getFacing(), data.getId());
                             data.setCurrentLocation(data.getTravelLocation());
@@ -572,7 +608,7 @@ public class DigitalInterfacePeripheral extends TardimPeripheral implements IPer
 //                            }
 
                             String level_str = "tardim:tardis_dimension";
-                            this.tileEntity.getLevel().getServer().getLevel(ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(level_str))).playSound(null, this.tileEntity.getPos(), (SoundEvent) TRDSounds.TARDIM_LANDING, SoundSource.AMBIENT, 1.0F, 1.0F);
+                            this.tileEntity.getLevel().getServer().getLevel(ResourceKey.create(Registries.DIMENSION, new ResourceLocation(level_str))).playSound(null, this.tileEntity.getPos(), (SoundEvent) TRDSounds.TARDIM_LANDING, SoundSource.AMBIENT, 1.0F, 1.0F);
 
                         } else {
                             throw new LuaException("TARDIM landing obstructed. Aborting...");
@@ -608,7 +644,7 @@ public class DigitalInterfacePeripheral extends TardimPeripheral implements IPer
 
         Optional<Biome> biome = this.tileEntity.getLevel().getServer()
                 .registryAccess()
-                .registryOrThrow(Registry.BIOME_REGISTRY)
+                .registryOrThrow(Registries.BIOME)
                 .getOptional(new ResourceLocation(biome_str));
         if (biome != null && biome.isPresent()) {
             if (data.getTravelLocation() == null) {
@@ -740,14 +776,15 @@ public class DigitalInterfacePeripheral extends TardimPeripheral implements IPer
         try {
             Level lvl = this.tileEntity.getLevel();
             if (!lvl.isClientSide) {
-                lvl.playSound(
-                        null,
-                        this.tileEntity.getPos(),
-                        Registration.CLOISTER_SOUND_EVENT,
-                        SoundSource.BLOCKS,
-                        1.5f,
-                        1f
-                );
+//                lvl.playSound(
+//                        null,
+//                        this.tileEntity.getPos(),
+//                        Registration.CLOISTER_SOUND_EVENT,
+//                        SoundSource.BLOCKS,
+//                        1.5f,
+//                        1f
+//                );
+                // TODO: Re-add
             }
         } catch (Exception var9) {
             throw new LuaException("There was an error trying to play the sound");

@@ -15,8 +15,7 @@ dependencies {
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
     implementation project(":common")
 
-    // Obfuscation forced my hand, TARDIM will be here for now  :/
-    modImplementation(files("/Users/andreynikitin/Downloads/tardim.jar"))
+    modImplementation("curse.maven:tardim-531315:4668945")
     modCompileOnly("cc.tweaked:cc-tweaked-$minecraft_version-fabric-api:$cc_version")
 }
 

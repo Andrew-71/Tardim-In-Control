@@ -3,7 +3,7 @@ package su.a71.tardim_ic.jammer;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -14,13 +14,13 @@ public class PersonalJammerMaterial implements ArmorMaterial {
     private static final int[] PROTECTION_VALUES = new int[] {1, 1, 1, 1};
 
     @Override
-    public int getDurabilityForSlot(EquipmentSlot slot) {
-        return BASE_DURABILITY[slot.getIndex()] * 33;
+    public int getDurabilityForType(ArmorItem.Type type) {
+        return BASE_DURABILITY[type.getSlot().getIndex()] * 33;
     }
 
     @Override
-    public int getDefenseForSlot(EquipmentSlot slot) {
-        return PROTECTION_VALUES[slot.getIndex()];
+    public int getDefenseForType(ArmorItem.Type type) {
+        return PROTECTION_VALUES[type.getSlot().getIndex()];
     }
 
     @Override

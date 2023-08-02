@@ -1,6 +1,6 @@
 package su.a71.tardim_ic.platform;
 
-import com.example.examplemod.Constants;
+import su.a71.tardim_ic.Constants;
 import su.a71.tardim_ic.platform.services.IPlatformHelper;
 
 import java.util.ServiceLoader;
@@ -19,7 +19,7 @@ public class Services {
         final T loadedService = ServiceLoader.load(clazz)
                 .findFirst()
                 .orElseThrow(() -> new NullPointerException("Failed to load service for " + clazz.getName()));
-        Constants.LOG.debug("Loaded {} for service {}", loadedService, clazz);
+//        Constants.LOG.debug("Loaded {} for service {}", loadedService, clazz);
         return loadedService;
     }
 }

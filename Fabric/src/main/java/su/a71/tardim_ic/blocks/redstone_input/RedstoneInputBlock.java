@@ -26,24 +26,25 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 
 import org.jetbrains.annotations.NotNull;
-import su.a71.tardim_ic.tardim_ic.Registration;
-import su.a71.tardim_ic.tardim_ic.utils.FakePlayer;
+import su.a71.tardim_ic.tardim_ic.registration.Registration;
+import su.a71.tardim_ic.utils.FakePlayer;
 
 import javax.annotation.Nullable;
 
 public class RedstoneInputBlock extends BlockBaseTardimPanel implements EntityBlock {
+
     public RedstoneInputBlock() {
-        super(FabricBlockSettings.of(Material.METAL).strength(2, 4));  // No occlusion?
+        super(FabricBlockSettings.create().strength(2, 4).mapColor(MapColor.TERRACOTTA_ORANGE));  // No occlusion?        this.setDefaultState((BlockState)this.getDefaultState().with(ON, false));
     }
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-        return Registration.REDSTONE_TARDIM_INPUT_TILEENTITY.create(pos, state);
+        return Registration.REDSTONE_INPUT_BE.create(pos, state);
     }
 
     @Override
@@ -53,10 +54,10 @@ public class RedstoneInputBlock extends BlockBaseTardimPanel implements EntityBl
             w.playSound(null, blockPos, TRDSounds.TARDIM_BEEP, SoundSource.BLOCKS, 0.3F, 0.5F);
 
             BlockEntity be = w.getBlockEntity(blockPos);
-            if (be instanceof RedstoneInputTileEntity && w.dimension() == TRDDimensions.TARDIS) {
+            if (be instanceof RedstoneInputBlockEntity && w.dimension() == TRDDimensions.TARDIS) {
                 TardimData data = TardimManager.getFromPos(blockPos);
                 if (data != null && data.hasPermission(player)) {
-                    ((RedstoneInputTileEntity) be).lastPlayer = player.getGameProfile().getId();
+                    ((RedstoneInputBlockEntity) be).lastPlayer = player.getGameProfile().getId();
                     NetworkHandler.sendTo((ServerPlayer)player, new PacketOpenEditGui(blockPos, 1));
                     return InteractionResult.CONSUME;
                 }
@@ -78,25 +79,26 @@ public class RedstoneInputBlock extends BlockBaseTardimPanel implements EntityBl
         DebugPackets.sendNeighborsUpdatePacket(level, blockPos);
 
         BlockEntity be = level.getBlockEntity(blockPos);
-        if (!(be instanceof RedstoneInputTileEntity)) {
+        if (!(be instanceof RedstoneInputBlockEntity)) {
             return;
         }
 
         // get redstone signal
         Direction direction = blockState.getValue(FACING);
         int redstoneSignal = level.getSignal(blockPos, direction);
-        if (redstoneSignal > 0 && !((RedstoneInputTileEntity) be).isPowered) {
-            ((RedstoneInputTileEntity) be).isPowered = true;
+        if (redstoneSignal > 0 && !((RedstoneInputBlockEntity) be).isPowered) {
+            ((RedstoneInputBlockEntity) be).isPowered = true;
             if (level.dimension() == TRDDimensions.TARDIS) {
                 TardimData data = TardimManager.getFromPos(blockPos);
-                if (data != null && !level.isClientSide && ((RedstoneInputTileEntity) be).lastPlayer != null) {
+                if (data != null && !level.isClientSide && ((RedstoneInputBlockEntity) be).lastPlayer != null) {
                     if (((TileEntityBaseTardimPanel)be).hasCommand()) {
-                        ((TileEntityBaseTardimPanel)be).execute(new FakePlayer(level, blockPos, ((RedstoneInputTileEntity) be).lastPlayer));
+                        ((TileEntityBaseTardimPanel)be).execute(new FakePlayer(level, blockPos, ((RedstoneInputBlockEntity) be).lastPlayer));
                     }
                 }
             }
 
-        } else if (redstoneSignal == 0 && ((RedstoneInputTileEntity) be).isPowered)
-            ((RedstoneInputTileEntity) be).isPowered = false;
+        } else if (redstoneSignal == 0 && ((RedstoneInputBlockEntity) be).isPowered) {
+            ((RedstoneInputBlockEntity) be).isPowered = false;
+        }
     }
 }

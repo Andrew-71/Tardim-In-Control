@@ -57,6 +57,12 @@ subprojects {
                 includeModule("org.squiddev", "Cobalt")
             }
         }
+        // Curseforge
+        repositories {
+            maven {
+                url "https://cursemaven.com"
+            }
+        }
     }
 
     tasks.withType(JavaCompile).configureEach {

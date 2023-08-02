@@ -2,7 +2,7 @@
     "schemaVersion": 1,
     "id": "tardim_ic",
     "version": "${version}",
-    "name": "${mod_name}",
+    "name": "TARDIM: In Control",
     "description": "All of time and space, now automated and improved. This mod aims to improve your TARDIM experience",
     "authors": [
         "${mod_author}"
@@ -26,7 +26,7 @@
     "depends": {
         "fabricloader": ">=0.14",
         "fabric": "*",
-        "minecraft": "1.20",
+        "minecraft": ">=1.20.1",
         "java": ">=17",
         "tardim": ">=1.2.2"
     },

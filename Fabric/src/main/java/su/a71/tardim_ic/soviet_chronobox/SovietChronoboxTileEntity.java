@@ -4,7 +4,6 @@ import com.swdteam.tardim.common.init.TRDTiles;
 import com.swdteam.tardim.tileentity.TileEntityTardim;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
-import su.a71.tardim_ic.tardim_ic.Registration;
 import su.a71.tardim_ic.tardim_ic.registration.Exteriors;
 
 public class SovietChronoboxTileEntity extends TileEntityTardim {

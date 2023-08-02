@@ -11,6 +11,7 @@ import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityT
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.datafix.fixes.References;
 import net.minecraft.world.level.block.Block;
@@ -19,8 +20,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
-import su.a71.tardim_ic.tardim_ic.Constants;
+import su.a71.tardim_ic.Constants;
 import su.a71.tardim_ic.soviet_chronobox.SovietChronoboxTileEntity;
 
 public class Exteriors {
@@ -33,11 +33,11 @@ public class Exteriors {
 
     private static <T extends BlockEntity> BlockEntityType<T> createTardimTile(String string, FabricBlockEntityTypeBuilder<T> builder) {
         Type<?> type = Util.fetchChoiceType(References.BLOCK_ENTITY, string);
-        return (BlockEntityType) Registry.register(Registry.BLOCK_ENTITY_TYPE, new ResourceLocation(Constants.MOD_ID, string), builder.build(type));
+        return (BlockEntityType) Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, new ResourceLocation(Constants.MOD_ID, string), builder.build(type));
     }
 
     public static void register() {
-        FLOOR_SOVIET_CHRONOBOX = Registry.register(Registry.BLOCK, new ResourceLocation(Constants.MOD_ID, "tardim_floor_soviet"), new BlockTardimFloor(FabricBlockSettings.of(Material.WOOD).sounds(SoundType.WOOD).strength(-1.0F, 3600000.0F).noLootTable().noOcclusion(), new BlockTardimFloor.TardimTileData() {
+        FLOOR_SOVIET_CHRONOBOX = Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(Constants.MOD_ID, "tardim_floor_soviet"), new BlockTardimFloor(FabricBlockSettings.create().sounds(SoundType.WOOD).strength(-1.0F, 3600000.0F).noLootTable().noOcclusion(), new BlockTardimFloor.TardimTileData() {
             public BlockEntityType<TileEntityTardim> getType() {
                 return TILE_SOVIET_CHRONOBOX;
             }
@@ -49,8 +49,8 @@ public class Exteriors {
             }
         }));
         TILE_SOVIET_CHRONOBOX = createTardimTile("tardim_soviet_chronobox", FabricBlockEntityTypeBuilder.create(SovietChronoboxTileEntity::new, new Block[]{FLOOR_SOVIET_CHRONOBOX}));
-        DOOR_SOVIET_CHRONOBOX = Registry.register(Registry.BLOCK, new ResourceLocation(Constants.MOD_ID, "tardim_door_soviet"), new BlockTardimDoors(FabricBlockSettings.of(Material.WOOD).sounds(SoundType.WOOD).strength(-1.0F, 3600000.0F).noLootTable().noOcclusion()));
-        ROOF_SOVIET_CHRONOBOX = Registry.register(Registry.BLOCK, new ResourceLocation(Constants.MOD_ID, "tardim_roof_soviet"), new BlockTardimRoof(FabricBlockSettings.of(Material.WOOD).sounds(SoundType.WOOD).strength(-1.0F, 3600000.0F).noLootTable().noOcclusion()));
+        DOOR_SOVIET_CHRONOBOX = Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(Constants.MOD_ID, "tardim_door_soviet"), new BlockTardimDoors(FabricBlockSettings.create().sounds(SoundType.WOOD).strength(-1.0F, 3600000.0F).noLootTable().noOcclusion()));
+        ROOF_SOVIET_CHRONOBOX = Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(Constants.MOD_ID, "tardim_roof_soviet"), new BlockTardimRoof(FabricBlockSettings.create().sounds(SoundType.WOOD).strength(-1.0F, 3600000.0F).noLootTable().noOcclusion()));
         TARDIM_TYPE_SOVIET = new TardimRegistry.TardimBuilder(new ResourceLocation(Constants.MOD_ID, "tardim_soviet_chronobox"), "TARDIM Soviet Chronobox", ROOF_SOVIET_CHRONOBOX, DOOR_SOVIET_CHRONOBOX, FLOOR_SOVIET_CHRONOBOX);
     }
 }
