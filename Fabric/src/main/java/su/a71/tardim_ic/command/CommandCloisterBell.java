@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import su.a71.tardim_ic.tardim_ic.registration.Registration;
 
 
 /*
@@ -24,15 +25,14 @@ public class CommandCloisterBell implements ICommand {
                     try {
                         Level lvl = player.level();
                         if (!lvl.isClientSide) {
-//                            lvl.playSound(
-//                                    null,
-//                                    pos,
-//                                    Registration.CLOISTER_SOUND_EVENT,
-//                                    SoundSource.BLOCKS,
-//                                    1.5f,
-//                                    1f
-//                            );
-                            // TODO: Re-add
+                            lvl.playSound(
+                                    null,
+                                    pos,
+                                    Registration.CLOISTER_BELL,
+                                    SoundSource.BLOCKS,
+                                    1.5f,
+                                    1f
+                            );
                         }
                     } catch (Exception var9) {
                         CommandTardimBase.sendResponse(player, "There was an error", CommandTardimBase.ResponseType.FAIL, source);

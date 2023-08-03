@@ -24,7 +24,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import static su.a71.tardim_ic.Constants.LOG;
 
-@Mixin(value = TileEntityFuelStorage.class, remap = false)
+@Mixin(value = TileEntityFuelStorage.class, remap = true)
 public class BetterFuelStorageMixin {
 
     // This is rather inefficient as we iterate 2 times

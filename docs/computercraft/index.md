@@ -3,7 +3,7 @@ If you have ComputerCraft: Tweaked installed,
 TARDIM: IC provides quite a few peripherals.
 The main one is new Digital TARDIM Interface,
 which gives you complete control over your TARDIM.
-However, some TARDIM blocks also recieve getters for information related to them.
+However, some TARDIM blocks also receive getters for information related to them.
 
 ## ComputerCraft for beginners
 ComputerCraft adds working computers to minecraft, controlled by Lua language. 

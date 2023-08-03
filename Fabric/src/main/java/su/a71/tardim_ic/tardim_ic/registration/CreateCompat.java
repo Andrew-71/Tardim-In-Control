@@ -17,4 +17,6 @@ public class CreateCompat {
 //        AllDisplayBehaviours.assignBlockEntity(AllDisplayBehaviours.register(new ResourceLocation(Constants.MOD_ID, "fuel_storage_display_source"), new FuelLevelDisplaySource()), TILE_FUEL_STORAGE);
 //        AllDisplayBehaviours.assignBlockEntity(AllDisplayBehaviours.register(new ResourceLocation(Constants.MOD_ID, "fuel_required_display_source"), new RequiredFuelDisplaySource()), TILE_FUEL_STORAGE);
     }
+
+
 }

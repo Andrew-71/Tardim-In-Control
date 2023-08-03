@@ -38,7 +38,6 @@ public class FoodMachineBlock extends HorizontalDirectionalBlock implements Enti
     public FoodMachineBlock() {
         super(Properties.of().strength(2, 4).noOcclusion().mapColor(MapColor.METAL));  // No occlusion?
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
-        //this.registerDefaultState(this.stateDefinition.any().setValue(HORIZONTAL_FACING, Direction.NORTH));
     }
 
     public BlockState getStateForPlacement(BlockPlaceContext $$0) {
@@ -63,13 +62,12 @@ public class FoodMachineBlock extends HorizontalDirectionalBlock implements Enti
             if (be instanceof FoodMachineBlockEntity && w.dimension() == TRDDimensions.TARDIS) {
                 TardimData data = TardimManager.getFromPos(blockPos);
                 if (data != null && data.hasPermission(player)) {
-                    if (data.getFuel() >= 0.05) {
-                        data.setFuel(data.getFuel() - 0.05);  // Remove some fuel in exchange for food
+                    if (data.getFuel() >= 0.2) {
+                        data.setFuel(data.getFuel() - 0.2);  // Remove some fuel in exchange for food
                         ItemEntity food = new ItemEntity(EntityType.ITEM, w);
 
                         // Select type of food here
                         food.setItem(new ItemStack(Items.BREAD, 1));
-
 
                         food.setPos(Vec3.atCenterOf(blockPos).add(new Vec3(0, 0.2, 0)));
                         w.addFreshEntity(food);

@@ -63,6 +63,21 @@ subprojects {
                 url "https://cursemaven.com"
             }
         }
+        // Create Fabric 1.20 (Jeez that's a lot of mavens)
+//        maven {
+//            name "devOSSnapshots"
+//            url "https://mvn.devos.one/snapshots"
+//        }
+//        maven {
+//            name "tterrag maven"
+//            url "https://maven.tterrag.com/"
+//        }
+//        maven {
+//            url "https://maven.jamieswhiteshirt.com/libs-release"
+//            content {
+//                includeGroup "com.jamieswhiteshirt"
+//            }
+//        }
     }
 
     tasks.withType(JavaCompile).configureEach {
@@ -81,7 +96,6 @@ subprojects {
     // metadata includes mapped dependencies which are not reasonably consumable by
     // other mod developers.
     tasks.withType(GenerateModuleMetadata).configureEach {
-
         enabled = false
     }
 }
