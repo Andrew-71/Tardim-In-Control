@@ -1,1 +1,0 @@
-# Crafting recipes for the mod's blocks

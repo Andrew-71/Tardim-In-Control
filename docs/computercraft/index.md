@@ -1,15 +1,20 @@
 # ComputerCraft compatibility
 If you have ComputerCraft: Tweaked installed, 
 TARDIM: IC provides quite a few peripherals.
+
 The main one is new Digital TARDIM Interface,
 which gives you complete control over your TARDIM.
 However, some TARDIM blocks also receive getters for information related to them.
 
 ## ComputerCraft for beginners
 ComputerCraft adds working computers to minecraft, controlled by Lua language. 
-If you are new, [CC's official discord](https://discord.com/servers/minecraft-computer-mods-477910221872824320) has a lot of people who can help.\
-I also suggest taking a look at [Lua's website](https://www.lua.org/start.html) and [CC: Tweaked's documentaion](https://tweaked.cc)\
-Please do not ask questions about CC itself in TARDIM: IC's Discord.
+If you are new, [CC's official discord](https://discord.com/servers/minecraft-computer-mods-477910221872824320) has a lot of people who can help.
+I also suggest taking a look at [Lua's website](https://www.lua.org/start.html) and [CC: Tweaked's documentaion](https://tweaked.cc)
+
+Please do not ask questions about ComputerCraft itself in TARDIM: IC's Discord. I am far from the most experienced user of that mod.
+
+## Notes about mod's peripherals
+All of the peripherals throw if they are called outside a TARDIM. Only digital interface has ability to **set** data, others can only **get**.
 
 ## Available peripherals
 | Type                                                      | Description                                                                            |

@@ -344,12 +344,12 @@ public class DigitalInterfacePeripheral extends TardimPeripheral<DigitalInterfac
             throw new LuaException("Player not found");
         }
 
-        for (ItemStack armour : player.getArmorSlots()) {
-//            if (armour.is(PERSONAL_JAMMER)) {
-//                throw new LuaException("Player location jammed");
-//            };
-            // TODO: Re-add
-        }
+//        for (ItemStack armour : player.getArmorSlots()) {
+////            if (armour.is(PERSONAL_JAMMER)) {
+////                throw new LuaException("Player location jammed");
+////            };
+//            // TODO: Re-add
+//        }
 
         ResourceKey<Level> dim = player.getCommandSenderWorld().dimension();
         BlockPos pos = player.blockPosition();

@@ -1,27 +1,33 @@
-![TARDIM: IC Banner](./media/banner.png)
+![TARDIM: IC Banner](docs/assets/img/banner.png)
 ### All of time and space, *now automated and improved*.
 
 This mod is an addon for the [TARDIM mod](https://www.curseforge.com/minecraft/mc-mods/tardim), 
 and adds a way to control and manage your time (but mostly space) machine with new blocks, redstone, 
 and even other mods like [ComputerCraft: Tweaked](https://tweaked.cc) or [Create](https://github.com/Creators-of-Create/Create)
 
-### Features:
+## Features:
 * New commands that let you ring cloister bell or list all biomes and dimensions
 * Improved fuel system, which will take in any furnace fuel and won't consume buckets 
 * Redstone TARDIM Input: New block that lets you execute a TARDIM command with the power of redstone! After saving a command, this block executes it every time it gets powered by redstone
 * Full ComputerCraft integration
   * Digital TARDIM interface: ComputerCraft peripheral that lets you control a TARDIM using computers! Full list of methods is available in the [Javadoc](http://andrey71.me/TARDIM-ic-docs/su/a71/tardim_ic/tardim_ic/DigitalInterfacePeripheral.html) (Sorry for  that, this is the best auto-generated docs I could find for now). The peripheral supports almost all commands that the TARDIM computer panel has.
   * Peripherals for some of the TARDIM blocks that provide a few of digital interface's methods at smaller costs
-* Create integration (display sources): some of the blocks will now be able to act as a display source with Create mod
+* [Coming once Create Fabric is on 1.20] Create integration (display sources): some of the blocks will now be able to act as a display source with Create mod
+* New exterior - Soviet Chronobox, styled like a USSR phone booth
+* [WIP] Food machine - exchange fuel for food. *Currently only in creative mode and half finished.*
+* You can see planned features in the docs
 
-### Example use-cases
+## Example use-cases
 * Make a dashboard to monitor fuel levels, current location, and other information on a screen in a nice way.
 * Get refined control over your TARDIM, such as saving and loading locations, or setting a destination in a GUI.
 * Add visual effects that activate during flight e.g. note blocks or Create mod contraptions.
 
 The possibilities are endless, the only limit is your imagination!
 
-### FAQ
+## Documentation
+Information about the mod's blocks and integration, crafting recipes, and plans for development are available at https://tardim.a71.su
+
+## FAQ
 
 **Is this for Fabric or Forge?**
 : Both! As a Fabric player who recognises Forge's large playerbase, I support both major modloaders.

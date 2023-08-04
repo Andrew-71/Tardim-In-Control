@@ -20,7 +20,7 @@ public class TimeRotorPeripheral extends TardimPeripheral<BlockRotor> implements
      * @hidden
      */
     public TimeRotorPeripheral(FakeTardimPeripheralTileEntity tileEntity) {
-        super(tileEntity, "tardim_time_rotor", (BlockRotor) tileEntity.getBlock());
+        super(tileEntity, "tardim_rotor", (BlockRotor) tileEntity.getBlock());
     }
 
 

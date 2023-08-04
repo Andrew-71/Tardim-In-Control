@@ -7,8 +7,11 @@ copyright: Copyright © 2023 Andrey N.
 nav:
   - Home:
       - Home: "index.md"
-  - Crafting recipes:
-      - Recipes: "recipes.md"
+  - Features:
+      - Blocks:
+        - Redstone Input: blocks/redstone_input.md
+      - Commands: commands.md
+      - Changes to TARDIM: mixins.md
   - ComputerCraft compatibility:
       - computercraft/index.md
       - Peripherals:
@@ -16,59 +19,22 @@ nav:
         - Fuel Storage Block: computercraft/peripherals/fuel_storage.md
         - TARDIM Scanner Block: computercraft/peripherals/tardim_scanner.md
         - Time Rotor Block: computercraft/peripherals/time_rotor.md
-  - Guides:
-      - guides/index.md
-      - Wrenches and You: guides/wrenches.md
-      - "Using Animatronics: The Analog Way": guides/positioningAnimatronicAnalog.md
+  - Create compatibility:
+      - create/index.md
+#      - Display Sources:
+#        - Fuel Storage Block: create/sources/fuel_storage.md
+#        - TARDIM Scanner Block: create/sources/tardim_scanner.md
+#        - Time Rotor Block: create/sources/time_rotor.md
+  - Planned features:
+      - planned.md
 
 site_url: https://tardim.a71.su/
 repo_name: Andrew71/Tardim-In-Control
 repo_url: https://git.a71.su/Andrew71/Tardim-In-Control
-edit_uri: https://git.a71.su/Andrew71/Tardim-In-Control/src/branch/1.20/docs
-
-extra:
-  social:
-    - icon: simple/modrinth
-      link: https://modrinth.com/mod/tardim_ic
-      name: Modrinth
-    - icon: simple/curseforge
-      link: https://www.curseforge.com/minecraft/mc-mods/tardim_ic
-      name: CurseForge
-
-markdown_extensions:
-  - attr_list
-
-  - pymdownx.highlight:
-      anchor_linenums: true
-      line_spans: __span
-      pygments_lang_class: true
-  - pymdownx.inlinehilite
-  - pymdownx.snippets
-  - pymdownx.superfences
-
-  - admonition
-  - pymdownx.details
-
-  - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
-
-  - toc:
-      permalink: true
-
-plugins:
-  - minify:
-      minify_html: true
-      minify_js: true
-      minify_css: true
-      htmlmin_opts:
-        remove_comments: true
-  - social:
-  - glightbox:
-  - search:
+#edit_uri: https://git.a71.su/Andrew71/Tardim-In-Control/src/branch/1.20/docs
 
 theme:
-  name: material
+  name: readthedocs
 
   features:
     - content.code.copy
@@ -83,10 +49,7 @@ theme:
     primary: custom
     accent: custom
 
-  icon:
-    repo: fontawesome/brands/git
-  logo: assets/images/cccbridge-icon.png
-  favicon: assets/images/tweaked-programs-icon.png
+  favicon: assets/img/icon.png
 
 extra_css:
-  - assets/stylesheets/extra.css
+  - assets/style.css
