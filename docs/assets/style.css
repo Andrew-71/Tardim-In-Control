@@ -34,3 +34,9 @@ code {
     image-rendering: crisp-edges;
     width: 50px;
 }
+
+
+.section > p:nth-child(5) > img:nth-child(1), .section > p:nth-child(4) > img:nth-child(1) {
+    max-width: 100%;
+    width: 75%;
+}
