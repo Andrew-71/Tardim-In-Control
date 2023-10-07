@@ -1,3 +1,0 @@
-Display sources for the cartridge loader
-
-* Inserted X/Y/Z/Dimension
